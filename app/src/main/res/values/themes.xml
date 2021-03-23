@@ -1,0 +1,49 @@
+<resources>
+
+    <style name="Theme.Work_with_service" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorBackgroundFloating">@color/colorFrontLayer</item>
+        <item name="actionBarStyle">@style/ActionBar</item>
+    </style>
+
+    <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="titleTextStyle">@style/TitleTextStyle</item>
+        <item name="displayOptions">showHome|showTitle</item>
+    </style>
+
+    <style name="TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/colorTextName</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:shadowColor">@color/colorTextShadow</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">1</item>
+    </style>
+
+    <style name="TextView.HeadName" parent="Theme.Work_with_service">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorTextName</item>
+        <item name="android:lineSpacingExtra">15dp</item>
+        <item name="android:shadowColor">@color/colorTextShadow</item>
+        <item name="android:shadowDx">3</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <style name="TextView.Heading" parent="Theme.Work_with_service">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorTextHeading</item>
+        <item name="android:lineSpacingExtra">15dp</item>
+    </style>
+
+    <style name="TextView.Normal" parent="Theme.Work_with_service">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:lineSpacingExtra">15dp</item>
+    </style>
+
+</resources>

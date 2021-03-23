@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Pokemon World</string>
+    <string name="pokemon">Pokemon</string>
+    <string name="Base_info">Base information</string>
+    <string name="base_experience">Start experience: </string>
+    <string name="pokemon_height">Height: </string>
+    <string name="pokemon_height_value">%1$dcm</string>
+    <string name="pokemon_weight">Weight: </string>
+    <string name="pokemon_weight_value">%1$.2fkg</string>
+    <string name="age_category">Age category: </string>
+    <string name="baby">Baby</string>
+    <string name="adult">Adult</string>
+    <string name="habitat">Habitat: </string>
+    <string name="color">Color: </string>
+    <string name="abilities">Abilities </string>
+    <string name="name_ability">%1$d. \"%2$s\" </string>
+    <string name="ability_effect"><b>Effect: </b></string>
+    <string name="ability_short_effect"><b>Short effect: </b></string>
+    <string name="not_information">Not information</string>
+</resources>
