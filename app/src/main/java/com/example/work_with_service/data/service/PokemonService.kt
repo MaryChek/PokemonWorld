@@ -1,9 +1,12 @@
-package com.example.work_with_service.ui.model
+package com.example.work_with_service.data.service
 
 import com.example.work_with_service.data.client.PokeApiClient
 import com.example.work_with_service.data.client.Resource
 import com.example.work_with_service.di.entities.*
 import com.example.work_with_service.data.client.Resource.Status.*
+import com.example.work_with_service.ui.model.ListPokemon
+import com.example.work_with_service.ui.model.PokiInfo
+import com.example.work_with_service.ui.model.ServicePokemonAnswer
 
 class PokemonService(
     private val onServiceFinishedWork: (ServicePokemonAnswer) -> Unit
@@ -16,7 +19,10 @@ class PokemonService(
 
     fun callPokemonSource() {
         listPokemon = mutableListOf()
-        remotePokemonSource.callPokemonResourceList(OFFSET, LIMIT)
+        remotePokemonSource.callPokemonResourceList(
+            OFFSET,
+            LIMIT
+        )
     }
 
     fun callPokemonInfo(pokemon: Pokemon) {
@@ -42,7 +48,11 @@ class PokemonService(
             is Pokemon -> {
                 addPokemonToList(pokemonResource)
                 if (listPokemon?.size == LIMIT) {
-                    onServiceFinishedWork(ListPokemon(listPokemon!!))
+                    onServiceFinishedWork(
+                        ListPokemon(
+                            listPokemon!!
+                        )
+                    )
                     listPokemon = null
                 }
             }

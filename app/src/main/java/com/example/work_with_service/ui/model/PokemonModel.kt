@@ -1,5 +1,6 @@
 package com.example.work_with_service.ui.model
 
+import com.example.work_with_service.data.service.PokemonService
 import com.example.work_with_service.di.entities.Ability
 import com.example.work_with_service.di.entities.NameResource
 import com.example.work_with_service.di.entities.Pokemon
@@ -11,7 +12,8 @@ class PokemonModel {
     private var pokemon: Pokemon? = null
 
     init {
-        pokemonService = PokemonService(this::onServiceFinishedWork)
+        pokemonService =
+            PokemonService(this::onServiceFinishedWork)
     }
 
     fun createPokemonList(onPokemonListReadyListener: (PokiAttributes) -> Unit) {
