@@ -8,9 +8,7 @@ class PokeApiClient(
     clientConfig: ClientConfig = ClientConfig()
 ) : PokemonRemoteDataSource() {
     private val service =
-        PokeApiServiceRetrofit(
-            clientConfig
-        )
+        PokeApiServiceRetrofit(clientConfig)
 
     fun callPokemonResourceList(offset: Int, limit: Int) =
         getResult(service.client.getPokemonList(offset, limit), onServiceCallAnswer)

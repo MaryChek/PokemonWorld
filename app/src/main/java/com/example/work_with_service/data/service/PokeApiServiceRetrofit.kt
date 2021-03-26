@@ -18,7 +18,7 @@ internal class PokeApiServiceRetrofit(
                 }.create()
             )
         )
-        .client(config.okHttpConfig.build())
+        .client(config.getUnsafeOkHttpClientBuilder().build())
         .build()
         .create(PokeApiService::class.java)
 
