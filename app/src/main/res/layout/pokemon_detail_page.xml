@@ -33,8 +33,15 @@
             android:layout_marginTop="10dp"/>
 
         <include
+            android:id="@+id/cvTypes"
+            layout="@layout/item_pokemon_additional_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+        <include
             android:id="@+id/cvAbilities"
-            layout="@layout/pokemon_ability"
+            layout="@layout/item_pokemon_additional_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp" />

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Work_with_service"
         tools:targetApi="n">
-        <activity android:name=".view.MainActivity">
+        <activity android:name="com.example.work_with_service.ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

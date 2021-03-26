@@ -3,6 +3,8 @@
     <string name="pokemon">Pokemon</string>
     <string name="Base_info">Base information</string>
     <string name="base_experience">Start experience: </string>
+    <string name="capture_rate">Capture rate: </string>
+    <string name="capture_rate_value">%1$d/255</string>
     <string name="pokemon_height">Height: </string>
     <string name="pokemon_height_value">%1$dcm</string>
     <string name="pokemon_weight">Weight: </string>
@@ -14,7 +16,11 @@
     <string name="color">Color: </string>
     <string name="abilities">Abilities </string>
     <string name="name_ability">%1$d. \"%2$s\" </string>
-    <string name="ability_effect"><b>Effect: </b></string>
-    <string name="ability_short_effect"><b>Short effect: </b></string>
+    <string name="types">Types </string>
+    <string name="name_type">%1$d. \"%2$s\" </string>
+    <string name="no_damage_to"><b>no damage to: </b></string>
+    <string name="double_damage_to"><b>double damage to: </b></string>
+    <string name="no_damage_from"><b>no damage from: </b></string>
+    <string name="double_damage_from"><b>double damage from: </b></string>
     <string name="not_information">Not information</string>
 </resources>

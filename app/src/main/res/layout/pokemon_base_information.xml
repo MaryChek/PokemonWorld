@@ -23,6 +23,10 @@
             layout="@layout/item_pokemon_base_info" />
 
         <include
+            android:id="@+id/tvCaptureRate"
+            layout="@layout/item_pokemon_base_info" />
+
+        <include
             android:id="@+id/tvHeight"
             layout="@layout/item_pokemon_base_info" />
 
