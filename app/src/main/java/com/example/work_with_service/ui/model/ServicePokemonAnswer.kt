@@ -1,9 +1,9 @@
 package com.example.work_with_service.ui.model
 
-import com.example.work_with_service.di.entities.Ability
-import com.example.work_with_service.di.entities.Pokemon
-import com.example.work_with_service.di.entities.PokemonSpecies
-import com.example.work_with_service.di.entities.Type
+import com.example.work_with_service.data.entities.Ability
+import com.example.work_with_service.data.entities.Pokemon
+import com.example.work_with_service.data.entities.PokemonSpecies
+import com.example.work_with_service.data.entities.Type
 
 sealed class ServicePokemonAnswer
 

@@ -1,6 +1,6 @@
 package com.example.work_with_service.data.service
 
-import com.example.work_with_service.di.entities.*
+import com.example.work_with_service.data.entities.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -25,6 +25,3 @@ interface PokeApiService {
     @GET("/api/v2/type/{name}")
     fun getPokemonType(@Path("name") name: String?): Call<Type>
 }
-
-
-

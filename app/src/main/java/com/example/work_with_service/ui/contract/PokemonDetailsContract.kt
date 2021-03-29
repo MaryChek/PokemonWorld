@@ -1,4 +1,4 @@
-package com.example.work_with_service.ui.pokemondetail.contract
+package com.example.work_with_service.ui.contract
 
 import com.example.work_with_service.ui.model.PokemonInfo
 
@@ -8,8 +8,6 @@ interface PokemonDetailsContract {
     }
 
     interface Presenter {
-//        fun onViewCreated()
-
         fun onViewGetPokemonName(namePokemon: String)
     }
 }

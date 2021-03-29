@@ -1,9 +1,9 @@
 package com.example.work_with_service.ui.model
 
 import com.example.work_with_service.data.service.PokemonService
-import com.example.work_with_service.di.entities.Ability
-import com.example.work_with_service.di.entities.NameResource
-import com.example.work_with_service.di.entities.Pokemon
+import com.example.work_with_service.data.entities.Ability
+import com.example.work_with_service.data.entities.NameResource
+import com.example.work_with_service.data.entities.Pokemon
 
 class PokemonModel {
     private var onListReadyListener: ((PokiAttributes) -> Unit)? = null
@@ -12,8 +12,7 @@ class PokemonModel {
     private var pokemon: Pokemon? = null
 
     init {
-        pokemonService =
-            PokemonService(this::onServiceFinishedWork)
+        pokemonService = PokemonService(this::onServiceFinishedWork)
     }
 
     fun createPokemonList(onPokemonListReadyListener: (PokiAttributes) -> Unit) {
@@ -27,7 +26,9 @@ class PokemonModel {
     ) {
         onListReadyListener = onPokemonInfoReadyListener
         pokemon = getPokemonByName(namePokemon)
-        pokemonService?.callPokemonInfo(pokemon!!)
+        pokemon?.let {
+            pokemonService?.callPokemonInfo(it)
+        }
     }
 
     private fun getPokemonByName(namePokemon: String): Pokemon =
@@ -62,27 +63,23 @@ class PokemonModel {
 
     private fun getPokemonInfo(pokiInfo: PokiInfo): PokemonInfo =
         PokemonInfo(
-            pokemon?.sprites?.frontDefault!!,
+            pokemon?.sprites?.frontDefault,
             takeBaseInfo(pokiInfo),
             takeAbilitiesInfo(pokiInfo.abilities),
             takeTypesInfo(pokiInfo)
         )
 
-    private fun takeBaseInfo(pokiInfo: PokiInfo): Base {
-        pokemon?.let {
-            return Base(
-                it.name,
-                it.baseExperience,
-                pokiInfo.pokemonSpecies.captureRate,
-                it.height,
-                it.weight,
-                pokiInfo.pokemonSpecies.isBaby,
-                pokiInfo.pokemonSpecies.habitat.name,
-                pokiInfo.pokemonSpecies.color.name
-            )
-        }
-        return Base()
-    }
+    private fun takeBaseInfo(pokiInfo: PokiInfo): BaseInfo =
+        BaseInfo(
+            pokemon?.name ?: "",
+            pokemon?.baseExperience ?: 0,
+            pokiInfo.pokemonSpecies.captureRate,
+            pokemon?.height ?: 0,
+            pokemon?.weight ?: 0,
+            pokiInfo.pokemonSpecies.isBaby,
+            pokiInfo.pokemonSpecies.habitat.name,
+            pokiInfo.pokemonSpecies.color.name
+        )
 
 
     private fun takeAbilitiesInfo(abilities: List<Ability>): List<PokiAbility> {
@@ -125,4 +122,3 @@ class PokemonModel {
         private const val ENGLISH_LANGUAGE = "en"
     }
 }
-

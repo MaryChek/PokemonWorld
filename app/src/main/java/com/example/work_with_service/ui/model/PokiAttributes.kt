@@ -1,10 +1,10 @@
 package com.example.work_with_service.ui.model
 
-sealed class PokiAttributes
+interface PokiAttributes
 
 class ListPokemonAttributes(
     val listAttributes: List<PokemonAttributes>
-) : PokiAttributes()
+) : PokiAttributes
 
 class PokemonAttributes(
     val imageUrl: String,
@@ -12,21 +12,21 @@ class PokemonAttributes(
 )
 
 class PokemonInfo(
-    val imageUrl: String,
-    val base: Base,
+    val imageUrl: String?,
+    val base: BaseInfo,
     val abilities: List<PokiAbility>,
     val types: List<PokiType>
-) : PokiAttributes()
+) : PokiAttributes
 
-class Base(
-    val name: String = "",
-    val baseExperience: Int = 0,
-    val captureRate: Int? = 0,
-    val height: Int = 0,
-    val weight: Int = 0,
-    val isBaby: Boolean = false,
-    val habitat: String = "",
-    val color: String = ""
+class BaseInfo(
+    val name: String,
+    val baseExperience: Int,
+    val captureRate: Int,
+    val height: Int,
+    val weight: Int,
+    val isBaby: Boolean,
+    val habitat: String,
+    val color: String
 )
 
 class PokiAbility(

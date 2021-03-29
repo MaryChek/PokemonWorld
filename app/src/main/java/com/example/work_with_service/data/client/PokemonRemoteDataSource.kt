@@ -1,6 +1,7 @@
 package com.example.work_with_service.data.client
 
-import com.example.work_with_service.di.entities.PokemonResource
+import com.example.work_with_service.data.entities.PokemonResource
+import com.example.work_with_service.data.service.Resource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,5 +30,9 @@ open class PokemonRemoteDataSource {
     }
 
     private fun error(message: String?): Resource<PokemonResource> =
-        Resource.error("Network call has failed for a following reason: $message")
+        Resource.error(NETWORK_FAIL + message)
+
+    companion object {
+        private const val NETWORK_FAIL = "Network call has failed for a following reason: "
+    }
 }

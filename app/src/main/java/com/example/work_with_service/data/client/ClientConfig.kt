@@ -1,22 +1,24 @@
 package com.example.work_with_service.data.client
 
 import android.annotation.SuppressLint
-import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import java.lang.Exception
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
-import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLContext
-import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 class ClientConfig(
-    val rootUrl: HttpUrl = HttpUrl.parse("https://pokeapi.co/api/v2/")!!
+    val baseUrl: String = BASE_URL,
+    val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
 ) {
-    fun getUnsafeOkHttpClientBuilder(): OkHttpClient.Builder {
+    init {
+        setupAcceptAllCertificates()
+    }
+
+    private fun setupAcceptAllCertificates() {
         try {
             val trustManager = object : X509TrustManager {
                 @SuppressLint("TrustAllX509TrustManager")
@@ -42,14 +44,10 @@ class ClientConfig(
             val sslContext: SSLContext = SSLContext.getInstance(PROTOCOL_TLS)
             sslContext.init(null, trustManagers, SecureRandom())
 
-            val sslSocketFactory: SSLSocketFactory = sslContext.socketFactory
-            val hostnameVerifier = HostnameVerifier { _, _ ->
+            okHttpClientBuilder.sslSocketFactory(sslContext.socketFactory, trustManager)
+            okHttpClientBuilder.hostnameVerifier { _, _ ->
                 true
             }
-            val builder: OkHttpClient.Builder = OkHttpClient.Builder()
-            builder.sslSocketFactory(sslSocketFactory, trustManager)
-            builder.hostnameVerifier(hostnameVerifier)
-            return builder
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
@@ -57,5 +55,6 @@ class ClientConfig(
 
     companion object {
         private const val PROTOCOL_TLS = "SSL"
+        private const val BASE_URL = "https://pokeapi.co/api/v2/"
     }
 }

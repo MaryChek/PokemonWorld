@@ -1,9 +1,9 @@
 package com.example.work_with_service.data.service
 
+import android.util.Log
 import com.example.work_with_service.data.client.PokeApiClient
-import com.example.work_with_service.data.client.Resource
-import com.example.work_with_service.di.entities.*
-import com.example.work_with_service.data.client.Resource.Status.*
+import com.example.work_with_service.data.service.Resource.Status.*
+import com.example.work_with_service.data.entities.*
 import com.example.work_with_service.ui.model.ListPokemon
 import com.example.work_with_service.ui.model.PokiInfo
 import com.example.work_with_service.ui.model.ServicePokemonAnswer
@@ -11,18 +11,14 @@ import com.example.work_with_service.ui.model.ServicePokemonAnswer
 class PokemonService(
     private val onServiceFinishedWork: (ServicePokemonAnswer) -> Unit
 ) {
-    private val remotePokemonSource: PokeApiClient = PokeApiClient(this::onServiceCallAnswer)
-    private var pokemonResourceList: PokemonResourceList? = null
+    private val remotePokemonSource = PokeApiClient(this::onServiceCallAnswer)
     private var pokemon: Pokemon? = null
     private var listPokemon: MutableList<Pokemon>? = null
     private var pokemonInfo: PokiInfo? = null
 
     fun callPokemonSource() {
         listPokemon = mutableListOf()
-        remotePokemonSource.callPokemonResourceList(
-            OFFSET,
-            LIMIT
-        )
+        remotePokemonSource.callPokemonResourceList(OFFSET, LIMIT)
     }
 
     fun callPokemonInfo(pokemon: Pokemon) {
@@ -33,14 +29,13 @@ class PokemonService(
 
     private fun onServiceCallAnswer(res: Resource<PokemonResource>) =
         when (res.status) {
-            SUCCESS -> onResponseSuccess(res.data!!)
+            SUCCESS -> onResponseSuccess(res.data)
             ERROR -> onResponseError(res.message)
         }
 
-    private fun onResponseSuccess(pokemonResource: PokemonResource) {
+    private fun onResponseSuccess(pokemonResource: PokemonResource?) {
         when (pokemonResource) {
             is PokemonResourceList -> {
-                pokemonResourceList = pokemonResource
                 pokemonResource.results.forEach {
                     remotePokemonSource.callPokemon(it.name)
                 }
@@ -48,12 +43,10 @@ class PokemonService(
             is Pokemon -> {
                 addPokemonToList(pokemonResource)
                 if (listPokemon?.size == LIMIT) {
-                    onServiceFinishedWork(
-                        ListPokemon(
-                            listPokemon!!
-                        )
-                    )
-                    listPokemon = null
+                    listPokemon?.let {
+                        onServiceFinishedWork(ListPokemon(it))
+                        listPokemon = null
+                    }
                 }
             }
             is PokemonSpecies -> {
@@ -76,8 +69,10 @@ class PokemonService(
                 pokemonInfo?.types?.apply {
                     add(pokemonResource)
                     if (size == pokemon?.types?.size) {
-                        onServiceFinishedWork(pokemonInfo!!)
-                        pokemonInfo = null
+                        pokemonInfo?.let {
+                            onServiceFinishedWork(it)
+                            pokemonInfo = null
+                        }
                         pokemon = null
                     }
                 }
@@ -90,8 +85,13 @@ class PokemonService(
         listPokemon?.add(pokemon)
     }
 
-    private fun onResponseError(message: String?) =
-        println(message)
+    private fun onResponseError(message: String?) {
+        message?.let {
+            Log.e(null, it)
+        }
+        pokemonInfo = null
+        pokemon = null
+    }
 
     companion object {
         private const val OFFSET = 0

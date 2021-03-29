@@ -1,6 +1,6 @@
-package com.example.work_with_service.ui.pokemondetail.presenter
+package com.example.work_with_service.ui.presenter
 
-import com.example.work_with_service.ui.pokemondetail.contract.PokemonDetailsContract
+import com.example.work_with_service.ui.contract.PokemonDetailsContract
 import com.example.work_with_service.ui.model.PokemonModel
 import com.example.work_with_service.ui.model.PokemonInfo
 import com.example.work_with_service.ui.model.PokiAttributes
@@ -10,9 +10,8 @@ class PokemonDetailsPresenter(
     private val view: PokemonDetailsContract.View
 ) : PokemonDetailsContract.Presenter {
 
-    override fun onViewGetPokemonName(namePokemon: String) {
+    override fun onViewGetPokemonName(namePokemon: String) =
         model.createPokemonInfo(namePokemon, this::onPokemonInfoReadyListener)
-    }
 
     private fun onPokemonInfoReadyListener(pokemonInfo: PokiAttributes) =
         view.showDetail(pokemonInfo as PokemonInfo)

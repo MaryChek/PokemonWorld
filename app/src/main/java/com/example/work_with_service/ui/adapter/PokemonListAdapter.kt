@@ -1,10 +1,10 @@
-package com.example.work_with_service.ui.pokemon.view.adapter
+package com.example.work_with_service.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.work_with_service.R
-import com.example.work_with_service.ui.pokemon.view.adapter.viewholder.PokemonViewHolder
+import com.example.work_with_service.ui.adapter.viewholder.PokemonViewHolder
 import com.example.work_with_service.ui.model.PokemonAttributes
 
 class PokemonListAdapter(

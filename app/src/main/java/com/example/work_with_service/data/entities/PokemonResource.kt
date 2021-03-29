@@ -1,4 +1,6 @@
-package com.example.work_with_service.di.entities
+package com.example.work_with_service.data.entities
+
+import com.squareup.moshi.Json
 
 sealed class PokemonResource
 
@@ -10,6 +12,7 @@ class PokemonResourceList(
 
 class Pokemon(
     val name: String,
+    @field:Json(name = "base_experience")
     val baseExperience: Int,
     val height: Int,
     val weight: Int,
@@ -27,18 +30,22 @@ class PokemonType(
 )
 
 class PokemonSprites(
+    @field:Json(name = "front_default")
     val frontDefault: String
 )
 
 class PokemonSpecies(
+    @field:Json(name = "is_Baby")
     val isBaby: Boolean,
     val habitat: NameResource,
     val color: NameResource,
+    @field:Json(name = "capture_rate")
     val captureRate: Int
 ) : PokemonResource()
 
 class Ability(
     val name: String,
+    @field:Json(name = "effect_entries")
     val effectEntries: List<VerboseEffect>
 ) : PokemonResource()
 
@@ -49,13 +56,18 @@ class VerboseEffect(
 
 class Type(
     val name: String,
+    @field:Json(name = "damage_relations")
     val damageRelations: TypeRelations
 ) : PokemonResource()
 
 class TypeRelations(
+    @field:Json(name = "no_damage_to")
     val noDamageTo: List<NameResource>,
+    @field:Json(name = "double_damage_to")
     val doubleDamageTo: List<NameResource>,
+    @field:Json(name = "no_damage_from")
     val noDamageFrom: List<NameResource>,
+    @field:Json(name = "double_damage_from")
     val doubleDamageFrom: List<NameResource>
 )
 

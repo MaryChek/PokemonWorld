@@ -1,4 +1,4 @@
-package com.example.work_with_service.ui.pokemon.contract
+package com.example.work_with_service.ui.contract
 
 import com.example.work_with_service.ui.model.PokemonAttributes
 
