@@ -18,7 +18,7 @@ class PagerAdapter(
         when (position) {
             POSITION_OF_LIST_POKEMON -> PokemonListPage()
             else -> PokemonDetailPage().apply {
-                arguments = bundleOf("namePokemon" to namePokemonForDetailPage)
+                arguments = bundleOf(KEY_FOR_NAME_POKEMON_ARG to namePokemonForDetailPage)
             }
         }
 
@@ -28,6 +28,7 @@ class PagerAdapter(
     }
 
     companion object {
+        private const val KEY_FOR_NAME_POKEMON_ARG = "namePokemon"
         private const val COUNT_OF_PAGE = 2
         private const val POSITION_OF_LIST_POKEMON = 0
         private const val POSITION_OF_DETAIL_PAGE = 1
