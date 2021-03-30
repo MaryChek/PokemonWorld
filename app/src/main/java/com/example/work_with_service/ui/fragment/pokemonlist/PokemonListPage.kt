@@ -1,4 +1,4 @@
-package com.example.work_with_service.ui.fragment
+package com.example.work_with_service.ui.fragment.pokemonlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import com.example.work_with_service.R
 import com.example.work_with_service.ui.contract.PokemonListContract
 import com.example.work_with_service.databinding.PokemonListPageBinding
 import com.example.work_with_service.ui.adapter.PokemonListAdapter
+import com.example.work_with_service.ui.fragment.pokemondetail.DetailPage
 import com.example.work_with_service.ui.model.PokemonAttributes
 import com.example.work_with_service.ui.model.PokemonModel
 import com.example.work_with_service.ui.presenter.PokemonListPresenter

@@ -1,4 +1,4 @@
-package com.example.work_with_service.ui.fragment
+package com.example.work_with_service.ui.fragment.pokemondetail
 
 import android.os.Bundle
 import android.text.*
@@ -18,6 +18,7 @@ import com.example.work_with_service.databinding.ItemPokemonBaseInfoBinding
 import com.example.work_with_service.databinding.PokemonBaseInformationBinding
 import com.example.work_with_service.databinding.PokemonDetailPageBinding
 import com.example.work_with_service.ui.model.*
+import com.example.work_with_service.ui.pager.adapter.PagerAdapter.Companion.KEY_FOR_NAME_POKEMON_ARG
 import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
 import com.example.work_with_service.ui.utils.firstUpperCase
 import com.example.work_with_service.ui.utils.setImageWithGlide
@@ -48,18 +49,18 @@ class PokemonDetailPage : Fragment(), PokemonDetailsContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let { bundle ->
-            bundle.getString("namePokemon")?.let {
-                presenter?.onViewGetPokemonName(it)
+            bundle.get(KEY_FOR_NAME_POKEMON_ARG)?.let {
+                presenter?.onViewGetPokemonAttributes(it as PokemonAttributes)
             }
         }
     }
 
-    override fun showDetail(pokemonInfo: PokemonInfo) {
+    override fun showDetail(pokemonDetail: PokemonDetail) {
         binding?.let {
-            setImageWithGlide(it.ivPokemon.rootView, pokemonInfo.imageUrl, it.ivPokemon)
-            setBaseInfo(it.cvBaseInformation, pokemonInfo.base)
-            setInfoByType(it.cvTypes, pokemonInfo.types)
-            setInfoByAbilities(it.cvAbilities, pokemonInfo.abilities)
+            setImageWithGlide(it.ivPokemon.rootView, pokemonDetail.imageUrl, it.ivPokemon)
+            setBaseInfo(it.cvBaseInformation, pokemonDetail.base)
+            setInfoByType(it.cvTypes, pokemonDetail.types)
+            setInfoByAbilities(it.cvAbilities, pokemonDetail.abilities)
         }
     }
 
@@ -108,7 +109,9 @@ class PokemonDetailPage : Fragment(), PokemonDetailsContract.View {
                 R.string.name_ability, i + 1, firstUpperCase(abilities[i].name)
             )
             properties.append(getSpannableStringWithStyle(text, R.style.TextView_Heading))
-            text = PARAGRAPH + abilities[i].effect.replace("\n\n", PARAGRAPH) + "\n"
+            text = PARAGRAPH + abilities[i].effect.replace("\n\n",
+                PARAGRAPH
+            ) + "\n"
             properties.append(getSpannableStringWithStyle(text, R.style.TextView_Normal))
         }
         setTextToItemAdditionalInfo(pokemonAbilityBinding, R.string.abilities, properties)

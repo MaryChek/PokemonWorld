@@ -11,7 +11,7 @@ class PokemonAttributes(
     val name: String
 )
 
-class PokemonInfo(
+class PokemonDetail(
     val imageUrl: String?,
     val base: BaseInfo,
     val abilities: List<PokiAbility>,

@@ -1,23 +1,24 @@
 package com.example.work_with_service.ui.model
 
-import com.example.work_with_service.data.service.PokemonService
+import com.example.work_with_service.data.repository.PokemonRepository
 import com.example.work_with_service.data.entities.Ability
 import com.example.work_with_service.data.entities.NameResource
 import com.example.work_with_service.data.entities.Pokemon
 
 class PokemonModel {
     private var onListReadyListener: ((PokiAttributes) -> Unit)? = null
-    private var pokemonService: PokemonService? = null
+    private var pokemonRepository: PokemonRepository? = null
     private var pokemonList: List<Pokemon> = listOf()
     private var pokemon: Pokemon? = null
 
     init {
-        pokemonService = PokemonService(this::onServiceFinishedWork)
+        pokemonRepository =
+            PokemonRepository(this::onServiceFinishedWork)
     }
 
     fun createPokemonList(onPokemonListReadyListener: (PokiAttributes) -> Unit) {
         onListReadyListener = onPokemonListReadyListener
-        pokemonService?.callPokemonSource()
+        pokemonRepository?.callPokemonSource()
     }
 
     fun createPokemonInfo(
@@ -27,7 +28,7 @@ class PokemonModel {
         onListReadyListener = onPokemonInfoReadyListener
         pokemon = getPokemonByName(namePokemon)
         pokemon?.let {
-            pokemonService?.callPokemonInfo(it)
+            pokemonRepository?.callPokemonInfo(it)
         }
     }
 
@@ -48,7 +49,7 @@ class PokemonModel {
                 pokemonList = pokemonAnswer.listPokemon
                 onListReadyListener?.invoke(getListPokemonAttributes(pokemonList))
             }
-            is PokiInfo ->
+            is PokiDetail ->
                 onListReadyListener?.invoke(getPokemonInfo(pokemonAnswer))
         }
     }
@@ -61,24 +62,24 @@ class PokemonModel {
         return ListPokemonAttributes(listAttributes)
     }
 
-    private fun getPokemonInfo(pokiInfo: PokiInfo): PokemonInfo =
-        PokemonInfo(
+    private fun getPokemonInfo(pokiDetail: PokiDetail): PokemonDetail =
+        PokemonDetail(
             pokemon?.sprites?.frontDefault,
-            takeBaseInfo(pokiInfo),
-            takeAbilitiesInfo(pokiInfo.abilities),
-            takeTypesInfo(pokiInfo)
+            takeBaseInfo(pokiDetail),
+            takeAbilitiesInfo(pokiDetail.abilities),
+            takeTypesInfo(pokiDetail)
         )
 
-    private fun takeBaseInfo(pokiInfo: PokiInfo): BaseInfo =
+    private fun takeBaseInfo(pokiDetail: PokiDetail): BaseInfo =
         BaseInfo(
             pokemon?.name ?: "",
             pokemon?.baseExperience ?: 0,
-            pokiInfo.pokemonSpecies.captureRate,
+            pokiDetail.pokemonSpecies.captureRate,
             pokemon?.height ?: 0,
             pokemon?.weight ?: 0,
-            pokiInfo.pokemonSpecies.isBaby,
-            pokiInfo.pokemonSpecies.habitat.name,
-            pokiInfo.pokemonSpecies.color.name
+            pokiDetail.pokemonSpecies.isBaby,
+            pokiDetail.pokemonSpecies.habitat.name,
+            pokiDetail.pokemonSpecies.color.name
         )
 
 
@@ -94,9 +95,9 @@ class PokemonModel {
         return abilitiesInfo
     }
 
-    private fun takeTypesInfo(pokiInfo: PokiInfo): List<PokiType> {
+    private fun takeTypesInfo(pokiDetail: PokiDetail): List<PokiType> {
         val typesInfo: MutableList<PokiType> = mutableListOf()
-        pokiInfo.types.forEach { type ->
+        pokiDetail.types.forEach { type ->
             typesInfo.add(
                 PokiType(
                     type.name,

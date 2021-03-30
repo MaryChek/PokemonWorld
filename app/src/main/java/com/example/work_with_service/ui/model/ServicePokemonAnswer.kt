@@ -11,7 +11,12 @@ class ListPokemon(
     val listPokemon: List<Pokemon>
 ) : ServicePokemonAnswer()
 
-class PokiInfo : ServicePokemonAnswer() {
+class PokiDetail(
+    val name: String,
+    val baseExperience: Int,
+    val height: Int,
+    val weight: Int
+) : ServicePokemonAnswer() {
     lateinit var pokemonSpecies: PokemonSpecies
     val types: MutableList<Type> = mutableListOf()
     val abilities: MutableList<Ability> = mutableListOf()

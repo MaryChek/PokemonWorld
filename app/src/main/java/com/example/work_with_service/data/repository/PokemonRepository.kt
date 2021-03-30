@@ -1,31 +1,42 @@
-package com.example.work_with_service.data.service
+package com.example.work_with_service.data.repository
 
 import android.util.Log
 import com.example.work_with_service.data.client.PokeApiClient
 import com.example.work_with_service.data.service.Resource.Status.*
 import com.example.work_with_service.data.entities.*
+import com.example.work_with_service.data.service.Resource
 import com.example.work_with_service.ui.model.ListPokemon
-import com.example.work_with_service.ui.model.PokiInfo
+import com.example.work_with_service.ui.model.PokiDetail
 import com.example.work_with_service.ui.model.ServicePokemonAnswer
 
-class PokemonService(
-    private val onServiceFinishedWork: (ServicePokemonAnswer) -> Unit
-) {
+class PokemonRepository {
+    private var onServiceFinishedWork: ((ServicePokemonAnswer) -> Unit)? = null
     private val remotePokemonSource = PokeApiClient(this::onServiceCallAnswer)
     private var pokemon: Pokemon? = null
     private var listPokemon: MutableList<Pokemon>? = null
-    private var pokemonInfo: PokiInfo? = null
+    private var pokemonDetail: PokiDetail? = null
 
-    fun callPokemonSource() {
+    fun callPokemonSource(onPokemonListReady: (ServicePokemonAnswer) -> Unit) {
+        onServiceFinishedWork = onPokemonListReady
         listPokemon = mutableListOf()
         remotePokemonSource.callPokemonResourceList(OFFSET, LIMIT)
     }
 
-    fun callPokemonInfo(pokemon: Pokemon) {
-        this.pokemon = pokemon
-        pokemonInfo = PokiInfo()
-        remotePokemonSource.callPokemonSpecies(pokemon.name)
+    fun callPokemonInfo(pokemonName: String, onPokemonDetailReady: (ServicePokemonAnswer) -> Unit) {
+        onServiceFinishedWork = onPokemonDetailReady
+        pokemon = findPokemonByName(pokemonName)
+        pokemon?.let {
+            pokemonDetail = PokiDetail(
+                it.name, it.baseExperience, it.height, it.weight
+            )
+            remotePokemonSource.callPokemonSpecies(it.name)
+        }
     }
+
+    private fun findPokemonByName(name: String): Pokemon? =
+        listPokemon?.first {
+            it.name == name
+        }
 
     private fun onServiceCallAnswer(res: Resource<PokemonResource>) =
         when (res.status) {
@@ -44,19 +55,19 @@ class PokemonService(
                 addPokemonToList(pokemonResource)
                 if (listPokemon?.size == LIMIT) {
                     listPokemon?.let {
-                        onServiceFinishedWork(ListPokemon(it))
+                        onServiceFinishedWork?.invoke(ListPokemon(it))
                         listPokemon = null
                     }
                 }
             }
             is PokemonSpecies -> {
-                pokemonInfo?.pokemonSpecies = pokemonResource
+                pokemonDetail?.pokemonSpecies = pokemonResource
                 pokemon?.abilities?.forEach {
                     remotePokemonSource.callPokemonAbility(it.ability.name)
                 }
             }
             is Ability -> {
-                pokemonInfo?.abilities?.apply {
+                pokemonDetail?.abilities?.apply {
                     add(pokemonResource)
                     if (size == pokemon?.abilities?.size) {
                         pokemon?.types?.forEach {
@@ -66,12 +77,12 @@ class PokemonService(
                 }
             }
             is Type -> {
-                pokemonInfo?.types?.apply {
+                pokemonDetail?.types?.apply {
                     add(pokemonResource)
                     if (size == pokemon?.types?.size) {
-                        pokemonInfo?.let {
-                            onServiceFinishedWork(it)
-                            pokemonInfo = null
+                        pokemonDetail?.let {
+                            onServiceFinishedWork?.invoke(it)
+                            pokemonDetail = null
                         }
                         pokemon = null
                     }
@@ -89,12 +100,19 @@ class PokemonService(
         message?.let {
             Log.e(null, it)
         }
-        pokemonInfo = null
+        pokemonDetail = null
         pokemon = null
     }
 
     companion object {
         private const val OFFSET = 0
         private const val LIMIT = 30
+
+        private var INSTANCE: PokemonRepository? = null
+
+        fun getInstance(): PokemonRepository =
+            INSTANCE ?: PokemonRepository().also {
+                INSTANCE = it
+            }
     }
 }

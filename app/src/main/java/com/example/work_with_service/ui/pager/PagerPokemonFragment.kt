@@ -9,7 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING
-import com.example.work_with_service.ui.fragment.DetailPage
+import com.example.work_with_service.ui.fragment.pokemondetail.DetailPage
 import com.example.work_with_service.databinding.PokemonPagerFragmentBinding
 import com.example.work_with_service.ui.pager.adapter.PagerAdapter
 
