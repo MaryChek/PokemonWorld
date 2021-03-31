@@ -14,6 +14,7 @@ class PokemonDetailsPresenter(
     override fun onViewGetPokemonName(namePokemon: String) {
         pokemonName = namePokemon
         model.createPokemonInfo(namePokemon, this::onPokemonInfoReady)
+        view.showLoadingIndicator()
     }
 
     override fun onViewRestart() {
@@ -21,12 +22,15 @@ class PokemonDetailsPresenter(
         if (pokemonInfo == null) {
             pokemonName?.let {
                 model.createPokemonInfo(it, this::onPokemonInfoReady)
+                view.showLoadingIndicator()
             }
         } else {
             onPokemonInfoReady(pokemonInfo)
         }
     }
 
-    private fun onPokemonInfoReady(pokemonInfo: PokiAttributes) =
+    private fun onPokemonInfoReady(pokemonInfo: PokiAttributes) {
         view.showDetail(pokemonInfo as PokemonInfo)
+        view.hideLoadingIndicator()
+    }
 }

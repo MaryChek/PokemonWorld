@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.*
 import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
+import android.view.View.*
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
@@ -12,11 +13,8 @@ import androidx.fragment.app.Fragment
 import com.example.work_with_service.App
 import com.example.work_with_service.R
 import android.text.Spanned.*
+import com.example.work_with_service.databinding.*
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
-import com.example.work_with_service.databinding.ItemPokemonAdditionalInfoBinding
-import com.example.work_with_service.databinding.ItemPokemonBaseInfoBinding
-import com.example.work_with_service.databinding.PokemonBaseInformationBinding
-import com.example.work_with_service.databinding.PokemonDetailPageBinding
 import com.example.work_with_service.ui.model.*
 import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
 import com.example.work_with_service.ui.utils.firstUpperCase
@@ -59,6 +57,14 @@ class PokemonDetailPage : Fragment(), PokemonDetailsContract.View {
         if (savedInstanceState != null) {
             presenter?.onViewRestart()
         }
+    }
+
+    override fun showLoadingIndicator() {
+        binding?.progressIndicator?.visibility = VISIBLE
+    }
+
+    override fun hideLoadingIndicator() {
+        binding?.progressIndicator?.visibility = GONE
     }
 
     override fun showDetail(pokemonInfo: PokemonInfo) {

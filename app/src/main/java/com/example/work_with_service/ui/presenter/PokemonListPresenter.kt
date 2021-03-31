@@ -10,12 +10,15 @@ class PokemonListPresenter(
     private val view: PokemonListContract.View
 ) : PokemonListContract.Presenter {
 
-    override fun onViewCreated() =
+    override fun onViewCreated() {
         model.createPokemonList(this::onPokemonListReadyListener)
+        view.showLoadingIndicator()
+    }
 
     override fun onViewRestart() =
         if (model.isPokemonListAttributesEmpty()) {
             model.createPokemonList(this::onPokemonListReadyListener)
+            view.showLoadingIndicator()
         } else {
             view.updatePokemonList(model.getListPokemonAttributes().listAttributes)
         }
@@ -23,6 +26,8 @@ class PokemonListPresenter(
     override fun onItemPokemonClick(namePokemon: String) =
         view.openDetailedPage(namePokemon)
 
-    private fun onPokemonListReadyListener(listPokemonAttributes: PokiAttributes) =
+    private fun onPokemonListReadyListener(listPokemonAttributes: PokiAttributes) {
         view.updatePokemonList((listPokemonAttributes as ListPokemonAttributes).listAttributes)
+        view.hideLoadingIndicator()
+    }
 }

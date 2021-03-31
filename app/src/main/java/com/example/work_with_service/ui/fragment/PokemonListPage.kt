@@ -58,6 +58,14 @@ class PokemonListPage : Fragment(), PokemonListContract.View {
         addDividerItem()
     }
 
+    override fun showLoadingIndicator() {
+        binding?.progressIndicator?.visibility = View.VISIBLE
+    }
+
+    override fun hideLoadingIndicator() {
+        binding?.progressIndicator?.visibility = View.GONE
+    }
+
     private fun onItemClick(namePokemon: String) =
         presenter.onItemPokemonClick(namePokemon)
 
