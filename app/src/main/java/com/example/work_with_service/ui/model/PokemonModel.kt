@@ -7,9 +7,10 @@ import com.example.work_with_service.data.entities.Pokemon
 
 class PokemonModel {
     private var onListReadyListener: ((PokiAttributes) -> Unit)? = null
-    private var pokemonService: PokemonService? = null
+    private var pokemonService: PokemonService
     private var pokemonList: List<Pokemon> = listOf()
     private var pokemon: Pokemon? = null
+    private var pokemonDetail: PokemonInfo? = null
 
     init {
         pokemonService = PokemonService(this::onServiceFinishedWork)
@@ -17,7 +18,7 @@ class PokemonModel {
 
     fun createPokemonList(onPokemonListReadyListener: (PokiAttributes) -> Unit) {
         onListReadyListener = onPokemonListReadyListener
-        pokemonService?.callPokemonSource()
+        pokemonService.callPokemonSource()
     }
 
     fun createPokemonInfo(
@@ -27,7 +28,7 @@ class PokemonModel {
         onListReadyListener = onPokemonInfoReadyListener
         pokemon = getPokemonByName(namePokemon)
         pokemon?.let {
-            pokemonService?.callPokemonInfo(it)
+            pokemonService.callPokemonInfo(it)
         }
     }
 
@@ -41,6 +42,12 @@ class PokemonModel {
 
     fun getListPokemonAttributes(): ListPokemonAttributes =
         getListPokemonAttributes(pokemonList)
+
+    fun isPokemonDetailEmpty(): Boolean =
+        pokemonDetail == null
+
+    fun getPokemonDetail(): PokemonInfo? =
+        pokemonDetail
 
     private fun onServiceFinishedWork(pokemonAnswer: ServicePokemonAnswer) {
         when (pokemonAnswer) {

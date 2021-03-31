@@ -29,11 +29,20 @@ class PokemonDetailPage : Fragment(), PokemonDetailsContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
+        initPokemon()
     }
 
     private fun init() {
         val model: PokemonModel = (requireActivity().applicationContext as App).pokemonModel
         presenter = PokemonDetailsPresenter(model, this)
+    }
+
+    private fun initPokemon() {
+        arguments?.let { bundle ->
+            bundle.getString("namePokemon")?.let {
+                presenter?.onViewGetPokemonName(it)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -47,10 +56,8 @@ class PokemonDetailPage : Fragment(), PokemonDetailsContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.let { bundle ->
-            bundle.getString("namePokemon")?.let {
-                presenter?.onViewGetPokemonName(it)
-            }
+        if (savedInstanceState != null) {
+            presenter?.onViewRestart()
         }
     }
 

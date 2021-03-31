@@ -9,5 +9,7 @@ interface PokemonDetailsContract {
 
     interface Presenter {
         fun onViewGetPokemonName(namePokemon: String)
+
+        fun onViewRestart()
     }
 }
