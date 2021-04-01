@@ -2,36 +2,48 @@ package com.example.work_with_service.data.service
 
 import android.util.Log
 import com.example.work_with_service.data.client.PokeApiClient
-import com.example.work_with_service.data.service.Resource.Status.*
 import com.example.work_with_service.data.entities.*
 import com.example.work_with_service.ui.model.ListPokemon
 import com.example.work_with_service.ui.model.PokiInfo
+import com.example.work_with_service.data.service.Status.*
 import com.example.work_with_service.ui.model.ServicePokemonAnswer
 
-class PokemonService(
-    private val onServiceFinishedWork: (ServicePokemonAnswer) -> Unit
-) {
+class PokemonService {
+    private var onPokemonListReady: ((ListPokemon) -> Unit)? = null
+    private var onPokemonDetailReady: ((PokiInfo) -> Unit)? = null
+    private var onServiceFinishedError: (() -> Unit)? = null
     private val remotePokemonSource = PokeApiClient(this::onServiceCallAnswer)
     private var pokemon: Pokemon? = null
     private var listPokemon: MutableList<Pokemon>? = null
     private var pokemonInfo: PokiInfo? = null
 
-    fun callPokemonSource() {
+    fun callPokemonSource(
+        onPokemonListReady: (ListPokemon) -> Unit,
+        onServiceFinishedError: () -> Unit
+    ) {
+        this.onPokemonListReady = onPokemonListReady
+        this.onServiceFinishedError = onServiceFinishedError
         listPokemon = mutableListOf()
         remotePokemonSource.callPokemonResourceList(OFFSET, LIMIT)
     }
 
-    fun callPokemonInfo(pokemon: Pokemon) {
+    fun callPokemonInfo(
+        pokemon: Pokemon, onPokemonDetailReady: (PokiInfo) -> Unit,
+        onServiceFinishedError: () -> Unit
+    ) {
+        this.onPokemonDetailReady = onPokemonDetailReady
+        this.onServiceFinishedError = onServiceFinishedError
         this.pokemon = pokemon
         pokemonInfo = PokiInfo()
         remotePokemonSource.callPokemonSpecies(pokemon.name)
     }
 
     private fun onServiceCallAnswer(res: Resource<PokemonResource>) =
-        when (res.status) {
-            SUCCESS -> onResponseSuccess(res.data)
-            ERROR -> onResponseError(res.message)
+        when (res.status == SUCCESS) {
+            true -> onResponseSuccess(res.data)
+            false -> onResponseError(res.message)
         }
+
 
     private fun onResponseSuccess(pokemonResource: PokemonResource?) {
         when (pokemonResource) {
@@ -44,7 +56,8 @@ class PokemonService(
                 addPokemonToList(pokemonResource)
                 if (listPokemon?.size == LIMIT) {
                     listPokemon?.let {
-                        onServiceFinishedWork(ListPokemon(it))
+                        val pokemons = ListPokemon(it)
+                        onPokemonListReady?.invoke(pokemons)
                         listPokemon = null
                     }
                 }
@@ -70,7 +83,7 @@ class PokemonService(
                     add(pokemonResource)
                     if (size == pokemon?.types?.size) {
                         pokemonInfo?.let {
-                            onServiceFinishedWork(it)
+                            onPokemonDetailReady?.invoke(it)
                             pokemonInfo = null
                         }
                         pokemon = null
@@ -87,10 +100,11 @@ class PokemonService(
 
     private fun onResponseError(message: String?) {
         message?.let {
-            Log.e(null, it)
+            Log.e(null, message)
         }
         pokemonInfo = null
         pokemon = null
+        onServiceFinishedError?.invoke()
     }
 
     companion object {

@@ -3,8 +3,8 @@ package com.example.work_with_service.ui.pager.adapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.work_with_service.ui.fragment.PokemonDetailPage
-import com.example.work_with_service.ui.fragment.PokemonListPage
+import com.example.work_with_service.ui.fragment.PokemonDetailPageFragment
+import com.example.work_with_service.ui.fragment.PokemonListPageFragment
 
 class PagerAdapter(
     fragment: Fragment,
@@ -16,8 +16,8 @@ class PagerAdapter(
 
     override fun createFragment(position: Int): Fragment =
         when (position) {
-            POSITION_OF_LIST_POKEMON -> PokemonListPage()
-            else -> PokemonDetailPage().apply {
+            POSITION_OF_LIST_POKEMON -> PokemonListPageFragment()
+            else -> PokemonDetailPageFragment().apply {
                 arguments = bundleOf(KEY_FOR_NAME_POKEMON_ARG to namePokemonForDetailPage)
             }
         }

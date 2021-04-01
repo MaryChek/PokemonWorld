@@ -11,13 +11,13 @@ class PokemonListPresenter(
 ) : PokemonListContract.Presenter {
 
     override fun onViewCreated() {
-        model.createPokemonList(this::onPokemonListReadyListener)
+        model.createPokemonList(this::onPokemonListReadyListener, this::onConnectionErrorListener)
         view.showLoadingIndicator()
     }
 
     override fun onViewRestart() =
         if (model.isPokemonListAttributesEmpty()) {
-            model.createPokemonList(this::onPokemonListReadyListener)
+            model.createPokemonList(this::onPokemonListReadyListener, this::onConnectionErrorListener)
             view.showLoadingIndicator()
         } else {
             view.updatePokemonList(model.getListPokemonAttributes().listAttributes)
@@ -29,5 +29,16 @@ class PokemonListPresenter(
     private fun onPokemonListReadyListener(listPokemonAttributes: PokiAttributes) {
         view.updatePokemonList((listPokemonAttributes as ListPokemonAttributes).listAttributes)
         view.hideLoadingIndicator()
+    }
+
+    private fun onConnectionErrorListener() {
+        view.hideLoadingIndicator()
+        view.showConnectionErrorMessage()
+    }
+
+    override fun onRetryConnectionClick() {
+        view.hideConnectionErrorMessage()
+        model.createPokemonList(this::onPokemonListReadyListener, this::onConnectionErrorListener)
+        view.showLoadingIndicator()
     }
 }

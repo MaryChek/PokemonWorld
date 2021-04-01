@@ -4,15 +4,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.example.work_with_service.R
-import com.example.work_with_service.databinding.MainActivittyBinding
+import com.example.work_with_service.databinding.ActivityMainBinding
 import com.example.work_with_service.ui.pager.PagerPokemonFragment
 
 class MainActivity : AppCompatActivity() {
-    private var binding: MainActivittyBinding? = null
+    private var binding: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = MainActivittyBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         attachRootFragment(savedInstanceState)
     }

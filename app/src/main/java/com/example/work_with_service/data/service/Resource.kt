@@ -1,14 +1,9 @@
 package com.example.work_with_service.data.service
 
 import com.example.work_with_service.data.entities.PokemonResource
-import com.example.work_with_service.data.service.Resource.Status.*
+import com.example.work_with_service.data.service.Status.*
 
 class Resource<out T>(val status: Status, val data: T?, val message: String?) {
-
-    enum class Status {
-        SUCCESS,
-        ERROR
-    }
 
     companion object {
         fun <T : PokemonResource> success(data: T): Resource<T> =

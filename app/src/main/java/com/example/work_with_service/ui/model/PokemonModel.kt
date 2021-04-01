@@ -4,31 +4,32 @@ import com.example.work_with_service.data.service.PokemonService
 import com.example.work_with_service.data.entities.Ability
 import com.example.work_with_service.data.entities.NameResource
 import com.example.work_with_service.data.entities.Pokemon
+import com.example.work_with_service.data.service.Status
 
 class PokemonModel {
     private var onListReadyListener: ((PokiAttributes) -> Unit)? = null
-    private var pokemonService: PokemonService
+    private var pokemonService: PokemonService = PokemonService()
     private var pokemonList: List<Pokemon> = listOf()
     private var pokemon: Pokemon? = null
     private var pokemonDetail: PokemonInfo? = null
 
-    init {
-        pokemonService = PokemonService(this::onServiceFinishedWork)
-    }
-
-    fun createPokemonList(onPokemonListReadyListener: (PokiAttributes) -> Unit) {
+    fun createPokemonList(
+        onPokemonListReadyListener: (PokiAttributes) -> Unit,
+        onServiceReturnError: () -> Unit
+    ) {
         onListReadyListener = onPokemonListReadyListener
-        pokemonService.callPokemonSource()
+        pokemonService.callPokemonSource(this::onServiceFinishedWork, onServiceReturnError)
     }
 
     fun createPokemonInfo(
         namePokemon: String,
-        onPokemonInfoReadyListener: (PokiAttributes) -> Unit
+        onPokemonInfoReadyListener: (PokiAttributes) -> Unit,
+        onServiceReturnError: () -> Unit
     ) {
         onListReadyListener = onPokemonInfoReadyListener
         pokemon = getPokemonByName(namePokemon)
         pokemon?.let {
-            pokemonService.callPokemonInfo(it)
+            pokemonService.callPokemonInfo(it, this::onServiceFinishedWork, onServiceReturnError)
         }
     }
 
@@ -42,9 +43,6 @@ class PokemonModel {
 
     fun getListPokemonAttributes(): ListPokemonAttributes =
         getListPokemonAttributes(pokemonList)
-
-    fun isPokemonDetailEmpty(): Boolean =
-        pokemonDetail == null
 
     fun getPokemonDetail(): PokemonInfo? =
         pokemonDetail

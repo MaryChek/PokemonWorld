@@ -9,21 +9,24 @@ class PokemonDetailsPresenter(
     private val model: PokemonModel,
     private val view: PokemonDetailsContract.View
 ) : PokemonDetailsContract.Presenter {
-    private var pokemonName: String? = null
+    private lateinit var pokemonName: String
 
     override fun onViewGetPokemonName(namePokemon: String) {
         pokemonName = namePokemon
-        model.createPokemonInfo(namePokemon, this::onPokemonInfoReady)
+        model.createPokemonInfo(
+            namePokemon,
+            this::onPokemonInfoReady,
+            this::onConnectionErrorListener
+        )
         view.showLoadingIndicator()
     }
 
     override fun onViewRestart() {
         val pokemonInfo: PokemonInfo? = model.getPokemonDetail()
         if (pokemonInfo == null) {
-            pokemonName?.let {
-                model.createPokemonInfo(it, this::onPokemonInfoReady)
+                model.createPokemonInfo(
+                    pokemonName, this::onPokemonInfoReady, this::onConnectionErrorListener)
                 view.showLoadingIndicator()
-            }
         } else {
             onPokemonInfoReady(pokemonInfo)
         }
@@ -32,5 +35,20 @@ class PokemonDetailsPresenter(
     private fun onPokemonInfoReady(pokemonInfo: PokiAttributes) {
         view.showDetail(pokemonInfo as PokemonInfo)
         view.hideLoadingIndicator()
+    }
+
+    private fun onConnectionErrorListener() {
+        view.hideLoadingIndicator()
+        view.showConnectionErrorMessage()
+    }
+
+    override fun onRetryConnectionClick() {
+        view.hideConnectionErrorMessage()
+        model.createPokemonInfo(
+            pokemonName,
+            this::onPokemonInfoReady,
+            this::onConnectionErrorListener
+        )
+        view.showLoadingIndicator()
     }
 }

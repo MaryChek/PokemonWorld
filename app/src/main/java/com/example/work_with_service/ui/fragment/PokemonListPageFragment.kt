@@ -3,6 +3,7 @@ package com.example.work_with_service.ui.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -10,15 +11,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.work_with_service.App
 import com.example.work_with_service.R
+import com.example.work_with_service.databinding.FragmentPokemonListPageBinding
 import com.example.work_with_service.ui.contract.PokemonListContract
-import com.example.work_with_service.databinding.PokemonListPageBinding
 import com.example.work_with_service.ui.adapter.PokemonListAdapter
 import com.example.work_with_service.ui.model.PokemonAttributes
 import com.example.work_with_service.ui.model.PokemonModel
 import com.example.work_with_service.ui.presenter.PokemonListPresenter
 
-class PokemonListPage : Fragment(), PokemonListContract.View {
-    private var binding: PokemonListPageBinding? = null
+class PokemonListPageFragment : Fragment(), PokemonListContract.View {
+    private var binding: FragmentPokemonListPageBinding? = null
     private var rvPokemon: RecyclerView? = null
     private var adapter: PokemonListAdapter? = null
     private lateinit var presenter: PokemonListPresenter
@@ -38,7 +39,7 @@ class PokemonListPage : Fragment(), PokemonListContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = PokemonListPageBinding.inflate(inflater, container, false)
+        binding = FragmentPokemonListPageBinding.inflate(inflater, container, false)
         rvPokemon = binding?.rvPokemon
         return binding?.root
     }
@@ -53,21 +54,33 @@ class PokemonListPage : Fragment(), PokemonListContract.View {
     }
 
     private fun initList() {
-        adapter = PokemonListAdapter(this::onItemClick)
+        adapter = PokemonListAdapter(presenter::onItemPokemonClick)
         rvPokemon?.adapter = adapter
         addDividerItem()
     }
 
     override fun showLoadingIndicator() {
-        binding?.progressIndicator?.visibility = View.VISIBLE
+        binding?.progressIndicator?.visibility = VISIBLE
     }
 
     override fun hideLoadingIndicator() {
-        binding?.progressIndicator?.visibility = View.GONE
+        binding?.progressIndicator?.visibility = GONE
     }
 
-    private fun onItemClick(namePokemon: String) =
-        presenter.onItemPokemonClick(namePokemon)
+    override fun showConnectionErrorMessage() {
+        binding?.connectionError?.root?.visibility = VISIBLE
+        setOnRetryConnectionClickListener()
+    }
+
+    private fun setOnRetryConnectionClickListener() {
+        binding?.connectionError?.buttonRetryConnection?.setOnClickListener {
+            presenter.onRetryConnectionClick()
+        }
+    }
+
+    override fun hideConnectionErrorMessage() {
+        binding?.connectionError?.root?.visibility = GONE
+    }
 
     override fun openDetailedPage(namePokemon: String) =
         (requireParentFragment() as DetailPage).openDetailedPage(namePokemon)

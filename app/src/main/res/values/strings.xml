@@ -23,4 +23,7 @@
     <string name="no_damage_from"><b>no damage from: </b></string>
     <string name="double_damage_from"><b>double damage from: </b></string>
     <string name="not_information">Not information</string>
+    <string name="connection_error">Something is wrong when connecting</string>
+    <string name="try_again">Turn on the internet and try again</string>
+    <string name="retry">Retry</string>
 </resources>

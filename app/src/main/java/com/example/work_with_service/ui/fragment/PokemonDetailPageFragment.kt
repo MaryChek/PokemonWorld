@@ -13,16 +13,19 @@ import androidx.fragment.app.Fragment
 import com.example.work_with_service.App
 import com.example.work_with_service.R
 import android.text.Spanned.*
-import com.example.work_with_service.databinding.*
+import com.example.work_with_service.databinding.FragmentPokemonDetailPageBinding
+import com.example.work_with_service.databinding.ItemPokemonAdditionalInfoBinding
+import com.example.work_with_service.databinding.ItemPokemonBaseInfoBinding
+import com.example.work_with_service.databinding.PokemonBaseInformationBinding
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
 import com.example.work_with_service.ui.model.*
 import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
 import com.example.work_with_service.ui.utils.firstUpperCase
 import com.example.work_with_service.ui.utils.setImageWithGlide
 
-class PokemonDetailPage : Fragment(), PokemonDetailsContract.View {
-    private var binding: PokemonDetailPageBinding? = null
-    private var presenter: PokemonDetailsPresenter? = null
+class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
+    private var binding: FragmentPokemonDetailPageBinding? = null
+    private lateinit var presenter: PokemonDetailsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +41,7 @@ class PokemonDetailPage : Fragment(), PokemonDetailsContract.View {
     private fun initPokemon() {
         arguments?.let { bundle ->
             bundle.getString("namePokemon")?.let {
-                presenter?.onViewGetPokemonName(it)
+                presenter.onViewGetPokemonName(it)
             }
         }
     }
@@ -48,14 +51,14 @@ class PokemonDetailPage : Fragment(), PokemonDetailsContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = PokemonDetailPageBinding.inflate(inflater)
+        binding = FragmentPokemonDetailPageBinding.inflate(inflater)
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (savedInstanceState != null) {
-            presenter?.onViewRestart()
+            presenter.onViewRestart()
         }
     }
 
@@ -67,7 +70,23 @@ class PokemonDetailPage : Fragment(), PokemonDetailsContract.View {
         binding?.progressIndicator?.visibility = GONE
     }
 
+    override fun showConnectionErrorMessage() {
+        binding?.connectionError?.root?.visibility = VISIBLE
+        setOnRetryConnectionClickListener()
+    }
+
+    private fun setOnRetryConnectionClickListener() {
+        binding?.connectionError?.buttonRetryConnection?.setOnClickListener {
+            presenter.onRetryConnectionClick()
+        }
+    }
+
+    override fun hideConnectionErrorMessage() {
+        binding?.connectionError?.root?.visibility = GONE
+    }
+
     override fun showDetail(pokemonInfo: PokemonInfo) {
+        binding?.ivPokemon?.visibility = VISIBLE
         binding?.let {
             setImageWithGlide(it.ivPokemon.rootView, pokemonInfo.imageUrl, it.ivPokemon)
             setBaseInfo(it.cvBaseInformation, pokemonInfo.base)
@@ -77,6 +96,7 @@ class PokemonDetailPage : Fragment(), PokemonDetailsContract.View {
     }
 
     private fun setBaseInfo(baseInfoBinding: PokemonBaseInformationBinding, baseInfo: BaseInfo) {
+        baseInfoBinding.root.visibility = VISIBLE
         binding?.tvNamePokemon?.text = firstUpperCase(baseInfo.name)
         setTextToItemBaseInfo(
             baseInfoBinding.tvBasExperience,
@@ -115,6 +135,7 @@ class PokemonDetailPage : Fragment(), PokemonDetailsContract.View {
         pokemonAbilityBinding: ItemPokemonAdditionalInfoBinding,
         abilities: List<PokiAbility>
     ) {
+        pokemonAbilityBinding.root.visibility = VISIBLE
         val properties = SpannableStringBuilder("")
         for (i in abilities.indices) {
             var text = "\t" + resources.getString(
@@ -151,6 +172,7 @@ class PokemonDetailPage : Fragment(), PokemonDetailsContract.View {
         pokemonTypeBinding: ItemPokemonAdditionalInfoBinding,
         typeInfo: List<PokiType>
     ) {
+        pokemonTypeBinding.root.visibility = VISIBLE
         val types = SpannableStringBuilder("")
         for (i in typeInfo.indices) {
             val text = "\t" + resources.getString(

@@ -7,9 +7,15 @@ interface BasePokemonContract {
         fun showLoadingIndicator()
 
         fun hideLoadingIndicator()
+
+        fun showConnectionErrorMessage()
+
+        fun hideConnectionErrorMessage()
     }
 
     interface Presenter {
         fun onViewRestart()
+
+        fun onRetryConnectionClick()
     }
 }

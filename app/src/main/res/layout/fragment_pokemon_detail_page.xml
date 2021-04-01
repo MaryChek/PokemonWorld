@@ -22,7 +22,8 @@
                 android:layout_width="248dp"
                 android:layout_height="178dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/ic_pokeball" />
+                android:src="@mipmap/ic_pokeball"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tvNamePokemon"
@@ -37,21 +38,24 @@
                 layout="@layout/pokemon_base_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:visibility="gone" />
 
             <include
                 android:id="@+id/cvTypes"
                 layout="@layout/item_pokemon_additional_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                android:visibility="gone" />
 
             <include
                 android:id="@+id/cvAbilities"
                 layout="@layout/item_pokemon_additional_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                android:visibility="gone" />
 
         </LinearLayout>
     </ScrollView>
@@ -64,5 +68,10 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/connectionError"
+        layout="@layout/connection_error"
+        android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
