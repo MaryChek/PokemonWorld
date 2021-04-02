@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -47,10 +48,8 @@ class PokemonListPageFragment : Fragment(), PokemonListContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initList()
-        when (savedInstanceState == null) {
-            true -> presenter.onViewCreated()
-            false -> presenter.onViewRestart()
-        }
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
+        presenter.onViewCreated()
     }
 
     private fun initList() {

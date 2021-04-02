@@ -1,10 +1,13 @@
 package com.example.work_with_service.ui.model
 
+import com.example.work_with_service.R
 import com.example.work_with_service.data.service.PokemonService
 import com.example.work_with_service.data.entities.Ability
 import com.example.work_with_service.data.entities.NameResource
 import com.example.work_with_service.data.entities.Pokemon
 import com.example.work_with_service.data.service.Status
+import com.example.work_with_service.ui.fragment.PokemonDetailPageFragment
+import java.util.*
 
 class PokemonModel {
     private var onListReadyListener: ((PokiAttributes) -> Unit)? = null
@@ -35,7 +38,7 @@ class PokemonModel {
 
     private fun getPokemonByName(namePokemon: String): Pokemon =
         pokemonList.first {
-            it.name == namePokemon
+            it.name.equals(namePokemon, true)
         }
 
     fun isPokemonListAttributesEmpty(): Boolean =
@@ -44,8 +47,11 @@ class PokemonModel {
     fun getListPokemonAttributes(): ListPokemonAttributes =
         getListPokemonAttributes(pokemonList)
 
-    fun getPokemonDetail(): PokemonInfo? =
-        pokemonDetail
+    fun getPokemonDetail(namePokemon: String): PokemonInfo? =
+        when (pokemonDetail?.base?.name == namePokemon) {
+            true -> pokemonDetail
+            false -> null
+        }
 
     private fun onServiceFinishedWork(pokemonAnswer: ServicePokemonAnswer) {
         when (pokemonAnswer) {
@@ -53,15 +59,19 @@ class PokemonModel {
                 pokemonList = pokemonAnswer.listPokemon
                 onListReadyListener?.invoke(getListPokemonAttributes(pokemonList))
             }
-            is PokiInfo ->
-                onListReadyListener?.invoke(getPokemonInfo(pokemonAnswer))
+            is PokiInfo -> {
+                getPokemonInfo(pokemonAnswer).let {
+                    pokemonDetail = it
+                    onListReadyListener?.invoke(it)
+                }
+            }
         }
     }
 
     private fun getListPokemonAttributes(listPokemon: List<Pokemon>): ListPokemonAttributes {
         val listAttributes: MutableList<PokemonAttributes> = mutableListOf()
         listPokemon.forEach {
-            listAttributes.add(PokemonAttributes(it.sprites.frontDefault, it.name))
+            listAttributes.add(PokemonAttributes(it.sprites.frontDefault, firstUpperCase(it.name)))
         }
         return ListPokemonAttributes(listAttributes)
     }
@@ -76,14 +86,17 @@ class PokemonModel {
 
     private fun takeBaseInfo(pokiInfo: PokiInfo): BaseInfo =
         BaseInfo(
-            pokemon?.name ?: "",
+            firstUpperCase(pokemon?.name),
             pokemon?.baseExperience ?: 0,
             pokiInfo.pokemonSpecies.captureRate,
-            pokemon?.height ?: 0,
-            pokemon?.weight ?: 0,
-            pokiInfo.pokemonSpecies.isBaby,
-            pokiInfo.pokemonSpecies.habitat.name,
-            pokiInfo.pokemonSpecies.color.name
+            pokemon?.height?.times(10) ?: 0,
+            pokemon?.weight?.div(100.0) ?: 0.00,
+            when (pokiInfo.pokemonSpecies.isBaby) {
+                true -> R.string.baby
+                false -> R.string.adult
+            },
+            firstUpperCase(pokiInfo.pokemonSpecies.habitat.name),
+            firstUpperCase(pokiInfo.pokemonSpecies.color.name)
         )
 
 
@@ -93,7 +106,11 @@ class PokemonModel {
             ability.effectEntries.firstOrNull {
                 it.language.name == ENGLISH_LANGUAGE
             }?.let {
-                abilitiesInfo.add(PokiAbility(ability.name, it.effect))
+                abilitiesInfo.add(
+                    PokiAbility(
+                        firstUpperCase(ability.name), it.effect.replace(TWO_NL, PARAGRAPH)
+                    )
+                )
             }
         }
         return abilitiesInfo
@@ -104,7 +121,7 @@ class PokemonModel {
         pokiInfo.types.forEach { type ->
             typesInfo.add(
                 PokiType(
-                    type.name,
+                    firstUpperCase(type.name),
                     takeDamageFrom(type.damageRelations.noDamageTo),
                     takeDamageFrom(type.damageRelations.doubleDamageTo),
                     takeDamageFrom(type.damageRelations.noDamageFrom),
@@ -123,7 +140,16 @@ class PokemonModel {
         return damage
     }
 
+    private fun firstUpperCase(word: String?): String {
+        if (word.isNullOrBlank()) {
+            return ""
+        }
+        return word.substring(0, 1).toUpperCase(Locale.ROOT) + word.substring(1);
+    }
+
     companion object {
         private const val ENGLISH_LANGUAGE = "en"
+        private const val TWO_NL = "\n\n"
+        private const val PARAGRAPH = "\n\t\t\t"
     }
 }

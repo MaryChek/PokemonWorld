@@ -13,20 +13,12 @@ class PokemonDetailsPresenter(
 
     override fun onViewGetPokemonName(namePokemon: String) {
         pokemonName = namePokemon
-        model.createPokemonInfo(
-            namePokemon,
-            this::onPokemonInfoReady,
-            this::onConnectionErrorListener
-        )
-        view.showLoadingIndicator()
-    }
-
-    override fun onViewRestart() {
-        val pokemonInfo: PokemonInfo? = model.getPokemonDetail()
+        val pokemonInfo: PokemonInfo? = model.getPokemonDetail(namePokemon)
         if (pokemonInfo == null) {
-                model.createPokemonInfo(
-                    pokemonName, this::onPokemonInfoReady, this::onConnectionErrorListener)
-                view.showLoadingIndicator()
+            model.createPokemonInfo(
+                pokemonName, this::onPokemonInfoReady, this::onConnectionErrorListener
+            )
+            view.showLoadingIndicator()
         } else {
             onPokemonInfoReady(pokemonInfo)
         }

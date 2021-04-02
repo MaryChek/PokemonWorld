@@ -7,9 +7,10 @@ import com.example.work_with_service.ui.fragment.PokemonDetailPageFragment
 import com.example.work_with_service.ui.fragment.PokemonListPageFragment
 
 class PagerAdapter(
-    fragment: Fragment,
-    private var namePokemonForDetailPage: String? = null
+    fragment: Fragment
 ) : FragmentStateAdapter(fragment) {
+    var namePokemonForDetailPage = ""
+        private set
 
     override fun getItemCount(): Int =
         COUNT_OF_PAGE

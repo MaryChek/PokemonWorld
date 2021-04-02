@@ -1,5 +1,7 @@
 package com.example.work_with_service.ui.model
 
+import androidx.annotation.StringRes
+
 interface PokiAttributes
 
 class ListPokemonAttributes(
@@ -23,8 +25,9 @@ class BaseInfo(
     val baseExperience: Int,
     val captureRate: Int,
     val height: Int,
-    val weight: Int,
-    val isBaby: Boolean,
+    val weight: Double,
+    @StringRes
+    val ageId: Int,
     val habitat: String,
     val color: String
 )

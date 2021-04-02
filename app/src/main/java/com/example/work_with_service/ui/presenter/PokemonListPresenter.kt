@@ -11,17 +11,17 @@ class PokemonListPresenter(
 ) : PokemonListContract.Presenter {
 
     override fun onViewCreated() {
-        model.createPokemonList(this::onPokemonListReadyListener, this::onConnectionErrorListener)
-        view.showLoadingIndicator()
-    }
-
-    override fun onViewRestart() =
         if (model.isPokemonListAttributesEmpty()) {
-            model.createPokemonList(this::onPokemonListReadyListener, this::onConnectionErrorListener)
+            model.createPokemonList(
+                this::onPokemonListReadyListener,
+                this::onConnectionErrorListener
+            )
             view.showLoadingIndicator()
         } else {
+            view.hideLoadingIndicator()
             view.updatePokemonList(model.getListPokemonAttributes().listAttributes)
         }
+    }
 
     override fun onItemPokemonClick(namePokemon: String) =
         view.openDetailedPage(namePokemon)

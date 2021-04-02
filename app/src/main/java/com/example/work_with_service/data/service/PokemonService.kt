@@ -64,6 +64,7 @@ class PokemonService {
             }
             is PokemonSpecies -> {
                 pokemonInfo?.pokemonSpecies = pokemonResource
+//                println("pokemon size " + pokemon?.abilities?.size)
                 pokemon?.abilities?.forEach {
                     remotePokemonSource.callPokemonAbility(it.ability.name)
                 }
