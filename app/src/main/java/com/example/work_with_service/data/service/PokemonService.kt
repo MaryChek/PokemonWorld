@@ -3,19 +3,18 @@ package com.example.work_with_service.data.service
 import android.util.Log
 import com.example.work_with_service.data.client.PokeApiClient
 import com.example.work_with_service.data.entities.*
-import com.example.work_with_service.ui.model.ListPokemon
-import com.example.work_with_service.ui.model.PokiInfo
+import com.example.work_with_service.ui.model.servicepokemonanswer.ListPokemon
+import com.example.work_with_service.ui.model.servicepokemonanswer.PokiDetail
 import com.example.work_with_service.data.service.Status.*
-import com.example.work_with_service.ui.model.ServicePokemonAnswer
 
 class PokemonService {
     private var onPokemonListReady: ((ListPokemon) -> Unit)? = null
-    private var onPokemonDetailReady: ((PokiInfo) -> Unit)? = null
+    private var onPokemonDetailReady: ((PokiDetail) -> Unit)? = null
     private var onServiceFinishedError: (() -> Unit)? = null
     private val remotePokemonSource = PokeApiClient(this::onServiceCallAnswer)
     private var pokemon: Pokemon? = null
     private var listPokemon: MutableList<Pokemon>? = null
-    private var pokemonInfo: PokiInfo? = null
+    private var pokemonDetail: PokiDetail? = null
 
     fun callPokemonSource(
         onPokemonListReady: (ListPokemon) -> Unit,
@@ -27,14 +26,21 @@ class PokemonService {
         remotePokemonSource.callPokemonResourceList(OFFSET, LIMIT)
     }
 
-    fun callPokemonInfo(
-        pokemon: Pokemon, onPokemonDetailReady: (PokiInfo) -> Unit,
+    fun callPokemonDetail(
+        pokemon: Pokemon,
+        onPokemonDetailReady: (PokiDetail) -> Unit,
         onServiceFinishedError: () -> Unit
     ) {
         this.onPokemonDetailReady = onPokemonDetailReady
         this.onServiceFinishedError = onServiceFinishedError
         this.pokemon = pokemon
-        pokemonInfo = PokiInfo()
+        pokemonDetail = PokiDetail(
+            pokemon.sprites.frontDefault,
+            pokemon.name,
+            pokemon.baseExperience,
+            pokemon.height,
+            pokemon.weight
+        )
         remotePokemonSource.callPokemonSpecies(pokemon.name)
     }
 
@@ -63,14 +69,13 @@ class PokemonService {
                 }
             }
             is PokemonSpecies -> {
-                pokemonInfo?.pokemonSpecies = pokemonResource
-//                println("pokemon size " + pokemon?.abilities?.size)
+                pokemonDetail?.pokemonSpecies = pokemonResource
                 pokemon?.abilities?.forEach {
                     remotePokemonSource.callPokemonAbility(it.ability.name)
                 }
             }
             is Ability -> {
-                pokemonInfo?.abilities?.apply {
+                pokemonDetail?.abilities?.apply {
                     add(pokemonResource)
                     if (size == pokemon?.abilities?.size) {
                         pokemon?.types?.forEach {
@@ -80,12 +85,12 @@ class PokemonService {
                 }
             }
             is Type -> {
-                pokemonInfo?.types?.apply {
+                pokemonDetail?.types?.apply {
                     add(pokemonResource)
                     if (size == pokemon?.types?.size) {
-                        pokemonInfo?.let {
+                        pokemonDetail?.let {
                             onPokemonDetailReady?.invoke(it)
-                            pokemonInfo = null
+                            pokemonDetail = null
                         }
                         pokemon = null
                     }
@@ -103,7 +108,7 @@ class PokemonService {
         message?.let {
             Log.e(null, message)
         }
-        pokemonInfo = null
+        pokemonDetail = null
         pokemon = null
         onServiceFinishedError?.invoke()
     }

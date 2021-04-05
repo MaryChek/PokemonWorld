@@ -1,8 +1,11 @@
 package com.example.work_with_service.data.entities
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 
-sealed class PokemonResource
+sealed class PokemonResource {
+    class NameResource(val name: String)
+}
 
 class PokemonResourceList(
     val count: Int,
@@ -19,20 +22,17 @@ class Pokemon(
     val abilities: List<PokemonAbility>,
     val types: List<PokemonType>,
     val sprites: PokemonSprites
-) : PokemonResource()
+) : PokemonResource(), Serializable {
 
-class PokemonAbility(
-    val ability: NameResource
-)
+    class PokemonAbility(val ability: NameResource)
 
-class PokemonType(
-    val type: NameResource
-)
+    class PokemonType(val type: NameResource)
 
-class PokemonSprites(
-    @field:Json(name = "front_default")
-    val frontDefault: String
-)
+    class PokemonSprites(
+        @field:Json(name = "front_default")
+        val frontDefault: String
+    )
+}
 
 class PokemonSpecies(
     @field:Json(name = "is_Baby")
@@ -47,30 +47,25 @@ class Ability(
     val name: String,
     @field:Json(name = "effect_entries")
     val effectEntries: List<VerboseEffect>
-) : PokemonResource()
+) : PokemonResource() {
 
-class VerboseEffect(
-    val effect: String,
-    val language: NameResource
-)
+    class VerboseEffect(val effect: String, val language: NameResource)
+}
 
 class Type(
     val name: String,
     @field:Json(name = "damage_relations")
     val damageRelations: TypeRelations
-) : PokemonResource()
+) : PokemonResource() {
 
-class TypeRelations(
-    @field:Json(name = "no_damage_to")
-    val noDamageTo: List<NameResource>,
-    @field:Json(name = "double_damage_to")
-    val doubleDamageTo: List<NameResource>,
-    @field:Json(name = "no_damage_from")
-    val noDamageFrom: List<NameResource>,
-    @field:Json(name = "double_damage_from")
-    val doubleDamageFrom: List<NameResource>
-)
-
-class NameResource(
-    val name: String
-)
+    class TypeRelations(
+        @field:Json(name = "no_damage_to")
+        val noDamageTo: List<NameResource>,
+        @field:Json(name = "double_damage_to")
+        val doubleDamageTo: List<NameResource>,
+        @field:Json(name = "no_damage_from")
+        val noDamageFrom: List<NameResource>,
+        @field:Json(name = "double_damage_from")
+        val doubleDamageFrom: List<NameResource>
+    )
+}

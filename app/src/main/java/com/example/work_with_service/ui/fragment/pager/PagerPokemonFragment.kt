@@ -1,4 +1,4 @@
-package com.example.work_with_service.ui.pager
+package com.example.work_with_service.ui.fragment.pager
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,12 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING
 import com.example.work_with_service.App
+import com.example.work_with_service.data.entities.Pokemon
 import com.example.work_with_service.ui.fragment.DetailPage
 import com.example.work_with_service.databinding.PokemonPagerFragmentBinding
 import com.example.work_with_service.ui.activity.MainActivity
 import com.example.work_with_service.ui.contract.PagerPokemonContract
 import com.example.work_with_service.ui.model.PagerTitlesModel
-import com.example.work_with_service.ui.pager.adapter.PagerAdapter
+import com.example.work_with_service.ui.fragment.pager.adapter.PagerAdapter
+import com.example.work_with_service.ui.presenter.PagerPokemonPresenter
 
 class PagerPokemonFragment : Fragment(),
     DetailPage, PagerPokemonContract.View {
@@ -31,7 +33,11 @@ class PagerPokemonFragment : Fragment(),
 
     private fun init() {
         val model: PagerTitlesModel = (requireActivity().applicationContext as App).pagerTitlesModel
-        presenter = PagerPokemonPresenter(model, this)
+        presenter =
+            PagerPokemonPresenter(
+                model,
+                this
+            )
     }
 
     private fun initOnBackPressedListener() {
@@ -86,9 +92,9 @@ class PagerPokemonFragment : Fragment(),
         pokemonPager?.isUserInputEnabled = false
     }
 
-    override fun openDetailedPage(namePokemon: String) {
-        presenter.onDetailPageOpens(namePokemon)
-        adapter?.setNamePokemonForDetailPage(namePokemon)
+    override fun openDetailedPage(pokemon: Pokemon) {
+        presenter.onDetailPageOpens(pokemon.name)
+        adapter?.setNamePokemonForDetailPage(pokemon)
     }
 
     override fun selectItemOnPager(position: Int) {

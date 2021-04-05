@@ -1,4 +1,4 @@
-package com.example.work_with_service.ui.pager
+package com.example.work_with_service.ui.presenter
 
 import com.example.work_with_service.ui.contract.PagerPokemonContract
 import com.example.work_with_service.ui.model.PagerTitlesModel

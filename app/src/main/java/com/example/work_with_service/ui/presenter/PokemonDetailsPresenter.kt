@@ -1,31 +1,32 @@
 package com.example.work_with_service.ui.presenter
 
+import com.example.work_with_service.data.entities.Pokemon
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
-import com.example.work_with_service.ui.model.PokemonModel
-import com.example.work_with_service.ui.model.PokemonInfo
-import com.example.work_with_service.ui.model.PokiAttributes
+import com.example.work_with_service.ui.model.PokemonDetailModel
+import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail
+import com.example.work_with_service.ui.model.pokiattributes.PokiAttributes
 
 class PokemonDetailsPresenter(
-    private val model: PokemonModel,
+    private val model: PokemonDetailModel,
     private val view: PokemonDetailsContract.View
 ) : PokemonDetailsContract.Presenter {
-    private lateinit var pokemonName: String
+    private lateinit var pokemon: Pokemon
 
-    override fun onViewGetPokemonName(namePokemon: String) {
-        pokemonName = namePokemon
-        val pokemonInfo: PokemonInfo? = model.getPokemonDetail(namePokemon)
-        if (pokemonInfo == null) {
-            model.createPokemonInfo(
-                pokemonName, this::onPokemonInfoReady, this::onConnectionErrorListener
+    override fun onViewGetPokemonName(pokemon: Pokemon) {
+        this.pokemon = pokemon
+        val pokemonDetail: PokemonDetail? = model.getPokemonDetail(pokemon)
+        if (pokemonDetail == null) {
+            model.fetchPokemonDetail(
+                pokemon, this::onPokemonInfoReady, this::onConnectionErrorListener
             )
             view.showLoadingIndicator()
         } else {
-            onPokemonInfoReady(pokemonInfo)
+            onPokemonInfoReady(pokemonDetail)
         }
     }
 
     private fun onPokemonInfoReady(pokemonInfo: PokiAttributes) {
-        view.showDetail(pokemonInfo as PokemonInfo)
+        view.showDetail(pokemonInfo as PokemonDetail)
         view.hideLoadingIndicator()
     }
 
@@ -36,8 +37,8 @@ class PokemonDetailsPresenter(
 
     override fun onRetryConnectionClick() {
         view.hideConnectionErrorMessage()
-        model.createPokemonInfo(
-            pokemonName,
+        model.fetchPokemonDetail(
+            pokemon,
             this::onPokemonInfoReady,
             this::onConnectionErrorListener
         )

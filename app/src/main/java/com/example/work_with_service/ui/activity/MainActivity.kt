@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.example.work_with_service.R
 import com.example.work_with_service.databinding.ActivityMainBinding
-import com.example.work_with_service.ui.pager.PagerPokemonFragment
+import com.example.work_with_service.ui.fragment.pager.PagerPokemonFragment
 
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null

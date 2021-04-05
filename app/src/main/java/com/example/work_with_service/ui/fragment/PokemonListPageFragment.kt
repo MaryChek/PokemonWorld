@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.work_with_service.App
 import com.example.work_with_service.R
+import com.example.work_with_service.data.entities.Pokemon
 import com.example.work_with_service.databinding.FragmentPokemonListPageBinding
 import com.example.work_with_service.ui.contract.PokemonListContract
 import com.example.work_with_service.ui.adapter.PokemonListAdapter
-import com.example.work_with_service.ui.model.PokemonAttributes
-import com.example.work_with_service.ui.model.PokemonModel
+import com.example.work_with_service.ui.model.PokemonListModel
+import com.example.work_with_service.ui.model.pokiattributes.ListPokemonAttributes.Attributes
 import com.example.work_with_service.ui.presenter.PokemonListPresenter
 
 class PokemonListPageFragment : Fragment(), PokemonListContract.View {
@@ -31,7 +32,7 @@ class PokemonListPageFragment : Fragment(), PokemonListContract.View {
     }
 
     private fun init() {
-        val model: PokemonModel = (requireActivity().applicationContext as App).pokemonModel
+        val model: PokemonListModel = (requireActivity().applicationContext as App).pokemonListModel
         presenter = PokemonListPresenter(model, this)
     }
 
@@ -81,8 +82,8 @@ class PokemonListPageFragment : Fragment(), PokemonListContract.View {
         binding?.connectionError?.root?.visibility = GONE
     }
 
-    override fun openDetailedPage(namePokemon: String) =
-        (requireParentFragment() as DetailPage).openDetailedPage(namePokemon)
+    override fun openDetailedPage(pokemon: Pokemon) =
+        (requireParentFragment() as DetailPage).openDetailedPage(pokemon)
 
     private fun addDividerItem() {
         val dividerItem = DividerItemDecoration(activity, RecyclerView.VERTICAL)
@@ -92,7 +93,7 @@ class PokemonListPageFragment : Fragment(), PokemonListContract.View {
         }
     }
 
-    override fun updatePokemonList(pokemonList: List<PokemonAttributes>) {
-        adapter?.submitList(pokemonList)
+    override fun updatePokemonList(pokemonsAttributes: List<Attributes>) {
+        adapter?.submitList(pokemonsAttributes)
     }
 }

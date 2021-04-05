@@ -1,13 +1,14 @@
 package com.example.work_with_service.ui.contract
 
-import com.example.work_with_service.ui.model.PokemonInfo
+import com.example.work_with_service.data.entities.Pokemon
+import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail
 
 interface PokemonDetailsContract {
     interface View: BasePokemonContract.View {
-        fun showDetail(pokemonInfo: PokemonInfo)
+        fun showDetail(pokemonDetail: PokemonDetail)
     }
 
     interface Presenter: BasePokemonContract.Presenter {
-        fun onViewGetPokemonName(namePokemon: String)
+        fun onViewGetPokemonName(pokemon: Pokemon)
     }
 }

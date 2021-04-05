@@ -13,13 +13,16 @@ import androidx.fragment.app.Fragment
 import com.example.work_with_service.App
 import com.example.work_with_service.R
 import android.text.Spanned.*
-import androidx.appcompat.app.AppCompatActivity
+import com.example.work_with_service.data.entities.Pokemon
 import com.example.work_with_service.databinding.FragmentPokemonDetailPageBinding
 import com.example.work_with_service.databinding.ItemPokemonAdditionalInfoBinding
 import com.example.work_with_service.databinding.ItemPokemonBaseInfoBinding
 import com.example.work_with_service.databinding.PokemonBaseInformationBinding
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
 import com.example.work_with_service.ui.model.*
+import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail
+import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail.Ability
+import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail.Type
 import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
 import com.example.work_with_service.ui.utils.setImageWithGlide
 
@@ -33,7 +36,8 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     }
 
     private fun init() {
-        val model: PokemonModel = (requireActivity().applicationContext as App).pokemonModel
+        val model: PokemonDetailModel =
+            (requireActivity().applicationContext as App).pokemonDetailModel
         presenter = PokemonDetailsPresenter(model, this)
     }
 
@@ -53,8 +57,8 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
 
     private fun initPokemon() {
         arguments?.let { bundle ->
-            bundle.getString("namePokemon")?.let {
-                presenter.onViewGetPokemonName(it)
+            bundle.getSerializable("namePokemon")?.let {
+                presenter.onViewGetPokemonName(it as Pokemon)
             }
         }
     }
@@ -82,34 +86,34 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         binding?.connectionError?.root?.visibility = GONE
     }
 
-    override fun showDetail(pokemonInfo: PokemonInfo) {
+    override fun showDetail(pokemonDetail: PokemonDetail) {
         binding?.ivPokemon?.visibility = VISIBLE
         binding?.let {
-            setImageWithGlide(it.ivPokemon.rootView, pokemonInfo.imageUrl, it.ivPokemon)
-            setBaseInfo(it.cvBaseInformation, pokemonInfo.base)
-            setInfoByType(it.cvTypes, pokemonInfo.types)
-            setInfoByAbilities(it.cvAbilities, pokemonInfo.abilities)
+            setImageWithGlide(it.ivPokemon.rootView, pokemonDetail.imageUrl, it.ivPokemon)
+            setBaseInfo(it.cvBaseInformation, pokemonDetail)
+            setInfoByType(it.cvTypes, pokemonDetail.types)
+            setInfoByAbilities(it.cvAbilities, pokemonDetail.abilities)
         }
     }
 
-    private fun setBaseInfo(baseInfoBinding: PokemonBaseInformationBinding, baseInfo: BaseInfo) {
+    private fun setBaseInfo(baseInfoBinding: PokemonBaseInformationBinding, detail: PokemonDetail) {
         baseInfoBinding.root.visibility = VISIBLE
-        binding?.tvNamePokemon?.text = baseInfo.name
+        binding?.tvNamePokemon?.text = detail.name
         setTextToItemBaseInfo(
             baseInfoBinding.tvBasExperience,
             R.string.base_experience,
-            baseInfo.baseExperience.toString()
+            detail.baseExperience.toString()
         )
-        var text: String = resources.getString(R.string.capture_rate_value, baseInfo.captureRate)
+        var text: String = resources.getString(R.string.capture_rate_value, detail.captureRate)
         setTextToItemBaseInfo(baseInfoBinding.tvCaptureRate, R.string.capture_rate, text)
-        text = resources.getString(R.string.pokemon_height_value, baseInfo.height)
+        text = resources.getString(R.string.pokemon_height_value, detail.height)
         setTextToItemBaseInfo(baseInfoBinding.tvHeight, R.string.pokemon_height, text)
-        text = resources.getString(R.string.pokemon_weight_value, baseInfo.weight)
+        text = resources.getString(R.string.pokemon_weight_value, detail.weight)
         setTextToItemBaseInfo(baseInfoBinding.tvWeight, R.string.pokemon_weight, text)
-        text = resources.getString(baseInfo.ageId)
+        text = resources.getString(detail.ageId)
         setTextToItemBaseInfo(baseInfoBinding.tvAgeCategory, R.string.age_category, text)
-        setTextToItemBaseInfo(baseInfoBinding.tvHabitat, R.string.habitat, baseInfo.habitat)
-        setTextToItemBaseInfo(baseInfoBinding.tvColor, R.string.color, baseInfo.color)
+        setTextToItemBaseInfo(baseInfoBinding.tvHabitat, R.string.habitat, detail.habitat)
+        setTextToItemBaseInfo(baseInfoBinding.tvColor, R.string.color, detail.color)
     }
 
     private fun setTextToItemBaseInfo(
@@ -123,7 +127,7 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
 
     private fun setInfoByAbilities(
         pokemonAbilityBinding: ItemPokemonAdditionalInfoBinding,
-        abilities: List<PokiAbility>
+        abilities: List<Ability>
     ) {
         pokemonAbilityBinding.root.visibility = VISIBLE
         val properties = SpannableStringBuilder("")
@@ -157,7 +161,7 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
 
     private fun setInfoByType(
         pokemonTypeBinding: ItemPokemonAdditionalInfoBinding,
-        typeInfo: List<PokiType>
+        typeInfo: List<Type>
     ) {
         pokemonTypeBinding.root.visibility = VISIBLE
         val types = SpannableStringBuilder("")
