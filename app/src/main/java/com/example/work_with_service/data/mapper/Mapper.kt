@@ -1,4 +1,4 @@
-package com.example.work_with_service.data.client
+package com.example.work_with_service.data.mapper
 
 import com.example.work_with_service.data.model.PokemonResource
 import com.example.work_with_service.data.model.Pokemon
