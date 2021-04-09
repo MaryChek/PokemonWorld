@@ -1,6 +1,6 @@
 package com.example.work_with_service.ui.presenter
 
-import com.example.work_with_service.data.entities.Pokemon
+import com.example.work_with_service.data.model.Pokemon
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
 import com.example.work_with_service.ui.model.PokemonDetailModel
 import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail

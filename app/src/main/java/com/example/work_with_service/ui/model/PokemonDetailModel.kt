@@ -1,7 +1,7 @@
 package com.example.work_with_service.ui.model
 
 import com.example.work_with_service.data.service.PokemonService
-import com.example.work_with_service.data.entities.Pokemon
+import com.example.work_with_service.data.model.Pokemon
 import com.example.work_with_service.ui.mapper.PokemonDetailMapper
 import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail
 import com.example.work_with_service.ui.model.pokiattributes.PokiAttributes

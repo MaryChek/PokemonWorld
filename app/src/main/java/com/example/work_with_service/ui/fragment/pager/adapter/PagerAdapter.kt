@@ -3,7 +3,7 @@ package com.example.work_with_service.ui.fragment.pager.adapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.work_with_service.data.entities.Pokemon
+import com.example.work_with_service.data.model.Pokemon
 import com.example.work_with_service.ui.fragment.PokemonDetailPageFragment
 import com.example.work_with_service.ui.fragment.PokemonListPageFragment
 

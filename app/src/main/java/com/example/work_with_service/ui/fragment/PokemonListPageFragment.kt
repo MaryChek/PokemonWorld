@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.work_with_service.App
 import com.example.work_with_service.R
-import com.example.work_with_service.data.entities.Pokemon
+import com.example.work_with_service.data.model.Pokemon
 import com.example.work_with_service.databinding.FragmentPokemonListPageBinding
 import com.example.work_with_service.ui.contract.PokemonListContract
 import com.example.work_with_service.ui.adapter.PokemonListAdapter

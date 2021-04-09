@@ -1,6 +1,6 @@
 package com.example.work_with_service.data.service
 
-import com.example.work_with_service.data.entities.*
+import com.example.work_with_service.domain.entities.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

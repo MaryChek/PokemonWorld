@@ -7,7 +7,8 @@ import com.example.work_with_service.ui.model.PokemonListModel
 
 class App: Application() {
     val pokemonListModel = PokemonListModel()
-    val pokemonDetailModel = PokemonDetailModel()
+    val pokemonDetailModel =
+        PokemonDetailModel()
     lateinit var pagerTitlesModel: PagerTitlesModel
 
     override fun onCreate() {

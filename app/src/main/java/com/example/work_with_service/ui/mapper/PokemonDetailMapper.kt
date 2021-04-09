@@ -1,8 +1,7 @@
 package com.example.work_with_service.ui.mapper
 
 import com.example.work_with_service.R
-import com.example.work_with_service.data.entities.Ability
-import com.example.work_with_service.data.entities.PokemonResource
+import com.example.work_with_service.data.model.Ability
 import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail
 import com.example.work_with_service.ui.model.servicepokemonanswer.PokiDetail
 
@@ -20,8 +19,8 @@ open class PokemonDetailMapper : BasePokemonMapper() {
                     true -> R.string.baby
                     false -> R.string.adult
                 },
-                firstUpperCase(it.pokemonSpecies.habitat.name),
-                firstUpperCase(it.pokemonSpecies.color.name),
+                firstUpperCase(it.pokemonSpecies.habitat),
+                firstUpperCase(it.pokemonSpecies.color),
                 mapAbilities(pokiDetail.abilities),
                 mapTypes(pokiDetail)
             )
@@ -29,11 +28,11 @@ open class PokemonDetailMapper : BasePokemonMapper() {
 
     private fun mapAbilities(abilities: List<Ability>): List<PokemonDetail.Ability> =
         abilities.mapNotNull { ability ->
-            ability.effectEntries.firstOrNull {
-                it.language.name == ENGLISH_LANGUAGE
+            ability.effects.firstOrNull {
+                it.language == ENGLISH_LANGUAGE
             }?.let {
                 PokemonDetail.Ability(
-                    firstUpperCase(ability.name), it.effect.replace(TWO_NL, PARAGRAPH)
+                    firstUpperCase(ability.name), it.description.replace(TWO_NL, PARAGRAPH)
                 )
             }
         }
@@ -42,16 +41,19 @@ open class PokemonDetailMapper : BasePokemonMapper() {
         pokiDetail.types.map { type ->
             PokemonDetail.Type(
                 firstUpperCase(type.name),
-                mapDamage(type.damageRelations.noDamageTo),
-                mapDamage(type.damageRelations.doubleDamageTo),
-                mapDamage(type.damageRelations.noDamageFrom),
-                mapDamage(type.damageRelations.doubleDamageFrom)
+                type.damageTypes.noDamageTo.map {
+                    firstUpperCase(it)
+                },
+                type.damageTypes.doubleDamageTo.map {
+                    firstUpperCase(it)
+                },
+                type.damageTypes.noDamageFrom.map {
+                    firstUpperCase(it)
+                },
+                type.damageTypes.doubleDamageFrom.map {
+                    firstUpperCase(it)
+                }
             )
-        }
-
-    private fun mapDamage(damageApiResource: List<PokemonResource.NameResource>): List<String> =
-        damageApiResource.map {
-            firstUpperCase(it.name)
         }
 
     companion object {

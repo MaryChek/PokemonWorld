@@ -2,7 +2,12 @@ package com.example.work_with_service.data.service
 
 import android.util.Log
 import com.example.work_with_service.data.client.PokeApiClient
-import com.example.work_with_service.data.entities.*
+import com.example.work_with_service.data.model.PokemonResource
+import com.example.work_with_service.data.model.Pokemon
+import com.example.work_with_service.data.model.Ability
+import com.example.work_with_service.data.model.PokemonResourceList
+import com.example.work_with_service.data.model.PokemonSpecies
+import com.example.work_with_service.data.model.Type
 import com.example.work_with_service.ui.model.servicepokemonanswer.ListPokemon
 import com.example.work_with_service.ui.model.servicepokemonanswer.PokiDetail
 import com.example.work_with_service.data.service.Status.*
@@ -35,7 +40,7 @@ class PokemonService {
         this.onServiceFinishedError = onServiceFinishedError
         this.pokemon = pokemon
         pokemonDetail = PokiDetail(
-            pokemon.sprites.frontDefault,
+            pokemon.frontDefault,
             pokemon.name,
             pokemon.baseExperience,
             pokemon.height,
@@ -44,18 +49,19 @@ class PokemonService {
         remotePokemonSource.callPokemonSpecies(pokemon.name)
     }
 
-    private fun onServiceCallAnswer(res: Resource<PokemonResource>) =
+    private fun onServiceCallAnswer(res: Resource<PokemonResource?>) {
         when (res.status == SUCCESS) {
             true -> onResponseSuccess(res.data)
             false -> onResponseError(res.message)
         }
+    }
 
 
     private fun onResponseSuccess(pokemonResource: PokemonResource?) {
         when (pokemonResource) {
             is PokemonResourceList -> {
-                pokemonResource.results.forEach {
-                    remotePokemonSource.callPokemon(it.name)
+                pokemonResource.pokemonNames.forEach {
+                    remotePokemonSource.callPokemon(it)
                 }
             }
             is Pokemon -> {
@@ -70,16 +76,16 @@ class PokemonService {
             }
             is PokemonSpecies -> {
                 pokemonDetail?.pokemonSpecies = pokemonResource
-                pokemon?.abilities?.forEach {
-                    remotePokemonSource.callPokemonAbility(it.ability.name)
+                pokemon?.abilityNames?.forEach {
+                    remotePokemonSource.callPokemonAbility(it)
                 }
             }
             is Ability -> {
                 pokemonDetail?.abilities?.apply {
                     add(pokemonResource)
-                    if (size == pokemon?.abilities?.size) {
-                        pokemon?.types?.forEach {
-                            remotePokemonSource.callPokemonType(it.type.name)
+                    if (size == pokemon?.abilityNames?.size) {
+                        pokemon?.typeNames?.forEach {
+                            remotePokemonSource.callPokemonType(it)
                         }
                     }
                 }
@@ -87,7 +93,7 @@ class PokemonService {
             is Type -> {
                 pokemonDetail?.types?.apply {
                     add(pokemonResource)
-                    if (size == pokemon?.types?.size) {
+                    if (size == pokemon?.typeNames?.size) {
                         pokemonDetail?.let {
                             onPokemonDetailReady?.invoke(it)
                             pokemonDetail = null
@@ -95,7 +101,6 @@ class PokemonService {
                         pokemon = null
                     }
                 }
-
             }
         }
     }

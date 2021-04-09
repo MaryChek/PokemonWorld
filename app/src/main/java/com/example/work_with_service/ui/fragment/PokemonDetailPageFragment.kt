@@ -13,13 +13,13 @@ import androidx.fragment.app.Fragment
 import com.example.work_with_service.App
 import com.example.work_with_service.R
 import android.text.Spanned.*
-import com.example.work_with_service.data.entities.Pokemon
+import com.example.work_with_service.data.model.Pokemon
 import com.example.work_with_service.databinding.FragmentPokemonDetailPageBinding
 import com.example.work_with_service.databinding.ItemPokemonAdditionalInfoBinding
 import com.example.work_with_service.databinding.ItemPokemonBaseInfoBinding
 import com.example.work_with_service.databinding.PokemonBaseInformationBinding
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
-import com.example.work_with_service.ui.model.*
+import com.example.work_with_service.ui.model.PokemonDetailModel
 import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail
 import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail.Ability
 import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail.Type

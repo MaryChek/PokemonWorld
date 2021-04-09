@@ -1,8 +1,8 @@
 package com.example.work_with_service.ui.model.servicepokemonanswer
 
-import com.example.work_with_service.data.entities.Ability
-import com.example.work_with_service.data.entities.PokemonSpecies
-import com.example.work_with_service.data.entities.Type
+import com.example.work_with_service.data.model.Ability
+import com.example.work_with_service.data.model.PokemonSpecies
+import com.example.work_with_service.data.model.Type
 
 class PokiDetail(
     val frontDefault: String,
