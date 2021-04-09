@@ -16,7 +16,7 @@ class Pokemon(
     val abilityNames: List<String>,
     val typeNames: List<String>,
     val frontDefault: String
-) : PokemonResource(), Serializable
+) : PokemonResource()
 
 class PokemonSpecies(
     val isBaby: Boolean,

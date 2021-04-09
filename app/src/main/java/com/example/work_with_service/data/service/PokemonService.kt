@@ -2,24 +2,25 @@ package com.example.work_with_service.data.service
 
 import android.util.Log
 import com.example.work_with_service.data.client.PokeApiClient
-import com.example.work_with_service.data.model.PokemonResource
-import com.example.work_with_service.data.model.Pokemon
-import com.example.work_with_service.data.model.Ability
-import com.example.work_with_service.data.model.PokemonResourceList
-import com.example.work_with_service.data.model.PokemonSpecies
-import com.example.work_with_service.data.model.Type
-import com.example.work_with_service.ui.model.servicepokemonanswer.ListPokemon
-import com.example.work_with_service.ui.model.servicepokemonanswer.PokiDetail
+import com.example.work_with_service.data.model.*
+import com.example.work_with_service.data.model.ListPokemon
 import com.example.work_with_service.data.service.Status.*
 
 class PokemonService {
     private var onPokemonListReady: ((ListPokemon) -> Unit)? = null
-    private var onPokemonDetailReady: ((PokiDetail) -> Unit)? = null
+    private var onPokemonDetailReady: ((PokemonDetail) -> Unit)? = null
     private var onServiceFinishedError: (() -> Unit)? = null
     private val remotePokemonSource = PokeApiClient(this::onServiceCallAnswer)
-    private var pokemon: Pokemon? = null
+
+    //    private var pokemon: Pokemon? = null
+
+    //    private var pokemonDetail: PokiDetail? = null
+//    private var pokemonAbilities: MutableList<Ability> = mutableListOf()
+//    private var pokemonTypes: MutableList<Type> = mutableListOf()
     private var listPokemon: MutableList<Pokemon>? = null
-    private var pokemonDetail: PokiDetail? = null
+    private var pokemonDetail: PokemonDetail? = null
+    private var pokemonAbilities: List<String> = listOf()
+    private var pokemonTypes: List<String> = listOf()
 
     fun callPokemonSource(
         onPokemonListReady: (ListPokemon) -> Unit,
@@ -32,21 +33,35 @@ class PokemonService {
     }
 
     fun callPokemonDetail(
-        pokemon: Pokemon,
-        onPokemonDetailReady: (PokiDetail) -> Unit,
+        pokemonName: String,
+        abilityNames: List<String>,
+        typeNames: List<String>,
+        onPokemonDetailReady: (PokemonDetail) -> Unit,
         onServiceFinishedError: () -> Unit
     ) {
         this.onPokemonDetailReady = onPokemonDetailReady
         this.onServiceFinishedError = onServiceFinishedError
-        this.pokemon = pokemon
-        pokemonDetail = PokiDetail(
-            pokemon.frontDefault,
-            pokemon.name,
-            pokemon.baseExperience,
-            pokemon.height,
-            pokemon.weight
-        )
-        remotePokemonSource.callPokemonSpecies(pokemon.name)
+        pokemonDetail = PokemonDetail()
+        pokemonAbilities = abilityNames
+        pokemonTypes = typeNames
+        callPokemonSpecies(pokemonName)
+//        callPokemonAbilities(abilityNames)
+//        callPokemonTypes(typeNames)
+    }
+
+    private fun callPokemonSpecies(pokemonName: String) =
+        remotePokemonSource.callPokemonSpecies(pokemonName)
+
+    private fun callPokemonAbilities() {
+        pokemonAbilities.forEach {
+            remotePokemonSource.callPokemonAbility(it)
+        }
+    }
+
+    private fun callPokemonTypes() {
+        pokemonTypes.forEach {
+            remotePokemonSource.callPokemonType(it)
+        }
     }
 
     private fun onServiceCallAnswer(res: Resource<PokemonResource?>) {
@@ -66,44 +81,78 @@ class PokemonService {
             }
             is Pokemon -> {
                 addPokemonToList(pokemonResource)
-                if (listPokemon?.size == LIMIT) {
-                    listPokemon?.let {
-                        val pokemons = ListPokemon(it)
-                        onPokemonListReady?.invoke(pokemons)
+                listPokemon?.let {
+                    if (it.size == LIMIT) {
+                        onPokemonListReady?.invoke(ListPokemon(it))
                         listPokemon = null
                     }
                 }
             }
             is PokemonSpecies -> {
-                pokemonDetail?.pokemonSpecies = pokemonResource
-                pokemon?.abilityNames?.forEach {
-                    remotePokemonSource.callPokemonAbility(it)
-                }
+                pokemonDetail?.species = pokemonResource
+                callPokemonAbilities()
+//                pokemonDetailReady()
+//                pokemonDetail?.pokemonSpecies = pokemonResource
+//                pokemon?.abilityNames?.forEach {
+//                    remotePokemonSource.callPokemonAbility(it)
+//                }
             }
             is Ability -> {
-                pokemonDetail?.abilities?.apply {
-                    add(pokemonResource)
-                    if (size == pokemon?.abilityNames?.size) {
-                        pokemon?.typeNames?.forEach {
-                            remotePokemonSource.callPokemonType(it)
-                        }
+                pokemonDetail?.abilities?.let {
+                    it.add(pokemonResource)
+                    if (it.size == pokemonAbilities.size) {
+                        callPokemonTypes()
                     }
+//                pokemonDetailReady()
+//                pokemonDetail?.abilities?.apply {
+//                    add(pokemonResource)
+//                    if (size == pokemon?.abilityNames?.size) {
+//                        pokemon?.typeNames?.forEach {
+//                            remotePokemonSource.callPokemonType(it)
+//                        }
+//                    }
+//                }
+
                 }
             }
             is Type -> {
-                pokemonDetail?.types?.apply {
-                    add(pokemonResource)
-                    if (size == pokemon?.typeNames?.size) {
+                pokemonDetail?.types?.let { types ->
+                    types.add(pokemonResource)
+                    if (types.size == pokemonTypes.size) {
                         pokemonDetail?.let {
                             onPokemonDetailReady?.invoke(it)
-                            pokemonDetail = null
                         }
-                        pokemon = null
                     }
+//                    pokemonDetailReady()
+//                pokemonDetail?.types?.apply {
+//                    add(pokemonResource)
+//                    if (size == pokemon?.typeNames?.size) {
+//                        pokemonDetail?.let {
+//                            onPokemonDetailReady?.invoke(it)
+//                            pokemonDetail = null
+//                        }
+//                        pokemon = null
+//                    }
+//                }
                 }
             }
         }
     }
+
+//    private fun isPokemonDetailReady(pokemonDetail: PokemonDetail): Boolean =
+//        pokemonDetail.abilities.size == countPokemonAbility
+//            && pokemonDetail.types.size == countPokemonType
+//            && pokemonDetail.species != null
+//
+//    private fun pokemonDetailReady() {
+//        pokemonDetail?.let {
+//            if (isPokemonDetailReady(it)) {
+//                onPokemonDetailReady?.invoke(it)
+//                countPokemonType = 0
+//                countPokemonAbility = 0
+//            }
+//        }
+//    }
 
     private fun addPokemonToList(pokemon: Pokemon) {
         listPokemon?.add(pokemon)
@@ -113,8 +162,6 @@ class PokemonService {
         message?.let {
             Log.e(null, message)
         }
-        pokemonDetail = null
-        pokemon = null
         onServiceFinishedError?.invoke()
     }
 

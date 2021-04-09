@@ -13,16 +13,17 @@ import androidx.fragment.app.Fragment
 import com.example.work_with_service.App
 import com.example.work_with_service.R
 import android.text.Spanned.*
-import com.example.work_with_service.data.model.Pokemon
+import androidx.core.os.bundleOf
+import com.example.work_with_service.ui.model.Pokemon
 import com.example.work_with_service.databinding.FragmentPokemonDetailPageBinding
 import com.example.work_with_service.databinding.ItemPokemonAdditionalInfoBinding
 import com.example.work_with_service.databinding.ItemPokemonBaseInfoBinding
 import com.example.work_with_service.databinding.PokemonBaseInformationBinding
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
-import com.example.work_with_service.ui.model.PokemonDetailModel
-import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail
-import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail.Ability
-import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail.Type
+import com.example.work_with_service.ui.model.pokemondetail.PokemonDetailModel
+import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail
+import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail.Ability
+import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail.Type
 import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
 import com.example.work_with_service.ui.utils.setImageWithGlide
 
@@ -57,7 +58,7 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
 
     private fun initPokemon() {
         arguments?.let { bundle ->
-            bundle.getSerializable("namePokemon")?.let {
+            bundle.getSerializable(KEY_FOR_NAME_POKEMON_ARG)?.let {
                 presenter.onViewGetPokemonName(it as Pokemon)
             }
         }
@@ -197,5 +198,13 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
 
     companion object {
         private const val PARAGRAPH = "\n\t\t\t"
+
+        private const val KEY_FOR_NAME_POKEMON_ARG = "namePokemon"
+
+        fun newInstance(pokemon: Pokemon?) = PokemonDetailPageFragment().apply {
+            pokemon.let {
+                arguments = bundleOf(KEY_FOR_NAME_POKEMON_ARG to it)
+            }
+        }
     }
 }

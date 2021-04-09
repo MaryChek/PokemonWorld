@@ -1,19 +1,17 @@
-package com.example.work_with_service.ui.model
+package com.example.work_with_service.ui.model.pokemons
 
-import com.example.work_with_service.data.model.Pokemon
+import com.example.work_with_service.ui.model.Pokemon
 import com.example.work_with_service.data.service.PokemonService
 import com.example.work_with_service.ui.mapper.PokemonListMapper
-import com.example.work_with_service.ui.model.pokiattributes.ListPokemonAttributes
-import com.example.work_with_service.ui.model.pokiattributes.PokiAttributes
-import com.example.work_with_service.ui.model.servicepokemonanswer.ListPokemon
+import com.example.work_with_service.data.model.ListPokemon
 
 class PokemonListModel: PokemonListMapper() {
-    private var onListReadyListener: ((PokiAttributes) -> Unit)? = null
+    private var onListReadyListener: ((PokemonsAttributes) -> Unit)? = null
     private var pokemonService: PokemonService = PokemonService()
     private var pokemonList: List<Pokemon> = listOf()
 
     fun fetchPokemonList(
-        onPokemonListReadyListener: (PokiAttributes) -> Unit,
+        onPokemonListReadyListener: (PokemonsAttributes) -> Unit,
         onServiceReturnError: () -> Unit
     ) {
         onListReadyListener = onPokemonListReadyListener
@@ -23,8 +21,8 @@ class PokemonListModel: PokemonListMapper() {
     fun isPokemonListAttributesEmpty(): Boolean =
         pokemonList.isEmpty()
 
-    fun getListPokemonAttributes(): ListPokemonAttributes =
-        ListPokemonAttributes(map(pokemonList))
+    fun getListPokemonAttributes(): PokemonsAttributes =
+        PokemonsAttributes(map(pokemonList))
 
     fun getPokemonByName(namePokemon: String): Pokemon =
         pokemonList.first {
@@ -32,7 +30,9 @@ class PokemonListModel: PokemonListMapper() {
         }
 
     private fun onServiceFinishedWork(pokemonAnswer: ListPokemon) {
-        pokemonList = pokemonAnswer.listPokemon
-        onListReadyListener?.invoke(ListPokemonAttributes(map(pokemonList)))
+        pokemonList = map(pokemonAnswer)
+        onListReadyListener?.invoke(
+            PokemonsAttributes(map(pokemonList))
+        )
     }
 }

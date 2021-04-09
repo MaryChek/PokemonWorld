@@ -1,26 +1,27 @@
 package com.example.work_with_service.ui.mapper
 
+import com.example.work_with_service.data.model.PokemonDetail as DataPokemonDetail
 import com.example.work_with_service.R
 import com.example.work_with_service.data.model.Ability
-import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail
-import com.example.work_with_service.ui.model.servicepokemonanswer.PokiDetail
+import com.example.work_with_service.ui.model.Pokemon
+import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail
 
 open class PokemonDetailMapper : BasePokemonMapper() {
-    fun map(pokiDetail: PokiDetail): PokemonDetail =
+    fun map(pokiDetail: DataPokemonDetail, pokemon: Pokemon): PokemonDetail =
         pokiDetail.let {
             PokemonDetail(
-                it.frontDefault,
-                it.name,
-                it.baseExperience,
-                it.pokemonSpecies.captureRate,
-                it.height.times(10),
-                it.weight.div(100.0),
-                when (it.pokemonSpecies.isBaby) {
+                pokemon.frontDefault,
+                pokemon.name,
+                pokemon.baseExperience,
+                it.species!!.captureRate,
+                pokemon.height,
+                pokemon.weight,
+                when (it.species!!.isBaby) {
                     true -> R.string.baby
                     false -> R.string.adult
                 },
-                firstUpperCase(it.pokemonSpecies.habitat),
-                firstUpperCase(it.pokemonSpecies.color),
+                firstUpperCase(it.species!!.habitat),
+                firstUpperCase(it.species!!.color),
                 mapAbilities(pokiDetail.abilities),
                 mapTypes(pokiDetail)
             )
@@ -37,7 +38,7 @@ open class PokemonDetailMapper : BasePokemonMapper() {
             }
         }
 
-    private fun mapTypes(pokiDetail: PokiDetail): List<PokemonDetail.Type> =
+    private fun mapTypes(pokiDetail: DataPokemonDetail): List<PokemonDetail.Type> =
         pokiDetail.types.map { type ->
             PokemonDetail.Type(
                 firstUpperCase(type.name),

@@ -1,7 +1,7 @@
 package com.example.work_with_service.ui.contract
 
-import com.example.work_with_service.data.model.Pokemon
-import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail
+import com.example.work_with_service.ui.model.Pokemon
+import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail
 
 interface PokemonDetailsContract {
     interface View: BasePokemonContract.View {

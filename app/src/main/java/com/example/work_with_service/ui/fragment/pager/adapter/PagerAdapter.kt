@@ -1,9 +1,8 @@
 package com.example.work_with_service.ui.fragment.pager.adapter
 
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.work_with_service.data.model.Pokemon
+import com.example.work_with_service.ui.model.Pokemon
 import com.example.work_with_service.ui.fragment.PokemonDetailPageFragment
 import com.example.work_with_service.ui.fragment.PokemonListPageFragment
 
@@ -19,11 +18,7 @@ class PagerAdapter(
     override fun createFragment(position: Int): Fragment =
         when (position) {
             POSITION_OF_LIST_POKEMON -> PokemonListPageFragment()
-            else -> PokemonDetailPageFragment().apply {
-                pokemonForDetailPage?.let {
-                    arguments = bundleOf(KEY_FOR_NAME_POKEMON_ARG to it)
-                }
-            }
+            else -> PokemonDetailPageFragment.newInstance(pokemonForDetailPage)
         }
 
     fun setNamePokemonForDetailPage(newPokemon: Pokemon) {
@@ -32,7 +27,6 @@ class PagerAdapter(
     }
 
     companion object {
-        private const val KEY_FOR_NAME_POKEMON_ARG = "namePokemon"
         private const val COUNT_OF_PAGE = 2
         private const val POSITION_OF_LIST_POKEMON = 0
         private const val POSITION_OF_DETAIL_PAGE = 1

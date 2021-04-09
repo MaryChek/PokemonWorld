@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.work_with_service.App
 import com.example.work_with_service.R
-import com.example.work_with_service.data.model.Pokemon
+import com.example.work_with_service.ui.model.Pokemon
 import com.example.work_with_service.databinding.FragmentPokemonListPageBinding
 import com.example.work_with_service.ui.contract.PokemonListContract
 import com.example.work_with_service.ui.adapter.PokemonListAdapter
-import com.example.work_with_service.ui.model.PokemonListModel
-import com.example.work_with_service.ui.model.pokiattributes.ListPokemonAttributes.Attributes
+import com.example.work_with_service.ui.model.pokemons.PokemonListModel
+import com.example.work_with_service.ui.model.pokemons.PokemonsAttributes.Attribute
 import com.example.work_with_service.ui.presenter.PokemonListPresenter
 
 class PokemonListPageFragment : Fragment(), PokemonListContract.View {
@@ -93,7 +93,7 @@ class PokemonListPageFragment : Fragment(), PokemonListContract.View {
         }
     }
 
-    override fun updatePokemonList(pokemonsAttributes: List<Attributes>) {
+    override fun updatePokemonList(pokemonsAttributes: List<Attribute>) {
         adapter?.submitList(pokemonsAttributes)
     }
 }

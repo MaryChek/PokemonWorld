@@ -1,9 +1,8 @@
 package com.example.work_with_service.ui.presenter
 
 import com.example.work_with_service.ui.contract.PokemonListContract
-import com.example.work_with_service.ui.model.PokemonListModel
-import com.example.work_with_service.ui.model.pokiattributes.ListPokemonAttributes
-import com.example.work_with_service.ui.model.pokiattributes.PokiAttributes
+import com.example.work_with_service.ui.model.pokemons.PokemonListModel
+import com.example.work_with_service.ui.model.pokemons.PokemonsAttributes
 
 class PokemonListPresenter(
     private val model: PokemonListModel,
@@ -15,7 +14,7 @@ class PokemonListPresenter(
             fetchPokemonList()
         } else {
             view.hideLoadingIndicator()
-            view.updatePokemonList(model.getListPokemonAttributes().listAttributes)
+            view.updatePokemonList(model.getListPokemonAttributes().attributes)
         }
     }
 
@@ -27,8 +26,8 @@ class PokemonListPresenter(
     override fun onItemPokemonClick(namePokemon: String) =
         view.openDetailedPage(model.getPokemonByName(namePokemon))
 
-    private fun onPokemonListReadyListener(listPokemonAttributes: PokiAttributes) {
-        view.updatePokemonList((listPokemonAttributes as ListPokemonAttributes).listAttributes)
+    private fun onPokemonListReadyListener(pokemons: PokemonsAttributes) {
+        view.updatePokemonList(pokemons.attributes)
         view.hideLoadingIndicator()
     }
 

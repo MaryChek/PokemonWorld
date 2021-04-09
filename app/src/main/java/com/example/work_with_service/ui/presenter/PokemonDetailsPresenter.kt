@@ -1,10 +1,9 @@
 package com.example.work_with_service.ui.presenter
 
-import com.example.work_with_service.data.model.Pokemon
+import com.example.work_with_service.ui.model.Pokemon
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
-import com.example.work_with_service.ui.model.PokemonDetailModel
-import com.example.work_with_service.ui.model.pokiattributes.PokemonDetail
-import com.example.work_with_service.ui.model.pokiattributes.PokiAttributes
+import com.example.work_with_service.ui.model.pokemondetail.PokemonDetailModel
+import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail
 
 class PokemonDetailsPresenter(
     private val model: PokemonDetailModel,
@@ -25,8 +24,8 @@ class PokemonDetailsPresenter(
         }
     }
 
-    private fun onPokemonInfoReady(pokemonInfo: PokiAttributes) {
-        view.showDetail(pokemonInfo as PokemonDetail)
+    private fun onPokemonInfoReady(pokemonInfo: PokemonDetail) {
+        view.showDetail(pokemonInfo)
         view.hideLoadingIndicator()
     }
 

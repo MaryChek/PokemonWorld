@@ -1,4 +1,4 @@
-package com.example.work_with_service.ui.model.pokiattributes
+package com.example.work_with_service.ui.model.pokemondetail
 
 import androidx.annotation.StringRes
 
@@ -15,7 +15,7 @@ class PokemonDetail(
     val color: String,
     val abilities: List<Ability>,
     val types: List<Type>
-) : PokiAttributes {
+) {
 
     class Ability(
         val name: String? = null,

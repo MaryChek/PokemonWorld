@@ -1,13 +1,12 @@
 package com.example.work_with_service.ui.contract
 
-import com.example.work_with_service.data.model.Pokemon
-import com.example.work_with_service.ui.model.pokiattributes.ListPokemonAttributes.Attributes
+import com.example.work_with_service.ui.model.Pokemon
+import com.example.work_with_service.ui.model.pokemons.PokemonsAttributes.Attribute
 
 interface PokemonListContract {
     interface View: BasePokemonContract.View {
-        fun updatePokemonList(pokemonsAttributes: List<Attributes>)
+        fun updatePokemonList(pokemonsAttributes: List<Attribute>)
 
-//        fun openDetailedPage(namePokemon: String)
         fun openDetailedPage(pokemon: Pokemon)
     }
 
