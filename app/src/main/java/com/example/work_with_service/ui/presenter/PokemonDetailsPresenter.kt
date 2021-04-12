@@ -15,13 +15,15 @@ class PokemonDetailsPresenter(
         this.pokemon = pokemon
         val pokemonDetail: PokemonDetail? = model.getPokemonDetail(pokemon)
         if (pokemonDetail == null) {
-            model.fetchPokemonDetail(
-                pokemon, this::onPokemonInfoReady, this::onConnectionErrorListener
-            )
-            view.showLoadingIndicator()
+            fetchPokemonDetail()
         } else {
             onPokemonInfoReady(pokemonDetail)
         }
+    }
+
+    private fun fetchPokemonDetail() {
+        model.fetchPokemonDetail(pokemon, this::onPokemonInfoReady, this::onConnectionErrorListener)
+        view.showLoadingIndicator()
     }
 
     private fun onPokemonInfoReady(pokemonInfo: PokemonDetail) {
@@ -36,11 +38,6 @@ class PokemonDetailsPresenter(
 
     override fun onRetryConnectionClick() {
         view.hideConnectionErrorMessage()
-        model.fetchPokemonDetail(
-            pokemon,
-            this::onPokemonInfoReady,
-            this::onConnectionErrorListener
-        )
-        view.showLoadingIndicator()
+        fetchPokemonDetail()
     }
 }

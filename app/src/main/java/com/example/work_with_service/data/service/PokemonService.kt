@@ -2,21 +2,21 @@ package com.example.work_with_service.data.service
 
 import android.util.Log
 import com.example.work_with_service.data.client.PokeApiClient
-import com.example.work_with_service.data.model.*
+import com.example.work_with_service.data.model.PokemonDetail
 import com.example.work_with_service.data.model.ListPokemon
-import com.example.work_with_service.data.service.Status.*
+import com.example.work_with_service.data.model.PokemonResource
+import com.example.work_with_service.data.model.PokemonResourceList
+import com.example.work_with_service.data.model.Pokemon
+import com.example.work_with_service.data.model.PokemonSpecies
+import com.example.work_with_service.data.model.Ability
+import com.example.work_with_service.data.model.Type
+import com.example.work_with_service.data.service.Status.SUCCESS
 
 class PokemonService {
     private var onPokemonListReady: ((ListPokemon) -> Unit)? = null
     private var onPokemonDetailReady: ((PokemonDetail) -> Unit)? = null
     private var onServiceFinishedError: (() -> Unit)? = null
     private val remotePokemonSource = PokeApiClient(this::onServiceCallAnswer)
-
-    //    private var pokemon: Pokemon? = null
-
-    //    private var pokemonDetail: PokiDetail? = null
-//    private var pokemonAbilities: MutableList<Ability> = mutableListOf()
-//    private var pokemonTypes: MutableList<Type> = mutableListOf()
     private var listPokemon: MutableList<Pokemon>? = null
     private var pokemonDetail: PokemonDetail? = null
     private var pokemonAbilities: List<String> = listOf()
@@ -41,12 +41,9 @@ class PokemonService {
     ) {
         this.onPokemonDetailReady = onPokemonDetailReady
         this.onServiceFinishedError = onServiceFinishedError
-        pokemonDetail = PokemonDetail()
         pokemonAbilities = abilityNames
         pokemonTypes = typeNames
         callPokemonSpecies(pokemonName)
-//        callPokemonAbilities(abilityNames)
-//        callPokemonTypes(typeNames)
     }
 
     private fun callPokemonSpecies(pokemonName: String) =
@@ -89,13 +86,8 @@ class PokemonService {
                 }
             }
             is PokemonSpecies -> {
-                pokemonDetail?.species = pokemonResource
+                pokemonDetail = PokemonDetail(pokemonResource)
                 callPokemonAbilities()
-//                pokemonDetailReady()
-//                pokemonDetail?.pokemonSpecies = pokemonResource
-//                pokemon?.abilityNames?.forEach {
-//                    remotePokemonSource.callPokemonAbility(it)
-//                }
             }
             is Ability -> {
                 pokemonDetail?.abilities?.let {
@@ -103,16 +95,6 @@ class PokemonService {
                     if (it.size == pokemonAbilities.size) {
                         callPokemonTypes()
                     }
-//                pokemonDetailReady()
-//                pokemonDetail?.abilities?.apply {
-//                    add(pokemonResource)
-//                    if (size == pokemon?.abilityNames?.size) {
-//                        pokemon?.typeNames?.forEach {
-//                            remotePokemonSource.callPokemonType(it)
-//                        }
-//                    }
-//                }
-
                 }
             }
             is Type -> {
@@ -123,36 +105,10 @@ class PokemonService {
                             onPokemonDetailReady?.invoke(it)
                         }
                     }
-//                    pokemonDetailReady()
-//                pokemonDetail?.types?.apply {
-//                    add(pokemonResource)
-//                    if (size == pokemon?.typeNames?.size) {
-//                        pokemonDetail?.let {
-//                            onPokemonDetailReady?.invoke(it)
-//                            pokemonDetail = null
-//                        }
-//                        pokemon = null
-//                    }
-//                }
                 }
             }
         }
     }
-
-//    private fun isPokemonDetailReady(pokemonDetail: PokemonDetail): Boolean =
-//        pokemonDetail.abilities.size == countPokemonAbility
-//            && pokemonDetail.types.size == countPokemonType
-//            && pokemonDetail.species != null
-//
-//    private fun pokemonDetailReady() {
-//        pokemonDetail?.let {
-//            if (isPokemonDetailReady(it)) {
-//                onPokemonDetailReady?.invoke(it)
-//                countPokemonType = 0
-//                countPokemonAbility = 0
-//            }
-//        }
-//    }
 
     private fun addPokemonToList(pokemon: Pokemon) {
         listPokemon?.add(pokemon)

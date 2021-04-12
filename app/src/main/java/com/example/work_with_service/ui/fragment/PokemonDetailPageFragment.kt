@@ -1,10 +1,11 @@
 package com.example.work_with_service.ui.fragment
 
 import android.os.Bundle
-import android.text.*
+import android.text.SpannableStringBuilder
 import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
-import android.view.View.*
+import android.view.View.VISIBLE
+import android.view.View.GONE
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
@@ -12,20 +13,20 @@ import androidx.annotation.StyleRes
 import androidx.fragment.app.Fragment
 import com.example.work_with_service.App
 import com.example.work_with_service.R
-import android.text.Spanned.*
+import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import androidx.core.os.bundleOf
-import com.example.work_with_service.ui.model.Pokemon
 import com.example.work_with_service.databinding.FragmentPokemonDetailPageBinding
 import com.example.work_with_service.databinding.ItemPokemonAdditionalInfoBinding
 import com.example.work_with_service.databinding.ItemPokemonBaseInfoBinding
 import com.example.work_with_service.databinding.PokemonBaseInformationBinding
+import com.example.work_with_service.ui.utils.setImageWithGlide
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
+import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
 import com.example.work_with_service.ui.model.pokemondetail.PokemonDetailModel
 import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail
+import com.example.work_with_service.ui.model.Pokemon
 import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail.Ability
 import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail.Type
-import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
-import com.example.work_with_service.ui.utils.setImageWithGlide
 
 class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     private var binding: FragmentPokemonDetailPageBinding? = null
@@ -37,8 +38,8 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     }
 
     private fun init() {
-        val model: PokemonDetailModel =
-            (requireActivity().applicationContext as App).pokemonDetailModel
+        val app: App = (requireActivity().applicationContext as App)
+        val model: PokemonDetailModel = app.pokemonDetailModel
         presenter = PokemonDetailsPresenter(model, this)
     }
 
@@ -131,7 +132,7 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         abilities: List<Ability>
     ) {
         pokemonAbilityBinding.root.visibility = VISIBLE
-        val properties = SpannableStringBuilder("")
+        val properties = SpannableStringBuilder((""))
         var text: String
         for (i in abilities.indices) {
             text = "\t" + resources.getString(R.string.name_ability, (i + 1), abilities[i].name)
@@ -165,7 +166,7 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         typeInfo: List<Type>
     ) {
         pokemonTypeBinding.root.visibility = VISIBLE
-        val types = SpannableStringBuilder("")
+        val types = SpannableStringBuilder((""))
         var text: String
         for (i in typeInfo.indices) {
             text = "\t" + resources.getString(R.string.name_type, (i + 1), typeInfo[i].name)
@@ -185,7 +186,7 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
 
     private fun getTypeNamesByDamage(typeNames: List<String>, @StringRes nameTypeId: Int)
             : SpannableStringBuilder {
-        val textTypeNames = SpannableStringBuilder("")
+        val textTypeNames = SpannableStringBuilder((""))
         var text: String
         if (typeNames.isNotEmpty()) {
             text = PARAGRAPH + resources.getString(nameTypeId)

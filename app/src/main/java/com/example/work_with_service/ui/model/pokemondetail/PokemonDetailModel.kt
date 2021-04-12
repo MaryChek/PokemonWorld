@@ -35,11 +35,9 @@ class PokemonDetailModel : PokemonDetailMapper() {
 
     private fun onServiceFinishedWork(pokemonAnswer: DataPokemonDetail) {
         pokemon?.let { pokemon ->
-            if (pokemonAnswer.species != null) {
-                map(pokemonAnswer, pokemon).let {
-                    pokemonDetail = it
-                    onListReadyListener?.invoke(it)
-                }
+            map(pokemonAnswer, pokemon).let {
+                pokemonDetail = it
+                onListReadyListener?.invoke(it)
             }
         }
     }

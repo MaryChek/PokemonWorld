@@ -6,7 +6,7 @@ class Pokemon(
     val name: String,
     val baseExperience: Int,
     val height: Int,
-    val weight: Double,
+    val weight: Int,
     val abilityNames: List<String>,
     val typeNames: List<String>,
     val frontDefault: String

@@ -1,6 +1,6 @@
 package com.example.work_with_service.data.client
 
-import com.example.work_with_service.data.model.*
+import com.example.work_with_service.data.model.PokemonResource
 import com.example.work_with_service.data.service.PokeApiServiceRetrofit
 import com.example.work_with_service.data.service.Resource
 

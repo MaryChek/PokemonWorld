@@ -1,15 +1,12 @@
 package com.example.work_with_service.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.work_with_service.ui.model.pokemons.PokemonsAttributes.Attribute
+import com.example.work_with_service.ui.model.pokemons.PokemonsAttributes.Attributes
 
-class PokemonItemDiff : DiffUtil.ItemCallback<Attribute>() {
-    override fun areContentsTheSame(
-        oldItem: Attribute,
-        newItem: Attribute
-    ): Boolean =
+class PokemonItemDiff : DiffUtil.ItemCallback<Attributes>() {
+    override fun areContentsTheSame(oldItem: Attributes, newItem: Attributes): Boolean =
         oldItem.name == newItem.name
 
-    override fun areItemsTheSame(oldItem: Attribute, newItem: Attribute): Boolean =
+    override fun areItemsTheSame(oldItem: Attributes, newItem: Attributes): Boolean =
         oldItem.name == newItem.name
 }

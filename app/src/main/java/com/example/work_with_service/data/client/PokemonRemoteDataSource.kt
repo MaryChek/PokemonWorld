@@ -1,11 +1,11 @@
 package com.example.work_with_service.data.client
 
-import com.example.work_with_service.data.mapper.Mapper
-import com.example.work_with_service.data.model.*
-import com.example.work_with_service.data.service.Resource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.example.work_with_service.data.mapper.Mapper
+import com.example.work_with_service.data.model.PokemonResource
+import com.example.work_with_service.data.service.Resource
 
 open class PokemonRemoteDataSource {
     private val mapper = Mapper()
@@ -39,4 +39,3 @@ open class PokemonRemoteDataSource {
         private const val NETWORK_FAIL = "Network call has failed for a following reason: "
     }
 }
-

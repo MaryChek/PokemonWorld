@@ -3,7 +3,8 @@ package com.example.work_with_service.ui.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.VISIBLE
+import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -17,7 +18,7 @@ import com.example.work_with_service.databinding.FragmentPokemonListPageBinding
 import com.example.work_with_service.ui.contract.PokemonListContract
 import com.example.work_with_service.ui.adapter.PokemonListAdapter
 import com.example.work_with_service.ui.model.pokemons.PokemonListModel
-import com.example.work_with_service.ui.model.pokemons.PokemonsAttributes.Attribute
+import com.example.work_with_service.ui.model.pokemons.PokemonsAttributes.Attributes
 import com.example.work_with_service.ui.presenter.PokemonListPresenter
 
 class PokemonListPageFragment : Fragment(), PokemonListContract.View {
@@ -32,7 +33,8 @@ class PokemonListPageFragment : Fragment(), PokemonListContract.View {
     }
 
     private fun init() {
-        val model: PokemonListModel = (requireActivity().applicationContext as App).pokemonListModel
+        val app: App = (requireActivity().applicationContext as App)
+        val model: PokemonListModel = app.pokemonListModel
         presenter = PokemonListPresenter(model, this)
     }
 
@@ -49,7 +51,7 @@ class PokemonListPageFragment : Fragment(), PokemonListContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initList()
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
+        setTitle()
         presenter.onViewCreated()
     }
 
@@ -57,6 +59,10 @@ class PokemonListPageFragment : Fragment(), PokemonListContract.View {
         adapter = PokemonListAdapter(presenter::onItemPokemonClick)
         rvPokemon?.adapter = adapter
         addDividerItem()
+    }
+
+    private fun setTitle() {
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
     }
 
     override fun showLoadingIndicator() {
@@ -93,7 +99,7 @@ class PokemonListPageFragment : Fragment(), PokemonListContract.View {
         }
     }
 
-    override fun updatePokemonList(pokemonsAttributes: List<Attribute>) {
+    override fun updatePokemonList(pokemonsAttributes: List<Attributes>) {
         adapter?.submitList(pokemonsAttributes)
     }
 }

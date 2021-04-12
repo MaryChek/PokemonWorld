@@ -1,10 +1,10 @@
 package com.example.work_with_service.ui.model.pokemons
 
 class PokemonsAttributes(
-    val attributes: List<Attribute>
+    val listAttributes: List<Attributes>
 ) {
 
-    class Attribute(
+    class Attributes(
         val imageUrl: String,
         val name: String
     )

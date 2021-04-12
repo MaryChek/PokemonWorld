@@ -2,7 +2,7 @@ package com.example.work_with_service.domain.entities
 
 import com.squareup.moshi.Json
 
-class Type (
+class Type(
     val name: String,
     @field:Json(name = "damage_relations")
     val damageRelations: TypeRelations

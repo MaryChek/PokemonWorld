@@ -10,7 +10,7 @@ class PokemonViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding: ListItemPokemonBinding = ListItemPokemonBinding.bind(view)
 
     fun bind(
-        pokemon: PokemonsAttributes.Attribute,
+        pokemon: PokemonsAttributes.Attributes,
         cityIconClickListener: (String) -> Unit
     ) {
         setImageWithGlide(binding.root, pokemon.imageUrl, binding.ivPokemon)

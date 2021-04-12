@@ -13,7 +13,6 @@ import com.example.work_with_service.domain.entities.PokemonSpecies as DomainPok
 import com.example.work_with_service.domain.entities.Ability as DomainPokemonAbility
 import com.example.work_with_service.domain.entities.Type as DomainPokemonType
 
-
 class Mapper {
 
     fun <T> map(domainPokemonResource: T): PokemonResource? =

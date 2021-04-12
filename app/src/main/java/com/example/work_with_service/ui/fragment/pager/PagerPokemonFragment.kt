@@ -32,12 +32,9 @@ class PagerPokemonFragment : Fragment(),
     }
 
     private fun init() {
-        val model: PagerTitlesModel = (requireActivity().applicationContext as App).pagerTitlesModel
-        presenter =
-            PagerPokemonPresenter(
-                model,
-                this
-            )
+        val app: App = (requireActivity().applicationContext as App)
+        val model: PagerTitlesModel = app.pagerTitlesModel
+        presenter = PagerPokemonPresenter(model, this)
     }
 
     private fun initOnBackPressedListener() {

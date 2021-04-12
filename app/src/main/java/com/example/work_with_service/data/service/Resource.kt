@@ -1,6 +1,7 @@
 package com.example.work_with_service.data.service
 
-import com.example.work_with_service.data.service.Status.*
+import com.example.work_with_service.data.service.Status.SUCCESS
+import com.example.work_with_service.data.service.Status.ERROR
 
 class Resource<out T>(val status: Status, val data: T?, val message: String?) {
 

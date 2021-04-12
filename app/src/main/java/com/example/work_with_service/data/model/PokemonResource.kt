@@ -1,7 +1,5 @@
 package com.example.work_with_service.data.model
 
-import java.io.Serializable
-
 sealed class PokemonResource
 
 class PokemonResourceList(

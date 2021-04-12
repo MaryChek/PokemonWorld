@@ -1,6 +1,5 @@
 package com.example.work_with_service.domain.entities
 
-import com.example.work_with_service.domain.entities.NameApiResource
 import com.squareup.moshi.Json
 
 class PokemonSpecies(

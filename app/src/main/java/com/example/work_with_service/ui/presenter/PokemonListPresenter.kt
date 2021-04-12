@@ -14,7 +14,7 @@ class PokemonListPresenter(
             fetchPokemonList()
         } else {
             view.hideLoadingIndicator()
-            view.updatePokemonList(model.getListPokemonAttributes().attributes)
+            view.updatePokemonList(model.getListPokemonAttributes().listAttributes)
         }
     }
 
@@ -27,7 +27,7 @@ class PokemonListPresenter(
         view.openDetailedPage(model.getPokemonByName(namePokemon))
 
     private fun onPokemonListReadyListener(pokemons: PokemonsAttributes) {
-        view.updatePokemonList(pokemons.attributes)
+        view.updatePokemonList(pokemons.listAttributes)
         view.hideLoadingIndicator()
     }
 

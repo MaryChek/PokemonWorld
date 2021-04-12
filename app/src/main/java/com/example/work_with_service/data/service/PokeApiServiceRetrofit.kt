@@ -1,8 +1,8 @@
 package com.example.work_with_service.data.service
 
-import com.example.work_with_service.data.client.ClientConfig
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import com.example.work_with_service.data.client.ClientConfig
 
 internal class PokeApiServiceRetrofit(config: ClientConfig) {
     val client: PokeApiService = Retrofit.Builder()

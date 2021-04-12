@@ -13,15 +13,15 @@ open class PokemonDetailMapper : BasePokemonMapper() {
                 pokemon.frontDefault,
                 pokemon.name,
                 pokemon.baseExperience,
-                it.species!!.captureRate,
-                pokemon.height,
-                pokemon.weight,
-                when (it.species!!.isBaby) {
+                it.species.captureRate,
+                pokemon.height.times(10),
+                pokemon.weight.div(100.0),
+                when (it.species.isBaby) {
                     true -> R.string.baby
                     false -> R.string.adult
                 },
-                firstUpperCase(it.species!!.habitat),
-                firstUpperCase(it.species!!.color),
+                firstUpperCase(it.species.habitat),
+                firstUpperCase(it.species.color),
                 mapAbilities(pokiDetail.abilities),
                 mapTypes(pokiDetail)
             )

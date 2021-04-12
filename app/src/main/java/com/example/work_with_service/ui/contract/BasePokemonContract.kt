@@ -12,8 +12,6 @@ interface BasePokemonContract {
     }
 
     interface Presenter {
-//        fun onViewRestart()
-
         fun onRetryConnectionClick()
     }
 }

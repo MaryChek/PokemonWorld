@@ -1,11 +1,11 @@
 package com.example.work_with_service.ui.model.pokemons
 
-import com.example.work_with_service.ui.model.Pokemon
 import com.example.work_with_service.data.service.PokemonService
-import com.example.work_with_service.ui.mapper.PokemonListMapper
 import com.example.work_with_service.data.model.ListPokemon
+import com.example.work_with_service.ui.model.Pokemon
+import com.example.work_with_service.ui.mapper.PokemonListMapper
 
-class PokemonListModel: PokemonListMapper() {
+class PokemonListModel : PokemonListMapper() {
     private var onListReadyListener: ((PokemonsAttributes) -> Unit)? = null
     private var pokemonService: PokemonService = PokemonService()
     private var pokemonList: List<Pokemon> = listOf()

@@ -1,6 +1,6 @@
 package com.example.work_with_service.ui.mapper
 
-import java.util.*
+import java.util.Locale
 
 open class BasePokemonMapper {
     fun firstUpperCase(word: String): String =
