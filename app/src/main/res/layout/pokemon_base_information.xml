@@ -23,32 +23,32 @@
 
         <include
             android:id="@+id/tvBasExperience"
-            layout="@layout/item_pokemon_base_info" />
+            layout="@layout/item_pokemon_base" />
 
         <include
             android:id="@+id/tvCaptureRate"
-            layout="@layout/item_pokemon_base_info" />
+            layout="@layout/item_pokemon_base" />
 
         <include
             android:id="@+id/tvHeight"
-            layout="@layout/item_pokemon_base_info" />
+            layout="@layout/item_pokemon_base" />
 
         <include
             android:id="@+id/tvWeight"
-            layout="@layout/item_pokemon_base_info"
+            layout="@layout/item_pokemon_base"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <include
             android:id="@+id/tvAgeCategory"
-            layout="@layout/item_pokemon_base_info" />
+            layout="@layout/item_pokemon_base" />
 
         <include
             android:id="@+id/tvHabitat"
-            layout="@layout/item_pokemon_base_info" />
+            layout="@layout/item_pokemon_base" />
 
         <include
             android:id="@+id/tvColor"
-            layout="@layout/item_pokemon_base_info" />
+            layout="@layout/item_pokemon_base" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

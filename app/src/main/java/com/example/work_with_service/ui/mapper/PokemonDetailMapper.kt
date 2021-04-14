@@ -11,7 +11,7 @@ open class PokemonDetailMapper : BasePokemonMapper() {
         pokiDetail.let {
             PokemonDetail(
                 pokemon.frontDefault,
-                pokemon.name,
+                firstUpperCase(pokemon.name),
                 pokemon.baseExperience,
                 it.species.captureRate,
                 pokemon.height.times(10),

@@ -15,10 +15,9 @@ import com.example.work_with_service.App
 import com.example.work_with_service.R
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import androidx.core.os.bundleOf
-import com.example.work_with_service.databinding.FragmentPokemonDetailPageBinding
-import com.example.work_with_service.databinding.ItemPokemonAdditionalInfoBinding
-import com.example.work_with_service.databinding.ItemPokemonBaseInfoBinding
-import com.example.work_with_service.databinding.PokemonBaseInformationBinding
+import androidx.recyclerview.widget.RecyclerView
+import com.example.work_with_service.databinding.*
+import com.example.work_with_service.ui.adapter.PokemonTypesAdapter
 import com.example.work_with_service.ui.utils.setImageWithGlide
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
 import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
@@ -119,7 +118,7 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     }
 
     private fun setTextToItemBaseInfo(
-        item: ItemPokemonBaseInfoBinding,
+        item: ItemPokemonBaseBinding,
         @StringRes textHeadId: Int,
         valueText: String
     ) {
@@ -128,7 +127,7 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     }
 
     private fun setInfoByAbilities(
-        pokemonAbilityBinding: ItemPokemonAdditionalInfoBinding,
+        pokemonAbilityBinding: ItemPokemonAbilitiesBinding,
         abilities: List<Ability>
     ) {
         pokemonAbilityBinding.root.visibility = VISIBLE
@@ -140,17 +139,17 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
             text = PARAGRAPH + abilities[i].effect + "\n"
             properties.append(getSpannableStringWithStyle(text, R.style.TextView_Normal))
         }
-        setTextToItemAdditionalInfo(pokemonAbilityBinding, R.string.abilities, properties)
+        pokemonAbilityBinding.tvValue.text = properties
     }
 
-    private fun setTextToItemAdditionalInfo(
-        item: ItemPokemonAdditionalInfoBinding,
-        @StringRes textHeadId: Int,
-        valueText: SpannableStringBuilder
-    ) {
-        item.tvHeading.text = resources.getString(textHeadId)
-        item.tvValue.text = valueText
-    }
+//    private fun setTextToItemAdditionalInfo(
+//        item: ItemPokemonAbilitiesBinding,
+//        @StringRes textHeadId: Int,
+//        valueText: SpannableStringBuilder
+//    ) {
+//        item.tvHeading.text = resources.getString(textHeadId)
+//        item.tvValue.text = valueText
+//    }
 
     private fun getSpannableStringWithStyle(text: String, @StyleRes styleRes: Int)
             : SpannableStringBuilder {
@@ -161,41 +160,55 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         return spannable
     }
 
+    //    private fun setInfoByType(
+//        pokemonTypeBinding: ItemPokemonTypesBinding,
+//        typeInfo: List<Type>
+//    ) {
+//        pokemonTypeBinding.root.visibility = VISIBLE
+//        val types = SpannableStringBuilder((""))
+//        var text: String
+//        for (i in typeInfo.indices) {
+//            text = "\t" + resources.getString(R.string.name_type, (i + 1), typeInfo[i].name)
+//            types.append(getSpannableStringWithStyle(text, R.style.TextView_Heading))
+//            types.append(getTypeNamesByDamage(typeInfo[i].noDamageTo, R.string.no_damage_to))
+//            types.append(
+//                getTypeNamesByDamage(typeInfo[i].doubleDamageTo, R.string.double_damage_to)
+//            )
+//            types.append(getTypeNamesByDamage(typeInfo[i].noDamageFrom, R.string.no_damage_from))
+//            types.append(
+//                getTypeNamesByDamage(typeInfo[i].doubleDamageFrom, R.string.double_damage_from)
+//            )
+//            types.append("\n")
+//        }
+//        setTextToItemAdditionalInfo(pokemonTypeBinding, R.string.types, types)
+//    }
     private fun setInfoByType(
-        pokemonTypeBinding: ItemPokemonAdditionalInfoBinding,
+        pokemonTypeBinding: ItemPokemonTypesBinding,
         typeInfo: List<Type>
     ) {
         pokemonTypeBinding.root.visibility = VISIBLE
-        val types = SpannableStringBuilder((""))
-        var text: String
-        for (i in typeInfo.indices) {
-            text = "\t" + resources.getString(R.string.name_type, (i + 1), typeInfo[i].name)
-            types.append(getSpannableStringWithStyle(text, R.style.TextView_Heading))
-            types.append(getTypeNamesByDamage(typeInfo[i].noDamageTo, R.string.no_damage_to))
-            types.append(
-                getTypeNamesByDamage(typeInfo[i].doubleDamageTo, R.string.double_damage_to)
-            )
-            types.append(getTypeNamesByDamage(typeInfo[i].noDamageFrom, R.string.no_damage_from))
-            types.append(
-                getTypeNamesByDamage(typeInfo[i].doubleDamageFrom, R.string.double_damage_from)
-            )
-            types.append("\n")
-        }
-        setTextToItemAdditionalInfo(pokemonTypeBinding, R.string.types, types)
+        val rvPokemonTypes = pokemonTypeBinding.rvPokemonTypes
+        val adapter = PokemonTypesAdapter(typeInfo)
+        val vh: RecyclerView.ViewHolder = adapter.createViewHolder(rvPokemonTypes, 0)
+        rvPokemonTypes.layoutManager?.measureChildWithMargins(vh.itemView, 0, 0)
+        rvPokemonTypes.layoutParams.height = vh.itemView.measuredHeight * 2
+        rvPokemonTypes.recycledViewPool.putRecycledView(vh)
+        rvPokemonTypes.adapter = adapter
+//    setTextToItemAdditionalInfo(pokemonTypeBinding, R.string.types, types)
     }
 
-    private fun getTypeNamesByDamage(typeNames: List<String>, @StringRes nameTypeId: Int)
-            : SpannableStringBuilder {
-        val textTypeNames = SpannableStringBuilder((""))
-        var text: String
-        if (typeNames.isNotEmpty()) {
-            text = PARAGRAPH + resources.getString(nameTypeId)
-            textTypeNames.append(getSpannableStringWithStyle(text, R.style.TextView_Heading))
-            text = typeNames.joinToString(separator = ", ")
-            textTypeNames.append(getSpannableStringWithStyle(text, R.style.TextView_Normal))
-        }
-        return textTypeNames
-    }
+//    private fun getTypeNamesByDamage(typeNames: List<String>, @StringRes nameTypeId: Int)
+//            : SpannableStringBuilder {
+//        val textTypeNames = SpannableStringBuilder((""))
+//        var text: String
+//        if (typeNames.isNotEmpty()) {
+//            text = PARAGRAPH + resources.getString(nameTypeId)
+//            textTypeNames.append(getSpannableStringWithStyle(text, R.style.TextView_Heading))
+//            text = typeNames.joinToString(separator = ", ")
+//            textTypeNames.append(getSpannableStringWithStyle(text, R.style.TextView_Normal))
+//        }
+//        return textTypeNames
+//    }
 
     companion object {
         private const val PARAGRAPH = "\n\t\t\t"
