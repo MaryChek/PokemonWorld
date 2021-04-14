@@ -15,6 +15,8 @@ import com.example.work_with_service.App
 import com.example.work_with_service.R
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.work_with_service.databinding.*
 import com.example.work_with_service.ui.adapter.PokemonTypesAdapter
@@ -30,6 +32,7 @@ import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail.Type
 class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     private var binding: FragmentPokemonDetailPageBinding? = null
     private lateinit var presenter: PokemonDetailsPresenter
+    private var rvPokemonTypes: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,12 +51,18 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPokemonDetailPageBinding.inflate(inflater)
+//        rvPokemonTypes = binding?.cvTypes?.rvPokemonTypes
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        initPokemonTypeList()
         initPokemon()
+    }
+
+    private fun initPokemonTypeList() {
+
     }
 
     private fun initPokemon() {
@@ -189,12 +198,7 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         pokemonTypeBinding.root.visibility = VISIBLE
         val rvPokemonTypes = pokemonTypeBinding.rvPokemonTypes
         val adapter = PokemonTypesAdapter(typeInfo)
-        val vh: RecyclerView.ViewHolder = adapter.createViewHolder(rvPokemonTypes, 0)
-        rvPokemonTypes.layoutManager?.measureChildWithMargins(vh.itemView, 0, 0)
-        rvPokemonTypes.layoutParams.height = vh.itemView.measuredHeight * 2
-        rvPokemonTypes.recycledViewPool.putRecycledView(vh)
         rvPokemonTypes.adapter = adapter
-//    setTextToItemAdditionalInfo(pokemonTypeBinding, R.string.types, types)
     }
 
 //    private fun getTypeNamesByDamage(typeNames: List<String>, @StringRes nameTypeId: Int)

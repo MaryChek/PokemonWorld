@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
@@ -12,73 +11,84 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:text="1. TypeName" />
 
     <LinearLayout
         android:id="@+id/noDamageTo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
         <TextView
             style="@style/TextView.Heading"
-            android:layout_width="wrap_content"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/no_damage_to" />
+            android:text="@string/no_damage_to"
+            android:layout_marginStart="35dp" />
 
-        <include layout="@layout/tv_type_names" />
-    </LinearLayout>
+        <include
+            layout="@layout/tv_type_names"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp" />
+        </LinearLayout>
 
     <LinearLayout
         android:id="@+id/doubleDamageTo"
-
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <TextView
             style="@style/TextView.Heading"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="180dp"
+            android:layout_marginStart="35dp"
             android:text="@string/double_damage_to" />
 
-        <include layout="@layout/tv_type_names" />
+        <include layout="@layout/tv_type_names"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/noDamageFrom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
         <TextView
             style="@style/TextView.Heading"
-            android:layout_width="wrap_content"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="35dp"
             android:text="@string/no_damage_from" />
 
-        <include layout="@layout/tv_type_names" />
+        <include layout="@layout/tv_type_names"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/doubleDamageFrom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp">
 
         <TextView
             style="@style/TextView.Heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="35dp"
             android:text="@string/double_damage_from" />
 
-        <include layout="@layout/tv_type_names" />
+        <include
+            layout="@layout/tv_type_names"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp" />
     </LinearLayout>
 </LinearLayout>
