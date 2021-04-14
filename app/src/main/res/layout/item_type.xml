@@ -18,19 +18,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
+
         <TextView
             style="@style/TextView.Heading"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:text="@string/no_damage_to"
-            android:layout_marginStart="35dp" />
+            android:layout_marginStart="35dp"
+            android:text="@string/no_damage_to" />
 
         <include
             layout="@layout/tv_type_names"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp" />
-        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/doubleDamageTo"
@@ -40,15 +41,16 @@
 
         <TextView
             style="@style/TextView.Heading"
-            android:layout_height="wrap_content"
             android:layout_width="180dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
             android:text="@string/double_damage_to" />
 
-        <include layout="@layout/tv_type_names"
+        <include
+            layout="@layout/tv_type_names"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -65,10 +67,11 @@
             android:layout_marginStart="35dp"
             android:text="@string/no_damage_from" />
 
-        <include layout="@layout/tv_type_names"
+        <include
+            layout="@layout/tv_type_names"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp" />
     </LinearLayout>
 
     <LinearLayout

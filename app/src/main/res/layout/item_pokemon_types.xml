@@ -10,8 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginVertical="8dp">
+        android:layout_marginVertical="8dp"
+        android:orientation="vertical">
 
         <TextView
             style="@style/TextView.HeadName"
@@ -25,8 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_type"
-            android:nestedScrollingEnabled="false"/>
+            tools:listitem="@layout/item_type" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

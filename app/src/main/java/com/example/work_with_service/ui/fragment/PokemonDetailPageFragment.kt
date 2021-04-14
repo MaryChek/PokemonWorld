@@ -32,7 +32,6 @@ import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail.Type
 class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     private var binding: FragmentPokemonDetailPageBinding? = null
     private lateinit var presenter: PokemonDetailsPresenter
-    private var rvPokemonTypes: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,18 +50,12 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPokemonDetailPageBinding.inflate(inflater)
-//        rvPokemonTypes = binding?.cvTypes?.rvPokemonTypes
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        initPokemonTypeList()
         initPokemon()
-    }
-
-    private fun initPokemonTypeList() {
-
     }
 
     private fun initPokemon() {
@@ -151,15 +144,6 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         pokemonAbilityBinding.tvValue.text = properties
     }
 
-//    private fun setTextToItemAdditionalInfo(
-//        item: ItemPokemonAbilitiesBinding,
-//        @StringRes textHeadId: Int,
-//        valueText: SpannableStringBuilder
-//    ) {
-//        item.tvHeading.text = resources.getString(textHeadId)
-//        item.tvValue.text = valueText
-//    }
-
     private fun getSpannableStringWithStyle(text: String, @StyleRes styleRes: Int)
             : SpannableStringBuilder {
         val spannable = SpannableStringBuilder(text)
@@ -169,50 +153,11 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         return spannable
     }
 
-    //    private fun setInfoByType(
-//        pokemonTypeBinding: ItemPokemonTypesBinding,
-//        typeInfo: List<Type>
-//    ) {
-//        pokemonTypeBinding.root.visibility = VISIBLE
-//        val types = SpannableStringBuilder((""))
-//        var text: String
-//        for (i in typeInfo.indices) {
-//            text = "\t" + resources.getString(R.string.name_type, (i + 1), typeInfo[i].name)
-//            types.append(getSpannableStringWithStyle(text, R.style.TextView_Heading))
-//            types.append(getTypeNamesByDamage(typeInfo[i].noDamageTo, R.string.no_damage_to))
-//            types.append(
-//                getTypeNamesByDamage(typeInfo[i].doubleDamageTo, R.string.double_damage_to)
-//            )
-//            types.append(getTypeNamesByDamage(typeInfo[i].noDamageFrom, R.string.no_damage_from))
-//            types.append(
-//                getTypeNamesByDamage(typeInfo[i].doubleDamageFrom, R.string.double_damage_from)
-//            )
-//            types.append("\n")
-//        }
-//        setTextToItemAdditionalInfo(pokemonTypeBinding, R.string.types, types)
-//    }
-    private fun setInfoByType(
-        pokemonTypeBinding: ItemPokemonTypesBinding,
-        typeInfo: List<Type>
-    ) {
-        pokemonTypeBinding.root.visibility = VISIBLE
-        val rvPokemonTypes = pokemonTypeBinding.rvPokemonTypes
-        val adapter = PokemonTypesAdapter(typeInfo)
-        rvPokemonTypes.adapter = adapter
-    }
-
-//    private fun getTypeNamesByDamage(typeNames: List<String>, @StringRes nameTypeId: Int)
-//            : SpannableStringBuilder {
-//        val textTypeNames = SpannableStringBuilder((""))
-//        var text: String
-//        if (typeNames.isNotEmpty()) {
-//            text = PARAGRAPH + resources.getString(nameTypeId)
-//            textTypeNames.append(getSpannableStringWithStyle(text, R.style.TextView_Heading))
-//            text = typeNames.joinToString(separator = ", ")
-//            textTypeNames.append(getSpannableStringWithStyle(text, R.style.TextView_Normal))
-//        }
-//        return textTypeNames
-//    }
+    private fun setInfoByType(pokemonTypeBinding: ItemPokemonTypesBinding, typeInfo: List<Type>) =
+        pokemonTypeBinding.apply {
+            root.visibility = VISIBLE
+            rvPokemonTypes.adapter = PokemonTypesAdapter(typeInfo)
+        }
 
     companion object {
         private const val PARAGRAPH = "\n\t\t\t"
