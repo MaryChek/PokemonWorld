@@ -1,24 +1,18 @@
 package com.example.work_with_service.ui.fragment
 
 import android.os.Bundle
-import android.text.SpannableStringBuilder
-import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
 import android.view.View.VISIBLE
 import android.view.View.GONE
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
-import androidx.annotation.StyleRes
 import androidx.fragment.app.Fragment
 import com.example.work_with_service.App
 import com.example.work_with_service.R
-import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import androidx.core.os.bundleOf
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.work_with_service.databinding.*
+import com.example.work_with_service.ui.adapter.PokemonAbilitiesAdapter
 import com.example.work_with_service.ui.adapter.PokemonTypesAdapter
 import com.example.work_with_service.ui.utils.setImageWithGlide
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
@@ -131,37 +125,19 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     private fun setInfoByAbilities(
         pokemonAbilityBinding: ItemPokemonAbilitiesBinding,
         abilities: List<Ability>
-    ) {
-        pokemonAbilityBinding.root.visibility = VISIBLE
-        val properties = SpannableStringBuilder((""))
-        var text: String
-        for (i in abilities.indices) {
-            text = "\t" + resources.getString(R.string.name_ability, (i + 1), abilities[i].name)
-            properties.append(getSpannableStringWithStyle(text, R.style.TextView_Heading))
-            text = PARAGRAPH + abilities[i].effect + "\n"
-            properties.append(getSpannableStringWithStyle(text, R.style.TextView_Normal))
+    ) =
+        pokemonAbilityBinding.apply {
+            root.visibility = VISIBLE
+            rvPokemonAbilities.adapter = PokemonAbilitiesAdapter(abilities)
         }
-        pokemonAbilityBinding.tvValue.text = properties
-    }
 
-    private fun getSpannableStringWithStyle(text: String, @StyleRes styleRes: Int)
-            : SpannableStringBuilder {
-        val spannable = SpannableStringBuilder(text)
-        spannable.setSpan(
-            TextAppearanceSpan(activity, styleRes), (0), text.length, SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        return spannable
-    }
-
-    private fun setInfoByType(pokemonTypeBinding: ItemPokemonTypesBinding, typeInfo: List<Type>) =
+    private fun setInfoByType(pokemonTypeBinding: ItemPokemonTypesBinding, types: List<Type>) =
         pokemonTypeBinding.apply {
             root.visibility = VISIBLE
-            rvPokemonTypes.adapter = PokemonTypesAdapter(typeInfo)
+            rvPokemonTypes.adapter = PokemonTypesAdapter(types)
         }
 
     companion object {
-        private const val PARAGRAPH = "\n\t\t\t"
-
         private const val KEY_FOR_NAME_POKEMON_ARG = "namePokemon"
 
         fun newInstance(pokemon: Pokemon?) = PokemonDetailPageFragment().apply {

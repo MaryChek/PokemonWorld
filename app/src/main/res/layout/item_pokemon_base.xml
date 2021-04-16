@@ -10,7 +10,7 @@
         style="@style/TextView.Heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="@string/base_experience" />
@@ -20,7 +20,7 @@
         style="@style/TextView.Normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="185dp"
+        android:layout_marginStart="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvHeading"
         tools:text="@string/base_experience" />

@@ -26,9 +26,8 @@ class PokemonTypesAdapter(private val pokemonTypes: List<PokemonDetail.Type>) :
             TypeViewHolder(this)
         }
 
-    override fun onBindViewHolder(holder: TypeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TypeViewHolder, position: Int) =
         bindViewHolder(holder, pokemonTypes[position], position)
-    }
 
     private fun bindViewHolder(
         holder: TypeViewHolder,
@@ -38,7 +37,11 @@ class PokemonTypesAdapter(private val pokemonTypes: List<PokemonDetail.Type>) :
         with(holder) {
             binding.apply {
                 tvNameType.text =
-                    root.resources.getString(R.string.name_type, (position + 1), itemType.name)
+                    root.resources.getString(
+                        R.string.name_with_number,
+                        (position + 1),
+                        itemType.name
+                    )
                 fillDamageItem(noDamageTo, itemType.noDamageTo)
                 fillDamageItem(doubleDamageTo, itemType.doubleDamageTo)
                 fillDamageItem(noDamageFrom, itemType.noDamageFrom)
@@ -48,10 +51,10 @@ class PokemonTypesAdapter(private val pokemonTypes: List<PokemonDetail.Type>) :
     }
 
     private fun fillDamageItem(itemDamage: LinearLayout, typeNames: List<String>) =
-        itemDamage.apply {
+        itemDamage.let {
             when (typeNames.isNotEmpty()) {
-                true -> tvTypeNames.text = typeNames.joinToString(separator = ", ")
-                false -> visibility = View.GONE
+                true -> it.tvTypeNames.text = typeNames.joinToString(separator = ", ")
+                false -> it.visibility = View.GONE
             }
         }
 

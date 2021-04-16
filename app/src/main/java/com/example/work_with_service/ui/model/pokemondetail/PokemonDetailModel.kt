@@ -28,7 +28,7 @@ class PokemonDetailModel : PokemonDetailMapper() {
     }
 
     fun getPokemonDetail(pokemon: Pokemon): PokemonDetail? =
-        when (pokemonDetail?.name == pokemon.name) {
+        when (pokemonDetail?.name.equals(pokemon.name, true)) {
             true -> pokemonDetail
             false -> null
         }
