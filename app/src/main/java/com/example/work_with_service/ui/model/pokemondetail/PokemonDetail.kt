@@ -10,7 +10,7 @@ class PokemonDetail(
     val height: Int,
     val weight: Double,
     @StringRes
-    val ageId: Int,
+    val resIdAge: Int,
     val habitat: String,
     val color: String,
     val abilities: List<Ability>,

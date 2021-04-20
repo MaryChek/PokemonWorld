@@ -6,7 +6,7 @@ interface PagerPokemonContract {
 
         fun selectItemOnPager(position: Int)
 
-        fun disableScrollPage()
+        fun disableSwapPage()
     }
 
     interface Presenter {

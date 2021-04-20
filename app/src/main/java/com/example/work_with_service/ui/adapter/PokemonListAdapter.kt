@@ -18,7 +18,6 @@ class PokemonListAdapter(
             PokemonViewHolder(this)
         }
 
-    override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) =
         holder.bind(getItem(position), cityIconClickListener)
-    }
 }

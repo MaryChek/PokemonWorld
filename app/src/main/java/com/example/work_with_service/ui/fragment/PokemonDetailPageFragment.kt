@@ -3,29 +3,25 @@ package com.example.work_with_service.ui.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.annotation.StringRes
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import com.chayangkoon.champ.glide.ktx.load
 import com.example.work_with_service.App
 import com.example.work_with_service.R
-import androidx.core.os.bundleOf
-import com.chayangkoon.champ.glide.ktx.load
-import com.example.work_with_service.databinding.FragmentPokemonDetailPageBinding
-import com.example.work_with_service.databinding.PokemonBaseInformationBinding
-import com.example.work_with_service.databinding.ItemPokemonBaseBinding
-import com.example.work_with_service.databinding.ItemPokemonAbilitiesBinding
-import com.example.work_with_service.databinding.ItemPokemonTypesBinding
+import com.example.work_with_service.databinding.*
 import com.example.work_with_service.ui.adapter.PokemonAbilitiesAdapter
 import com.example.work_with_service.ui.adapter.PokemonTypesAdapter
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
-import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
-import com.example.work_with_service.ui.model.pokemondetail.PokemonDetailModel
-import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail
 import com.example.work_with_service.ui.model.Pokemon
+import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail
 import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail.Ability
 import com.example.work_with_service.ui.model.pokemondetail.PokemonDetail.Type
+import com.example.work_with_service.ui.model.pokemondetail.PokemonDetailModel
+import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
 
 class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     private var binding: FragmentPokemonDetailPageBinding? = null
@@ -34,12 +30,21 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
+        initPokemon()
     }
 
     private fun init() {
         val app: App = (requireActivity().applicationContext as App)
         val model: PokemonDetailModel = app.pokemonDetailModel
         presenter = PokemonDetailsPresenter(model, this)
+    }
+
+    private fun initPokemon() {
+        arguments?.let { bundle ->
+            bundle.getSerializable(KEY_FOR_NAME_POKEMON_ARG)?.let {
+                presenter.init(it as Pokemon)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -49,19 +54,6 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     ): View? {
         binding = FragmentPokemonDetailPageBinding.inflate(inflater)
         return binding?.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initPokemon()
-    }
-
-    private fun initPokemon() {
-        arguments?.let { bundle ->
-            bundle.getSerializable(KEY_FOR_NAME_POKEMON_ARG)?.let {
-                presenter.onViewGetPokemonName(it as Pokemon)
-            }
-        }
     }
 
     override fun showLoadingIndicator() {
@@ -112,7 +104,7 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
             tvHeight.setTextToItems(R.string.pokemon_height, text)
             text = resources.getString(R.string.pokemon_weight_value, detail.weight)
             tvWeight.setTextToItems(R.string.pokemon_weight, text)
-            text = resources.getString(detail.ageId)
+            text = resources.getString(detail.resIdAge)
             tvAgeCategory.setTextToItems(R.string.age_category, text)
             tvHabitat.setTextToItems(R.string.habitat, detail.habitat)
             tvColor.setTextToItems(R.string.color, detail.color)

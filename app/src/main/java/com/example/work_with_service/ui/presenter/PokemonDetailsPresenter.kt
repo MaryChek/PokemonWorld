@@ -11,7 +11,7 @@ class PokemonDetailsPresenter(
 ) : PokemonDetailsContract.Presenter {
     private lateinit var pokemon: Pokemon
 
-    override fun onViewGetPokemonName(pokemon: Pokemon) {
+    override fun init(pokemon: Pokemon) {
         this.pokemon = pokemon
         val pokemonDetail: PokemonDetail? = model.getPokemonDetail(pokemon)
         if (pokemonDetail == null) {

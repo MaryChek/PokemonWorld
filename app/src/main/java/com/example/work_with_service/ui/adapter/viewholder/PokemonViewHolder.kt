@@ -14,12 +14,12 @@ class PokemonViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         pokemon: PokemonsAttributes.Attributes,
         cityIconClickListener: (String) -> Unit
     ) =
-        binding.apply {
-            ivPokemon.load(pokemon.imageUrl) {
+        binding.let {
+            it.ivPokemon.load(pokemon.imageUrl) {
                 placeholder(R.mipmap.ic_pokeball_foreground)
             }
-            tvNamePokemon.text = pokemon.name
-            cardViewPokemon.setOnClickListener {
+            it.tvNamePokemon.text = pokemon.name
+            it.cardViewPokemon.setOnClickListener {
                 cityIconClickListener(pokemon.name)
             }
         }

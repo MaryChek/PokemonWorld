@@ -11,7 +11,7 @@ import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING
 import com.example.work_with_service.App
 import com.example.work_with_service.ui.model.Pokemon
 import com.example.work_with_service.ui.fragment.DetailPage
-import com.example.work_with_service.databinding.PokemonPagerFragmentBinding
+import com.example.work_with_service.databinding.FragmentPokemonPagerBinding
 import com.example.work_with_service.ui.activity.MainActivity
 import com.example.work_with_service.ui.contract.PagerPokemonContract
 import com.example.work_with_service.ui.model.PagerTitlesModel
@@ -20,8 +20,9 @@ import com.example.work_with_service.ui.presenter.PagerPokemonPresenter
 
 class PagerPokemonFragment : Fragment(),
     DetailPage, PagerPokemonContract.View {
-    private var binding: PokemonPagerFragmentBinding? = null
-    private var pokemonPager: ViewPager2? = null
+    private var binding: FragmentPokemonPagerBinding? = null
+    private val pokemonPager: ViewPager2?
+        get() = binding?.pokemonPager
     private var adapter: PagerAdapter? = null
     private lateinit var presenter: PagerPokemonPresenter
 
@@ -55,8 +56,7 @@ class PagerPokemonFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = PokemonPagerFragmentBinding.inflate(inflater, container, false)
-        pokemonPager = binding?.pokemonPager
+        binding = FragmentPokemonPagerBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
@@ -85,7 +85,7 @@ class PagerPokemonFragment : Fragment(),
         })
     }
 
-    override fun disableScrollPage() {
+    override fun disableSwapPage() {
         pokemonPager?.isUserInputEnabled = false
     }
 

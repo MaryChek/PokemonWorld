@@ -9,6 +9,6 @@ interface PokemonDetailsContract {
     }
 
     interface Presenter : BasePokemonContract.Presenter {
-        fun onViewGetPokemonName(pokemon: Pokemon)
+        fun init(pokemon: Pokemon)
     }
 }

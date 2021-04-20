@@ -16,7 +16,7 @@ class PagerPokemonPresenter(
 
     override fun onPageStartedScrolling(position: Int) {
         if (position == POKEMON_LIST_PAGE_POSITION) {
-            view.disableScrollPage()
+            view.disableSwapPage()
         }
     }
 

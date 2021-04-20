@@ -9,14 +9,13 @@ class PokemonListPresenter(
     private val view: PokemonListContract.View
 ) : PokemonListContract.Presenter {
 
-    override fun onViewCreated() {
+    override fun onViewCreated() =
         if (model.isPokemonListAttributesEmpty()) {
             fetchPokemonList()
         } else {
             view.hideLoadingIndicator()
             view.updatePokemonList(model.getListPokemonAttributes().listAttributes)
         }
-    }
 
     private fun fetchPokemonList() {
         model.fetchPokemonList(this::onPokemonListReadyListener, this::onConnectionErrorListener)

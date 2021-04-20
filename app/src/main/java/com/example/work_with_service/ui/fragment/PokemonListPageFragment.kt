@@ -1,6 +1,7 @@
 package com.example.work_with_service.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
@@ -88,8 +89,12 @@ class PokemonListPageFragment : Fragment(), PokemonListContract.View {
         binding?.connectionError?.root?.visibility = GONE
     }
 
-    override fun openDetailedPage(pokemon: Pokemon) =
-        (requireParentFragment() as DetailPage).openDetailedPage(pokemon)
+    override fun openDetailedPage(pokemon: Pokemon) {
+        when (val parent = requireParentFragment()) {
+            is DetailPage -> parent.openDetailedPage(pokemon)
+            else -> Log.w(null, PARENT_FRAGMENT_ERROR)
+        }
+    }
 
     private fun addDividerItem() {
         val dividerItem = DividerItemDecoration(activity, RecyclerView.VERTICAL)
@@ -101,5 +106,10 @@ class PokemonListPageFragment : Fragment(), PokemonListContract.View {
 
     override fun updatePokemonList(pokemonsAttributes: List<Attributes>) {
         adapter?.submitList(pokemonsAttributes)
+    }
+
+    companion object {
+        private const val PARENT_FRAGMENT_ERROR =
+            "Pager fragment parent does not inherit interface DetailPage"
     }
 }
