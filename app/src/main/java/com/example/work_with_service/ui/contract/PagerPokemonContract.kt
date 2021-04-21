@@ -7,6 +7,10 @@ interface PagerPokemonContract {
         fun selectItemOnPager(position: Int)
 
         fun disableSwapPage()
+
+        fun disableOnBackPressedCallback()
+
+        fun onBackPressed()
     }
 
     interface Presenter {
@@ -15,5 +19,7 @@ interface PagerPokemonContract {
         fun onDetailPageOpens(namePokemon: String)
 
         fun onPageStartedScrolling(position: Int)
+
+        fun onBackPressed(pagePosition: Int)
     }
 }

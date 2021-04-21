@@ -20,6 +20,15 @@ class PagerPokemonPresenter(
         }
     }
 
+    override fun onBackPressed(pagePosition: Int) {
+        if (pagePosition == DETAIL_PAGE_POSITION) {
+            view.selectItemOnPager(POKEMON_LIST_PAGE_POSITION)
+        } else {
+            view.disableOnBackPressedCallback()
+            view.onBackPressed()
+        }
+    }
+
     override fun onDetailPageOpens(namePokemon: String) {
         model.setTitleByPosition(DETAIL_PAGE_POSITION, namePokemon)
         view.selectItemOnPager(DETAIL_PAGE_POSITION)

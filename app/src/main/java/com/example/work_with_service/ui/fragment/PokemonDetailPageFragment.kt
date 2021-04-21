@@ -30,7 +30,6 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
-        initPokemon()
     }
 
     private fun init() {
@@ -45,6 +44,11 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
                 presenter.init(it as Pokemon)
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initPokemon()
     }
 
     override fun onCreateView(

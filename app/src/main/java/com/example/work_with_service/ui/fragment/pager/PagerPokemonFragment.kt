@@ -21,34 +21,21 @@ import com.example.work_with_service.ui.presenter.PagerPokemonPresenter
 class PagerPokemonFragment : Fragment(),
     DetailPage, PagerPokemonContract.View {
     private var binding: FragmentPokemonPagerBinding? = null
+    private lateinit var presenter: PagerPokemonPresenter
     private val pokemonPager: ViewPager2?
         get() = binding?.pokemonPager
     private var adapter: PagerAdapter? = null
-    private lateinit var presenter: PagerPokemonPresenter
+    private lateinit var onBackPressedCallback: OnBackPressedCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
-        initOnBackPressedListener()
     }
 
     private fun init() {
         val app: App = (requireActivity().applicationContext as App)
         val model: PagerTitlesModel = app.pagerTitlesModel
         presenter = PagerPokemonPresenter(model, this)
-    }
-
-    private fun initOnBackPressedListener() {
-        val callBack: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() =
-                if (pokemonPager?.currentItem == DETAIL_PAGE_POSITION) {
-                    pokemonPager?.currentItem = POKEMON_LIST_PAGE_POSITION
-                } else {
-                    isEnabled = false
-                    requireActivity().onBackPressed()
-                }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callBack)
     }
 
     override fun onCreateView(
@@ -65,6 +52,7 @@ class PagerPokemonFragment : Fragment(),
         adapter = PagerAdapter(this)
         pokemonPager?.adapter = adapter
         registerOnPageChange()
+        initOnBackPressedListener()
     }
 
     private fun registerOnPageChange() {
@@ -85,6 +73,25 @@ class PagerPokemonFragment : Fragment(),
         })
     }
 
+    private fun initOnBackPressedListener() {
+        onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                pokemonPager?.currentItem?.let { currentItem ->
+                    presenter.onBackPressed(currentItem)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher
+            .addCallback(this, onBackPressedCallback)
+    }
+
+    override fun disableOnBackPressedCallback() {
+        onBackPressedCallback.isEnabled = false
+    }
+
+    override fun onBackPressed() =
+        requireActivity().onBackPressed()
+
     override fun disableSwapPage() {
         pokemonPager?.isUserInputEnabled = false
     }
@@ -100,10 +107,5 @@ class PagerPokemonFragment : Fragment(),
 
     override fun setTitleByPosition(position: Int, title: String) {
         (activity as MainActivity).supportActionBar?.title = title
-    }
-
-    companion object {
-        private const val POKEMON_LIST_PAGE_POSITION = 0
-        private const val DETAIL_PAGE_POSITION = 1
     }
 }
