@@ -24,7 +24,7 @@ import com.example.work_with_service.ui.model.pokemondetail.PokemonDetailModel
 import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
 
 class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
-    private var binding: FragmentPokemonDetailPageBinding? = null
+    private var binding: FragmentPokemonDetailBinding? = null
     private lateinit var presenter: PokemonDetailsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +56,7 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPokemonDetailPageBinding.inflate(inflater)
+        binding = FragmentPokemonDetailBinding.inflate(inflater)
         return binding?.root
     }
 
