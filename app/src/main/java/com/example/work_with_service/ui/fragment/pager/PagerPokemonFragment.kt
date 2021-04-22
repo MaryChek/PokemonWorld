@@ -1,4 +1,4 @@
-package com.example.work_with_service.ui.pager
+package com.example.work_with_service.ui.fragment.pager
 
 import android.content.Context
 import android.os.Bundle
@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING
 import com.example.work_with_service.ui.fragment.pokemondetail.DetailPage
-import com.example.work_with_service.databinding.PokemonPagerFragmentBinding
-import com.example.work_with_service.ui.pager.adapter.PagerAdapter
+import com.example.work_with_service.databinding.FragmentPokemonPagerBinding
+import com.example.work_with_service.ui.fragment.pager.adapter.PagerAdapter
+import com.example.work_with_service.ui.model.Pokemon
 
-class PagerPokemonFragment : Fragment(),
-    DetailPage {
-    private var binding: PokemonPagerFragmentBinding? = null
+class PagerPokemonFragment : Fragment(), DetailPage {
+    private var binding: FragmentPokemonPagerBinding? = null
     private var pokemonPager: ViewPager2? = null
     private var adapter: PagerAdapter? = null
 
@@ -38,7 +38,7 @@ class PagerPokemonFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = PokemonPagerFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentPokemonPagerBinding.inflate(inflater, container, false)
         pokemonPager = binding?.pokemonPager
         return binding?.root
     }
@@ -60,8 +60,8 @@ class PagerPokemonFragment : Fragment(),
         })
     }
 
-    override fun openDetailedPage(namePokemon: String) {
-        adapter?.setNamePokemonForDetailPage(namePokemon)
+    override fun openDetailedPage(pokemon: Pokemon) {
+        adapter?.setNamePokemonForDetailPage(pokemon)
         pokemonPager?.currentItem = DETAIL_PAGE_POSITION
     }
 

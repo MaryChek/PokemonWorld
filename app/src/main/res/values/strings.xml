@@ -15,12 +15,14 @@
     <string name="habitat">Habitat: </string>
     <string name="color">Color: </string>
     <string name="abilities">Abilities </string>
-    <string name="name_ability">%1$d. \"%2$s\" </string>
+    <string name="name_with_number">%1$d. \"%2$s\" </string>
     <string name="types">Types </string>
-    <string name="name_type">%1$d. \"%2$s\" </string>
     <string name="no_damage_to"><b>no damage to: </b></string>
     <string name="double_damage_to"><b>double damage to: </b></string>
     <string name="no_damage_from"><b>no damage from: </b></string>
     <string name="double_damage_from"><b>double damage from: </b></string>
     <string name="not_information">Not information</string>
+    <string name="connection_error">Something is wrong when connecting</string>
+    <string name="try_again">Turn on the internet and try again</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -1,22 +1,25 @@
 package com.example.work_with_service.data.client
 
-import com.example.work_with_service.data.entities.PokemonResource
-import com.example.work_with_service.data.service.Resource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.example.work_with_service.data.model.PokemonResource
+import com.example.work_with_service.data.service.Resource
+import com.example.work_with_service.data.mapper.PokemonResourceMapper
 
 open class PokemonRemoteDataSource {
-    fun <T : PokemonResource> getResult(
+    private val mapper = PokemonResourceMapper()
+
+    fun <T> getResult(
         call: Call<T>,
-        onServiceCallAnswer: (Resource<PokemonResource>) -> Unit
+        onServiceCallAnswer: (Resource<PokemonResource?>) -> Unit
     ) {
         call.enqueue(object : Callback<T> {
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 val pokemonResource: T? = response.body()
                 onServiceCallAnswer(
                     if (response.isSuccessful && pokemonResource != null) {
-                        Resource.success(pokemonResource)
+                        Resource.success(mapper.map(pokemonResource))
                     } else {
                         error(" ${response.code()} ${response.message()}")
                     }
@@ -29,7 +32,7 @@ open class PokemonRemoteDataSource {
         })
     }
 
-    private fun error(message: String?): Resource<PokemonResource> =
+    private fun <T> error(message: String?): Resource<T> =
         Resource.error(NETWORK_FAIL + message)
 
     companion object {

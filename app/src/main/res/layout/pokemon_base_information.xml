@@ -2,13 +2,15 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:cardBackgroundColor="@color/colorFrontLayer"
     app:cardCornerRadius="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
         <TextView
@@ -16,36 +18,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/Base_info" />
 
         <include
             android:id="@+id/tvBasExperience"
-            layout="@layout/item_pokemon_base_info" />
+            layout="@layout/item_pokemon_base" />
 
         <include
             android:id="@+id/tvCaptureRate"
-            layout="@layout/item_pokemon_base_info" />
+            layout="@layout/item_pokemon_base" />
 
         <include
             android:id="@+id/tvHeight"
-            layout="@layout/item_pokemon_base_info" />
+            layout="@layout/item_pokemon_base" />
 
         <include
             android:id="@+id/tvWeight"
-            layout="@layout/item_pokemon_base_info"
+            layout="@layout/item_pokemon_base"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <include
             android:id="@+id/tvAgeCategory"
-            layout="@layout/item_pokemon_base_info" />
+            layout="@layout/item_pokemon_base" />
 
         <include
             android:id="@+id/tvHabitat"
-            layout="@layout/item_pokemon_base_info" />
+            layout="@layout/item_pokemon_base" />
 
         <include
             android:id="@+id/tvColor"
-            layout="@layout/item_pokemon_base_info" />
+            layout="@layout/item_pokemon_base" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

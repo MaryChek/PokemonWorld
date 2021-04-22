@@ -2,29 +2,26 @@ package com.example.work_with_service.ui.fragment.pokemonlist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.work_with_service.data.entities.Pokemon
 import com.example.work_with_service.data.repository.PokemonRepository
-import com.example.work_with_service.ui.model.ListPokemon
-import com.example.work_with_service.ui.model.ListPokemonAttributes
-import com.example.work_with_service.ui.model.PokemonAttributes
-import com.example.work_with_service.ui.model.ServicePokemonAnswer
+import com.example.work_with_service.data.model.ListPokemon
+import com.example.work_with_service.ui.mapper.PokemonListMapper
+import com.example.work_with_service.ui.model.PokemonsAttributes
 
 class PokemonListViewModel : ViewModel() {
-    val pokemonListLive = MutableLiveData<ListPokemonAttributes>()
+    private val mapper: PokemonListMapper = PokemonListMapper()
+    val pokemonListLive = MutableLiveData<PokemonsAttributes>()
 
     fun fetchPokemonList() {
-        PokemonRepository.getInstance().callPokemonSource(this::onPokemonListReady)
+        PokemonRepository.getInstance()
+            .callPokemonSource(this::onServiceFinishedWork, this::onServiceReturnError)
     }
 
-    private fun onPokemonListReady(listPokemon: ServicePokemonAnswer) {
-        pokemonListLive.value = getListPokemonAttributes((listPokemon as ListPokemon).listPokemon)
+    private fun onServiceFinishedWork(listPokemon: ListPokemon) {
+        val pokemons = mapper.map(listPokemon)
+        pokemonListLive.value = PokemonsAttributes(mapper.map(pokemons))
     }
 
-    private fun getListPokemonAttributes(listPokemon: List<Pokemon>): ListPokemonAttributes {
-        val listAttributes: MutableList<PokemonAttributes> = mutableListOf()
-        listPokemon.forEach {
-            listAttributes.add(PokemonAttributes(it.sprites.frontDefault, it.name))
-        }
-        return ListPokemonAttributes(listAttributes)
+    private fun onServiceReturnError() {
+
     }
 }

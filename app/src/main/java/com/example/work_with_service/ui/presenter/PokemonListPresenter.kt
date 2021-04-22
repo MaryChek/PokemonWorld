@@ -1,28 +1,42 @@
 package com.example.work_with_service.ui.presenter
 
 import com.example.work_with_service.ui.contract.PokemonListContract
-import com.example.work_with_service.ui.model.PokemonModel
-import com.example.work_with_service.ui.model.ListPokemonAttributes
-import com.example.work_with_service.ui.model.PokiAttributes
+import com.example.work_with_service.ui.model.PokemonListModel
+import com.example.work_with_service.ui.model.PokemonsAttributes
 
 class PokemonListPresenter(
-    private val model: PokemonModel,
+    private val model: PokemonListModel,
     private val view: PokemonListContract.View
 ) : PokemonListContract.Presenter {
 
     override fun onViewCreated() =
-        model.createPokemonList(this::onPokemonListReadyListener)
-
-    override fun onViewRestart() =
         if (model.isPokemonListAttributesEmpty()) {
-            model.createPokemonList(this::onPokemonListReadyListener)
+            fetchPokemonList()
         } else {
+            view.hideLoadingIndicator()
             view.updatePokemonList(model.getListPokemonAttributes().listAttributes)
         }
 
-    override fun onItemPokemonClick(namePokemon: String) =
-        view.openDetailedPage(namePokemon)
+    private fun fetchPokemonList() {
+        model.fetchPokemonList(this::onPokemonListReadyListener, this::onConnectionErrorListener)
+        view.showLoadingIndicator()
+    }
 
-    private fun onPokemonListReadyListener(listPokemonAttributes: PokiAttributes) =
-        view.updatePokemonList((listPokemonAttributes as ListPokemonAttributes).listAttributes)
+    override fun onItemPokemonClick(namePokemon: String) =
+        view.openDetailedPage(model.getPokemonByName(namePokemon))
+
+    private fun onPokemonListReadyListener(pokemons: PokemonsAttributes) {
+        view.updatePokemonList(pokemons.listAttributes)
+        view.hideLoadingIndicator()
+    }
+
+    private fun onConnectionErrorListener() {
+        view.hideLoadingIndicator()
+        view.showConnectionErrorMessage()
+    }
+
+    override fun onRetryConnectionClick() {
+        view.hideConnectionErrorMessage()
+        fetchPokemonList()
+    }
 }

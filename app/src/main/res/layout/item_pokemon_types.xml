@@ -10,22 +10,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvHeading"
             style="@style/TextView.HeadName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            tools:text="Information" />
+            android:text="@string/types" />
 
-        <TextView
-            android:id="@+id/tvValue"
-            style="@style/TextView.Normal"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPokemonTypes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            tools:text="nameOne: something" />
+            android:layout_marginTop="10dp"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_type" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

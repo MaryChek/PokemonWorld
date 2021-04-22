@@ -4,15 +4,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.example.work_with_service.R
-import com.example.work_with_service.databinding.MainActivittyBinding
-import com.example.work_with_service.ui.pager.PagerPokemonFragment
+import com.example.work_with_service.databinding.ActivityMainBinding
+import com.example.work_with_service.ui.fragment.pager.PagerPokemonFragment
 
 class MainActivity : AppCompatActivity() {
-    private var binding: MainActivittyBinding? = null
+    private var binding: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = MainActivittyBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         attachRootFragment(savedInstanceState)
     }
@@ -21,21 +21,12 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransition: FragmentTransaction = supportFragmentManager.beginTransaction()
         if (savedInstanceState == null) {
             val pagerPokemon = PagerPokemonFragment()
-            fragmentTransition.replace(R.id.mainActivity, pagerPokemon, FRAGMENT_TAG).commit()
-        } else {
-            supportFragmentManager.findFragmentByTag(FRAGMENT_TAG)?.let { pagerFragment ->
-                fragmentTransition.attach(pagerFragment).commit()
-            }
+            fragmentTransition.replace(R.id.mainActivity, pagerPokemon, null).commit()
         }
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
         binding = null
-    }
-
-    companion object {
-        private const val FRAGMENT_TAG = "Fragment"
     }
 }

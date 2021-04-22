@@ -1,10 +1,14 @@
 package com.example.work_with_service.data.service
 
-import com.example.work_with_service.data.entities.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import com.example.work_with_service.domain.entities.PokemonResourceList
+import com.example.work_with_service.domain.entities.Pokemon
+import com.example.work_with_service.domain.entities.PokemonSpecies
+import com.example.work_with_service.domain.entities.Ability
+import com.example.work_with_service.domain.entities.Type
 
 interface PokeApiService {
     @GET("/api/v2/pokemon")
