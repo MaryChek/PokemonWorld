@@ -8,18 +8,18 @@ import com.example.work_with_service.data.service.Resource
 import com.example.work_with_service.data.mapper.PokemonResourceMapper
 
 open class PokemonRemoteDataSource {
-    private val mapper = PokemonResourceMapper()
+//    private val mapper = PokemonResourceMapper()
 
     fun <T> getResult(
         call: Call<T>,
-        onServiceCallAnswer: (Resource<PokemonResource?>) -> Unit
+        onServiceCallAnswer: (Resource<T>) -> Unit
     ) {
         call.enqueue(object : Callback<T> {
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 val pokemonResource: T? = response.body()
                 onServiceCallAnswer(
                     if (response.isSuccessful && pokemonResource != null) {
-                        Resource.success(mapper.map(pokemonResource))
+                        Resource.success(pokemonResource)
                     } else {
                         error(" ${response.code()} ${response.message()}")
                     }
