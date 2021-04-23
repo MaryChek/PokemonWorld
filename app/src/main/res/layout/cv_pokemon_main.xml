@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="5dp"
-            android:text="@string/Base_info" />
+            android:text="@string/pokemon_main" />
 
         <include
             android:id="@+id/tvBasExperience"

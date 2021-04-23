@@ -21,7 +21,6 @@ import com.example.work_with_service.ui.model.PokemonDetail
 import com.example.work_with_service.ui.model.PokemonDetail.Ability
 import com.example.work_with_service.ui.model.PokemonDetail.Type
 import com.example.work_with_service.ui.model.PokemonDetailModel
-import com.example.work_with_service.ui.model.PokemonListModel
 import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
 
 class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
@@ -39,17 +38,17 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         presenter = PokemonDetailsPresenter(model, this)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initPokemon()
+    }
+
     private fun initPokemon() {
         arguments?.let { bundle ->
             bundle.getSerializable(KEY_FOR_NAME_POKEMON_ARG)?.let {
                 presenter.init(it as Pokemon)
             }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initPokemon()
     }
 
     override fun onCreateView(
@@ -84,36 +83,31 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         binding?.connectionError?.root?.visibility = GONE
     }
 
-    override fun showDetail(pokemonDetail: PokemonDetail) {
+    override fun showPokemonMain(detail: PokemonDetail, pokemon: Pokemon) {
         binding?.let {
-            it.ivPokemon.visibility = VISIBLE
-            it.tvNamePokemon.text = pokemonDetail.name
-            it.ivPokemon.load(pokemonDetail.imageUrl) {
+            it.tvNamePokemon.text = detail.name
+            it.ivPokemon.load(pokemon.imageUrl) {
                 placeholder(R.mipmap.ic_pokeball_foreground)
             }
-            setBaseInfo(it.cvBaseInformation, pokemonDetail)
-            setInfoByType(it.cvTypes, pokemonDetail.types)
-            setInfoByAbilities(it.cvAbilities, pokemonDetail.abilities)
+            it.cvPokemonMain.apply {
+                root.visibility = VISIBLE
+                tvBasExperience.setTextToItems(
+                    R.string.base_experience, pokemon.baseExperience.toString()
+                )
+                var text: String =
+                    resources.getString(R.string.capture_rate_value, detail.captureRate)
+                tvCaptureRate.setTextToItems(R.string.capture_rate, text)
+                text = resources.getString(R.string.pokemon_height_value, pokemon.height)
+                tvHeight.setTextToItems(R.string.pokemon_height, text)
+                text = resources.getString(R.string.pokemon_weight_value, pokemon.weight)
+                tvWeight.setTextToItems(R.string.pokemon_weight, text)
+                text = resources.getString(detail.resIdAge)
+                tvAgeCategory.setTextToItems(R.string.age_category, text)
+                tvHabitat.setTextToItems(R.string.habitat, detail.habitat)
+                tvColor.setTextToItems(R.string.color, detail.color)
+            }
         }
     }
-
-    private fun setBaseInfo(baseInfoBinding: PokemonBaseInformationBinding, detail: PokemonDetail) =
-        baseInfoBinding.apply {
-            root.visibility = VISIBLE
-            tvBasExperience.setTextToItems(
-                R.string.base_experience, detail.baseExperience.toString()
-            )
-            var text: String = resources.getString(R.string.capture_rate_value, detail.captureRate)
-            tvCaptureRate.setTextToItems(R.string.capture_rate, text)
-            text = resources.getString(R.string.pokemon_height_value, detail.height)
-            tvHeight.setTextToItems(R.string.pokemon_height, text)
-            text = resources.getString(R.string.pokemon_weight_value, detail.weight)
-            tvWeight.setTextToItems(R.string.pokemon_weight, text)
-            text = resources.getString(detail.resIdAge)
-            tvAgeCategory.setTextToItems(R.string.age_category, text)
-            tvHabitat.setTextToItems(R.string.habitat, detail.habitat)
-            tvColor.setTextToItems(R.string.color, detail.color)
-        }
 
     private fun ItemPokemonBaseBinding.setTextToItems(
         @StringRes textHeadId: Int,
@@ -123,20 +117,19 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
         tvValue.text = valueText
     }
 
-    private fun setInfoByAbilities(
-        pokemonAbilityBinding: ItemPokemonAbilitiesBinding,
-        abilities: List<Ability>
-    ) =
-        pokemonAbilityBinding.apply {
+    override fun showPokemonAbilities(abilities: List<Ability>) {
+        binding?.cvAbilities?.apply {
             root.visibility = VISIBLE
             rvPokemonAbilities.adapter = PokemonAbilitiesAdapter(abilities)
         }
+    }
 
-    private fun setInfoByType(pokemonTypeBinding: ItemPokemonTypesBinding, types: List<Type>) =
-        pokemonTypeBinding.apply {
+    override fun showPokemonTypes(types: List<Type>) {
+        binding?.cvTypes?.apply {
             root.visibility = VISIBLE
             rvPokemonTypes.adapter = PokemonTypesAdapter(types)
         }
+    }
 
     companion object {
         private const val KEY_FOR_NAME_POKEMON_ARG = "namePokemon"

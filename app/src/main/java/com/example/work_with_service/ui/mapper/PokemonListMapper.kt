@@ -1,25 +1,19 @@
 package com.example.work_with_service.ui.mapper
 
-import com.example.work_with_service.data.model.ListPokemon
+import com.example.work_with_service.domain.entities.Pokemon as DomainPokemon
 import com.example.work_with_service.ui.model.Pokemon
-import com.example.work_with_service.ui.model.PokemonsAttributes.Attributes
 
 open class PokemonListMapper : BasePokemonMapper() {
-    fun map(listPokemon: List<Pokemon>): List<Attributes> =
-        listPokemon.map {
-            Attributes(it.frontDefault, firstUpperCase(it.name))
-        }
-
-    fun map(pokemonAnswer: ListPokemon): List<Pokemon> =
-        pokemonAnswer.listPokemon.map {
+    fun map(pokemonAnswer: List<DomainPokemon>): List<Pokemon> =
+        pokemonAnswer.map {
             Pokemon(
-                it.name,
+                firstUpperCase(it.name),
                 it.baseExperience,
-                it.height,
-                it.weight,
+                it.height.times(10),
+                it.weight.div(100.0),
                 it.abilityNames,
                 it.typeNames,
-                it.frontDefault
+                it.imageUrl
             )
         }
 }

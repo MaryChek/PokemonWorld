@@ -1,29 +1,38 @@
 package com.example.work_with_service.ui.mapper
 
-import com.example.work_with_service.data.model.PokemonDetail as DataPokemonDetail
+import com.example.work_with_service.domain.entities.PokemonDetail as DomainPokemonDetail
+import com.example.work_with_service.domain.entities.Pokemon as DomainPokemon
 import com.example.work_with_service.R
-import com.example.work_with_service.data.model.Ability
+import com.example.work_with_service.domain.entities.Ability
 import com.example.work_with_service.ui.model.Pokemon
 import com.example.work_with_service.ui.model.PokemonDetail
 
 open class PokemonDetailMapper : BasePokemonMapper() {
-    fun map(pokiDetail: DataPokemonDetail, pokemon: Pokemon): PokemonDetail =
-        pokiDetail.let {
+
+    fun map(pokemon: Pokemon): DomainPokemon =
+        DomainPokemon(
+            firstLowerCase(pokemon.name),
+            pokemon.baseExperience,
+            pokemon.height,
+            pokemon.weight.toInt(),
+            pokemon.abilityNames,
+            pokemon.typeNames,
+            pokemon.imageUrl
+        )
+
+    fun map(pokemonDetail: DomainPokemonDetail): PokemonDetail =
+        pokemonDetail.let {
             PokemonDetail(
-                pokemon.frontDefault,
-                firstUpperCase(pokemon.name),
-                pokemon.baseExperience,
+                firstUpperCase(it.name),
                 it.species.captureRate,
-                pokemon.height.times(10),
-                pokemon.weight.div(100.0),
                 when (it.species.isBaby) {
                     true -> R.string.baby
                     false -> R.string.adult
                 },
                 firstUpperCase(it.species.habitat),
                 firstUpperCase(it.species.color),
-                mapAbilities(pokiDetail.abilities),
-                mapTypes(pokiDetail)
+                mapAbilities(pokemonDetail.abilities),
+                mapTypes(pokemonDetail)
             )
         }
 
@@ -38,7 +47,7 @@ open class PokemonDetailMapper : BasePokemonMapper() {
             }
         }
 
-    private fun mapTypes(pokiDetail: DataPokemonDetail): List<PokemonDetail.Type> =
+    private fun mapTypes(pokiDetail: DomainPokemonDetail): List<PokemonDetail.Type> =
         pokiDetail.types.map { type ->
             PokemonDetail.Type(
                 firstUpperCase(type.name),

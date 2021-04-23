@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Pokemon World</string>
     <string name="pokemon">Pokemon</string>
-    <string name="Base_info">Base information</string>
+    <string name="pokemon_main">Main</string>
     <string name="base_experience">Start experience: </string>
     <string name="capture_rate">Capture rate: </string>
     <string name="capture_rate_value">%1$d/255</string>

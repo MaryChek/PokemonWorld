@@ -5,7 +5,11 @@ import com.example.work_with_service.ui.model.PokemonDetail
 
 interface PokemonDetailsContract {
     interface View : BasePokemonContract.View {
-        fun showDetail(pokemonDetail: PokemonDetail)
+        fun showPokemonMain(detail: PokemonDetail, pokemon: Pokemon)
+
+        fun showPokemonAbilities(abilities: List<PokemonDetail.Ability>)
+
+        fun showPokemonTypes(types: List<PokemonDetail.Type>)
     }
 
     interface Presenter : BasePokemonContract.Presenter {

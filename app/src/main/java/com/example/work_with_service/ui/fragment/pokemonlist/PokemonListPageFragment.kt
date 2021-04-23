@@ -19,7 +19,6 @@ import com.example.work_with_service.databinding.FragmentPokemonListBinding
 import com.example.work_with_service.ui.contract.PokemonListContract
 import com.example.work_with_service.ui.adapter.PokemonListAdapter
 import com.example.work_with_service.ui.model.PokemonListModel
-import com.example.work_with_service.ui.model.PokemonsAttributes.Attributes
 import com.example.work_with_service.ui.presenter.PokemonListPresenter
 import com.example.work_with_service.ui.fragment.pokemondetail.DetailPage
 
@@ -105,8 +104,8 @@ class PokemonListPageFragment : Fragment(), PokemonListContract.View {
         }
     }
 
-    override fun updatePokemonList(pokemonsAttributes: List<Attributes>) {
-        adapter?.submitList(pokemonsAttributes)
+    override fun updatePokemonList(pokemons: List<Pokemon>) {
+        adapter?.submitList(pokemons)
     }
 
     companion object {

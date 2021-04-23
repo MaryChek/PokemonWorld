@@ -26,8 +26,10 @@ class PokemonDetailsPresenter(
         view.showLoadingIndicator()
     }
 
-    private fun onPokemonInfoReady(pokemonInfo: PokemonDetail) {
-        view.showDetail(pokemonInfo)
+    private fun onPokemonInfoReady(pokemonDetail: PokemonDetail) {
+        view.showPokemonMain(pokemonDetail, pokemon)
+        view.showPokemonAbilities(pokemonDetail.abilities)
+        view.showPokemonTypes(pokemonDetail.types)
         view.hideLoadingIndicator()
     }
 

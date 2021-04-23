@@ -3,12 +3,8 @@ package com.example.work_with_service.ui.model
 import androidx.annotation.StringRes
 
 class PokemonDetail(
-    val imageUrl: String?,
     val name: String,
-    val baseExperience: Int,
     val captureRate: Int,
-    val height: Int,
-    val weight: Double,
     @StringRes
     val resIdAge: Int,
     val habitat: String,
