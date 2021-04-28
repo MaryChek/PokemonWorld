@@ -18,7 +18,7 @@ class PagerAdapter(
     override fun createFragment(position: Int): Fragment =
         when (position) {
             POSITION_OF_LIST_POKEMON -> PokemonListPageFragment()
-            else -> PokemonDetailPageFragment.newInstance(pokemonForDetailPage)
+            else -> PokemonListPageFragment()
         }
 
     fun setNamePokemonForDetailPage(newPokemon: Pokemon) {

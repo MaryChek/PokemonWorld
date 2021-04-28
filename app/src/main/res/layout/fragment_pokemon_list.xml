@@ -7,6 +7,26 @@
     android:background="@color/colorAppBackground"
     tools:context=".ui.fragment.pokemonlist.PokemonListPageFragment">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ToolbarTheme"
+            app:title="@string/app_name"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextAppearance="@style/TitleTextStyle" />
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPokemon"
         android:layout_width="match_parent"
@@ -14,7 +34,9 @@
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         tools:listitem="@layout/list_item_pokemon" />
 
     <ProgressBar
@@ -24,7 +46,7 @@
         android:indeterminate="true"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <include
         android:id="@+id/connectionError"

@@ -4,9 +4,11 @@ import com.example.work_with_service.data.repository.PokemonRepository
 import com.example.work_with_service.ui.mapper.PokemonListMapper
 import com.example.work_with_service.domain.entities.Pokemon as DomainPokemon
 
-class PokemonListModel(private val mapper: PokemonListMapper = PokemonListMapper())  {
+class PokemonListModel(
+    private val mapper: PokemonListMapper,
+    private var pokemonService: PokemonRepository
+){
     private var onListReadyListener: ((List<Pokemon>) -> Unit)? = null
-    private var pokemonService: PokemonRepository = PokemonRepository.getInstance()
     private var pokemonList: List<Pokemon> = listOf()
 
     fun fetchPokemonList(

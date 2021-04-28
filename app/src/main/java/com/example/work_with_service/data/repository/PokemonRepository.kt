@@ -14,8 +14,8 @@ import com.example.work_with_service.domain.entities.PokemonDetail
 import com.example.work_with_service.domain.entities.Pokemon as DomainPokemon
 
 class PokemonRepository(
-    private val remotePokemonSource: PokeApiClient = PokeApiClient(),
-    private val mapper: PokemonResourceMapper = PokemonResourceMapper()
+    private val remotePokemonSource: PokeApiClient,
+    private val mapper: PokemonResourceMapper
 ) {
     private var onPokemonListReady: ((List<DomainPokemon>) -> Unit)? = null
     private var onPokemonDetailReady: ((PokemonDetail) -> Unit)? = null
@@ -142,11 +142,14 @@ class PokemonRepository(
         private const val OFFSET = 0
         private const val LIMIT = 30
 
-        private var INSTANCE: PokemonRepository? = null
+//        private var INSTANCE: PokemonRepository? = null
 
-        fun getInstance(): PokemonRepository =
-            INSTANCE ?: PokemonRepository().also {
-                INSTANCE = it
-            }
+//        fun getInstance(
+//            remotePokemonSource: PokeApiClient,
+//            mapper: PokemonResourceMapper
+//        ): PokemonRepository =
+//            INSTANCE ?: PokemonRepository(remotePokemonSource, mapper).also {
+//                INSTANCE = it
+//            }
     }
 }

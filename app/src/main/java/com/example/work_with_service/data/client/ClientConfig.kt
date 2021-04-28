@@ -11,8 +11,8 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 class ClientConfig(
-    val baseUrl: String = BASE_URL,
-    val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
+    val baseUrl: String,
+    val okHttpClientBuilder: OkHttpClient.Builder
 ) {
     init {
         setupAcceptAllCertificates()
@@ -55,6 +55,5 @@ class ClientConfig(
 
     companion object {
         private const val PROTOCOL_TLS = "SSL"
-        private const val BASE_URL = "https://pokeapi.co/api/v2/"
     }
 }
