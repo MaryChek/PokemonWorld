@@ -4,26 +4,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-<!--        <item name="colorBackgroundFloating">@color/colorFrontLayer</item>-->
-<!--        <item name="actionBarStyle">@style/ActionBar</item>-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="CustomActionbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorControlNormal">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/colorTextName</item>
-<!--        <item name="titleTextAppearance">@style/TitleTextStyle</item>-->
-    </style>
-
-    <style name="ToolbarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/colorAppBackground</item>
-        <item name="titleTextAppearance">@style/TitleTextStyle</item>
-    </style>
-
-    <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
-        <item name="titleTextStyle">@style/TitleTextStyle</item>
-        <item name="displayOptions">showHome|showTitle</item>
     </style>
 
     <style name="TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">

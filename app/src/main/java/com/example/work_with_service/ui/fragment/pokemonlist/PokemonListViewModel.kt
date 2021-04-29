@@ -4,12 +4,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.work_with_service.App
 import com.example.work_with_service.data.repository.PokemonRepository
+import com.example.work_with_service.ui.mapper.PokemonDetailMapper
 import com.example.work_with_service.domain.entities.Pokemon as DomainPokemon
 import com.example.work_with_service.ui.mapper.PokemonListMapper
 import com.example.work_with_service.ui.model.Pokemon
 
-class PokemonListViewModel : ViewModel() {
-    private val mapper: PokemonListMapper = PokemonListMapper()
+class PokemonListViewModel(
+    private val mapper: PokemonListMapper,
+    private var pokemonService: PokemonRepository
+) : ViewModel() {
+    //    private val mapper: PokemonListMapper = PokemonListMapper()
     val pokemonListLive = MutableLiveData<List<Pokemon>>()
 
     fun fetchPokemonList() {

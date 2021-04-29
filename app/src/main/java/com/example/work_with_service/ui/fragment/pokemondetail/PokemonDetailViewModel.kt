@@ -5,9 +5,13 @@ import androidx.lifecycle.ViewModel
 import com.example.work_with_service.data.model.Ability
 //import com.example.work_with_service.data.model.NameResource
 import com.example.work_with_service.data.repository.PokemonRepository
+import com.example.work_with_service.ui.mapper.PokemonListMapper
 import com.example.work_with_service.ui.model.*
 
-class PokemonDetailViewModel : ViewModel() {
+class PokemonDetailViewModel(
+    private val mapper: PokemonListMapper,
+    private var pokemonService: PokemonRepository
+) : ViewModel() {
 //    private var pokemonAttributes: PokemonAttributes? = null
 //
 //    val pokemonDetailLive = MutableLiveData<PokemonDetail>()

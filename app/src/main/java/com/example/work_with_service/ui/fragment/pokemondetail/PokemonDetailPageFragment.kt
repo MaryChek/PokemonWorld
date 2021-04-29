@@ -8,20 +8,13 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.annotation.StringRes
-import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.chayangkoon.champ.glide.ktx.load
 import com.example.work_with_service.App
 import com.example.work_with_service.R
 import com.example.work_with_service.databinding.*
-import com.example.work_with_service.ui.activity.MainActivity
 import com.example.work_with_service.ui.adapter.PokemonAbilitiesAdapter
 import com.example.work_with_service.ui.adapter.PokemonTypesAdapter
 import com.example.work_with_service.ui.contract.PokemonDetailsContract
@@ -31,7 +24,6 @@ import com.example.work_with_service.ui.model.PokemonDetail.Ability
 import com.example.work_with_service.ui.model.PokemonDetail.Type
 import com.example.work_with_service.ui.model.PokemonDetailModel
 import com.example.work_with_service.ui.presenter.PokemonDetailsPresenter
-import kotlinx.android.synthetic.main.fragment_pokemon_detail.*
 
 class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     private var binding: FragmentPokemonDetailBinding? = null
@@ -62,23 +54,7 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
 
     private fun initNavigationToolBar() {
         binding?.let {
-//            (requireActivity() as MainActivity).supportActionBar?.hide()
-            val navController: NavController = findNavController()
-            val appBarConfiguration = AppBarConfiguration(navController.graph)
-//            (activity as MainActivity).setSupportActionBar(it.toolbar)
-//            (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            it.collapsingToolbar.setupWithNavController(
-                it.toolbar,
-                navController,
-                appBarConfiguration
-            )
-
-//             .setDisplayHomeAsUpEnabled(true)
-//            val appBarConfiguration = AppBarConfiguration(navController.graph)
-//            it.toolbar.setupWithNavController(navController, appBarConfiguration)
-//            NavigationUI.setupWithNavController(it.toolbar, navController, appBarConfiguration)
-//            NavigationUI.setupWithNavController(it.collapsingToolbar, it.toolbar, navController)
-
+            it.collapsingToolbar.setupWithNavController(it.toolbar, findNavController())
         }
     }
 
@@ -125,8 +101,11 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
     override fun showPokemonMain(detail: PokemonDetail, pokemon: Pokemon) {
         binding?.let {
             it.toolbar.title = detail.name
-            it.ivPokemon.load(pokemon.imageUrl) {
-                placeholder(R.mipmap.ic_pokeball_foreground)
+            it.ivPokemon.apply {
+                visibility = VISIBLE
+                load(pokemon.imageUrl) {
+                    placeholder(R.mipmap.ic_pokeball_foreground)
+                }
             }
             it.cvPokemonMain.apply {
                 root.visibility = VISIBLE
@@ -177,11 +156,5 @@ class PokemonDetailPageFragment : Fragment(), PokemonDetailsContract.View {
 
     companion object {
         private const val KEY_FOR_POKEMON_ARG = "namePokemon"
-
-//        fun newInstance(pokemon: Pokemon?) = PokemonDetailPageFragment().apply {
-//            pokemon.let {
-//                arguments = bundleOf(KEY_FOR_NAME_POKEMON_ARG to it)
-//            }
-//        }
     }
 }
