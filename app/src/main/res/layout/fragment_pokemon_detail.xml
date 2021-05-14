@@ -1,22 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<layout>-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-<!--    <data>-->
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="pokemonDetail"
+            type="com.example.work_with_service.presentation.models.PokemonDetail" />
+
+        <variable
+            name="pokemon"
+            type="com.example.work_with_service.presentation.models.Pokemon" />
+
+        <variable
+            name="status"
+            type="com.example.work_with_service.domain.Status" />
 <!--        <variable-->
-<!--            name=""-->
-<!--            type="" />-->
-<!--    </data>-->
+<!--            name="viewModel"-->
+<!--            type="com.example.work_with_service.ui.fragment.pokemondetail.PokemonDetailViewModel" />-->
+    </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height='?attr/actionBarSize'
+            app:height="@{(status == status.SUCCESS) ? @dimen/dp_220 : @dimen/action_bar_size}"
             android:theme="@style/CustomActionbarTheme">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -27,19 +42,20 @@
                 app:expandedTitleTextAppearance="@style/TitleTextStyle"
                 app:layout_scrollFlags="exitUntilCollapsed|scroll">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivPokemon"
                     android:layout_width="320dp"
                     android:layout_height="220dp"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@string/pokemon"
-                    android:src="@mipmap/ic_pokeball"
-                    android:visibility="gone" />
+                    android:visibility="@{(status == status.SUCCESS) ? View.VISIBLE : View.GONE}"
+                    app:imageUrl="@{pokemon.imageUrl}" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:title="@{pokemonDetail.name}"
                     app:layout_collapseMode="pin" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -53,7 +69,8 @@
                 android:id="@+id/scrollView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorAppBackground">
+                android:background="@color/colorAppBackground"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -65,7 +82,9 @@
                         layout="@layout/cv_pokemon_main"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
+                        app:pokemon="@{pokemon}"
+                        app:pokemonDetail="@{pokemonDetail}"
+                        android:visibility="@{(status == status.SUCCESS) ? View.VISIBLE : View.GONE}"
                         tools:visibility="visible" />
 
                     <include
@@ -74,7 +93,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:visibility="gone"
+                        android:visibility="@{(status == status.SUCCESS) ? View.VISIBLE : View.GONE}"
                         tools:visibility="visible" />
 
                     <include
@@ -83,8 +102,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:visibility="gone"
+                        android:visibility="@{(status == status.SUCCESS) ? View.VISIBLE : View.GONE}"
                         tools:visibility="visible" />
+
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
@@ -93,14 +113,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:visibility="@{(status == status.LOADING) ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
 
             <include
                 android:id="@+id/connectionError"
                 layout="@layout/connection_error"
-                android:visibility="gone" />
+                android:visibility="@{(status == status.ERROR) ? View.VISIBLE : View.GONE}"
+                tools:visibility="gone"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-<!--</layout>-->
+</layout>

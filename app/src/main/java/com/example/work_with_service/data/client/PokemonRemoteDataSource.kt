@@ -3,7 +3,7 @@ package com.example.work_with_service.data.client
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.example.work_with_service.data.service.Resource
+import com.example.work_with_service.domain.Resource
 
 open class PokemonRemoteDataSource {
 

@@ -6,7 +6,7 @@
     app:startDestination="@id/pokemonListPageFragment">
     <fragment
         android:id="@+id/pokemonListPageFragment"
-        android:name="com.example.work_with_service.ui.fragment.pokemonlist.PokemonListPageFragment"
+        android:name="com.example.work_with_service.presentation.fragments.PokemonListPageFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_pokemon_list">
         <action
@@ -15,11 +15,11 @@
     </fragment>
     <fragment
         android:id="@+id/pokemonDetailPageFragment"
-        android:name="com.example.work_with_service.ui.fragment.pokemondetail.PokemonDetailPageFragment"
+        android:name="com.example.work_with_service.presentation.fragments.PokemonDetailPageFragment"
         android:label="" >
         <argument
             android:name="pokemon"
-            app:argType="com.example.work_with_service.ui.model.Pokemon"
+            app:argType="com.example.work_with_service.presentation.models.Pokemon"
             app:nullable="true" />
     </fragment>
 </navigation>

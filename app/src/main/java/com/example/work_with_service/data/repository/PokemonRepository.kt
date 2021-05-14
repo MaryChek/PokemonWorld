@@ -1,87 +1,66 @@
 package com.example.work_with_service.data.repository
 
-import android.util.Log
-import com.example.work_with_service.data.client.PokeApiClient
-import com.example.work_with_service.data.mapper.PokemonResourceMapper
+import com.example.work_with_service.data.client.PokemonApiTalker
+import com.example.work_with_service.data.mappers.PokemonResourceMapper
 import com.example.work_with_service.data.model.PokemonResourceList
 import com.example.work_with_service.data.model.Pokemon
 import com.example.work_with_service.data.model.PokemonSpecies
 import com.example.work_with_service.data.model.Ability
 import com.example.work_with_service.data.model.Type
-import com.example.work_with_service.data.service.Resource
-import com.example.work_with_service.data.service.Status.SUCCESS
-import com.example.work_with_service.domain.entities.PokemonDetail
-import com.example.work_with_service.domain.entities.Pokemon as DomainPokemon
+import com.example.work_with_service.domain.Resource
+import com.example.work_with_service.domain.Status.ERROR
+import com.example.work_with_service.domain.Status.SUCCESS
+import com.example.work_with_service.domain.models.PokemonDetail
+import com.example.work_with_service.domain.models.Pokemon as DomainPokemon
 
 class PokemonRepository(
-    private val remotePokemonSource: PokeApiClient,
+    private val apiTalker: PokemonApiTalker,
     private val mapper: PokemonResourceMapper
 ) {
-    private var onPokemonListReady: ((List<DomainPokemon>) -> Unit)? = null
-    private var onPokemonDetailReady: ((PokemonDetail) -> Unit)? = null
-    private var onServiceFinishedError: (() -> Unit)? = null
+    private var onPokemonListReady: ((Resource<List<DomainPokemon>>) -> Unit)? = null
+    private var onPokemonDetailReady: ((Resource<PokemonDetail>) -> Unit)? = null
     private var listPokemon: MutableList<Pokemon>? = null
     private var pokemonDetail: PokemonDetail? = null
     private var pokemonAbilities: List<String> = listOf()
     private var pokemonTypes: List<String> = listOf()
 
-    fun callPokemonSource(
-        onPokemonListReady: (List<DomainPokemon>) -> Unit,
-        onServiceFinishedError: () -> Unit
-    ) {
+    fun fetchListPokemon(onPokemonListReady: (Resource<List<DomainPokemon>>) -> Unit) {
         this.onPokemonListReady = onPokemonListReady
-        this.onServiceFinishedError = onServiceFinishedError
         listPokemon = mutableListOf()
-        remotePokemonSource.callPokemonResourceList(
-            OFFSET,
-            LIMIT,
-            this::onServiceSendPokemonResourceList
-        )
+        apiTalker.callPokemonResourceList(OFFSET, LIMIT, this::onServiceSendPokemonResourceList)
     }
 
-    fun callPokemonDetail(
+    fun fetchPokemonDetail(
         pokemonName: String,
         abilityNames: List<String>,
         typeNames: List<String>,
-        onPokemonDetailReady: (PokemonDetail) -> Unit,
-        onServiceFinishedError: () -> Unit
+        onPokemonDetailReady: (Resource<PokemonDetail>) -> Unit
     ) {
         this.onPokemonDetailReady = onPokemonDetailReady
-        this.onServiceFinishedError = onServiceFinishedError
         pokemonAbilities = abilityNames
         pokemonTypes = typeNames
-        callPokemonSpecies(pokemonName)
+        fetchPokemonSpecies(pokemonName)
     }
 
-    private fun callPokemonSpecies(pokemonName: String) =
-        remotePokemonSource.callPokemonSpecies(pokemonName, this::onServiceSendPokemonSpecies)
-
-    private fun callPokemonAbilities() {
-        pokemonAbilities.forEach {
-            remotePokemonSource.callPokemonAbility(it, this::onServiceSendPokemonAbility)
-        }
-    }
-
-    private fun callPokemonTypes() {
-        pokemonTypes.forEach {
-            remotePokemonSource.callPokemonType(it, this::onServiceSendPokemonType)
-        }
-    }
+    private fun fetchPokemonSpecies(pokemonName: String) =
+        apiTalker.callPokemonSpecies(pokemonName, this::onServiceSendPokemonSpecies)
 
     private fun onServiceSendPokemonResourceList(resource: Resource<PokemonResourceList>) {
-        getResourceData(resource)?.let { pokemonResourceList ->
+//        getResourcePokemonData(resource)?.let { pokemonResourceList ->
+        getResource(resource, this::onPokemonListResourceStatusError)?.let { pokemonResourceList ->
             pokemonResourceList.results.forEach {
-                remotePokemonSource.callPokemon(it.name, this::onServiceSendPokemon)
+                apiTalker.callPokemon(it.name, this::onServiceSendPokemon)
             }
         }
     }
 
     private fun onServiceSendPokemon(resource: Resource<Pokemon>) {
-        getResourceData(resource)?.let { pokemon ->
-            addPokemonToList(pokemon)
+//        getResourcePokemonData(resource)?.let { pokemon ->
+        getResource(resource, this::onPokemonListResourceStatusError)?.let { pokemon ->
             listPokemon?.let {
+                it.add(pokemon)
                 if (it.size == LIMIT) {
-                    onPokemonListReady?.invoke(mapper.map(it))
+                    onPokemonListReady?.invoke(Resource.success(mapper.map(it)))
                     listPokemon = null
                 }
             }
@@ -89,67 +68,88 @@ class PokemonRepository(
     }
 
     private fun onServiceSendPokemonSpecies(resource: Resource<PokemonSpecies>) {
-        getResourceData(resource)?.let {
+//        getResourcePokemonDetailData(resource)?.let {
+        getResource(resource, this::onPokemonDetailResourceStatusError)?.let {
             pokemonDetail = PokemonDetail(it.name, mapper.map(it))
-            callPokemonAbilities()
+            fetchPokemonAbilities()
+        }
+    }
+
+    private fun fetchPokemonAbilities() {
+        pokemonAbilities.forEach {
+            apiTalker.callPokemonAbility(it, this::onServiceSendPokemonAbility)
         }
     }
 
     private fun onServiceSendPokemonAbility(resource: Resource<Ability>) {
-        getResourceData(resource)?.let { ability ->
+//        getResourcePokemonDetailData(resource)?.let { ability ->
+        getResource(resource, this::onPokemonDetailResourceStatusError)?.let { ability ->
             pokemonDetail?.abilities?.let {
                 it.add(mapper.map(ability))
                 if (it.size == pokemonAbilities.size) {
-                    callPokemonTypes()
+                    fetchPokemonTypes()
                 }
             }
         }
     }
 
+    private fun fetchPokemonTypes() =
+        pokemonTypes.forEach {
+            apiTalker.callPokemonType(it, this::onServiceSendPokemonType)
+        }
+
     private fun onServiceSendPokemonType(resource: Resource<Type>) {
-        getResourceData(resource)?.let { type ->
+//        getResourcePokemonDetailData(resource)?.let { type ->
+        getResource(resource, this::onPokemonDetailResourceStatusError)?.let { type ->
             pokemonDetail?.types?.let { types ->
                 types.add(mapper.map(type))
                 if (types.size == pokemonTypes.size) {
                     pokemonDetail?.let {
-                        onPokemonDetailReady?.invoke(it)
+                        onPokemonDetailReady?.invoke(Resource.success(it))
                     }
                 }
             }
         }
     }
 
-    private fun <T> getResourceData(res: Resource<T>): T? =
-        if (res.status == SUCCESS) {
-            res.data
-        } else {
-            onResponseError(res.message)
-            null
-        }
-
-    private fun addPokemonToList(pokemon: Pokemon) {
-        listPokemon?.add(pokemon)
+    private fun onPokemonListResourceStatusError(message: String) {
+        onPokemonListReady?.invoke(Resource.error((message), null))
     }
 
-    private fun onResponseError(message: String?) {
-        message?.let {
-            Log.e(null, message)
-        }
-        onServiceFinishedError?.invoke()
+    private fun onPokemonDetailResourceStatusError(message: String) {
+        onPokemonDetailReady?.invoke(Resource.error((message), null))
     }
+
+    private fun <T> getResource(
+        resource: Resource<T>,
+        onStatusResourceError: (String) -> Unit
+    ): T? {
+        if (resource.status == ERROR) {
+            onStatusResourceError(resource.message ?: UNKNOWN_ERROR)
+        }
+        return resource.data
+    }
+//
+//    private fun <T> getResourcePokemonData(resource: Resource<T>): T? =
+//        if (resource.status == SUCCESS) {
+//            resource.data
+//        } else {
+//            onPokemonListReady?.invoke(Resource.error((resource.message ?: ""), null))
+//            null
+//        }
+
+//
+//    private fun <T> getResourcePokemonDetailData(resource: Resource<T>): T? =
+//        if (resource.status == SUCCESS) {
+//            resource.data
+//        } else {
+//            onPokemonDetailReady?.invoke(Resource.error((resource.message ?: ""), null))
+//            null
+//        }
 
     companion object {
         private const val OFFSET = 0
         private const val LIMIT = 30
-
-//        private var INSTANCE: PokemonRepository? = null
-
-//        fun getInstance(
-//            remotePokemonSource: PokeApiClient,
-//            mapper: PokemonResourceMapper
-//        ): PokemonRepository =
-//            INSTANCE ?: PokemonRepository(remotePokemonSource, mapper).also {
-//                INSTANCE = it
-//            }
+        private const val UNKNOWN_ERROR = "Unknown error"
     }
 }
