@@ -1,6 +1,5 @@
 package com.example.work_with_service.presentation.models
 
-import androidx.databinding.BaseObservable
 import java.io.Serializable
 
 class Pokemon(
@@ -11,4 +10,4 @@ class Pokemon(
     val abilityNames: List<String>,
     val typeNames: List<String>,
     val imageUrl: String
-) : Serializable, BaseObservable()
+) : Serializable

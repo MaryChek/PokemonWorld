@@ -1,15 +1,13 @@
-package com.example.work_with_service.data.client
+package com.example.work_with_service.data.api
 
-import com.example.work_with_service.data.model.*
-import com.example.work_with_service.data.service.PokeApiService
-import com.example.work_with_service.data.service.PokeApiServiceRetrofit
+import com.example.work_with_service.data.api.model.*
 import com.example.work_with_service.domain.Resource
 
 class PokemonApiTalker(
     clientConfig: ClientConfig,
-    service: PokeApiServiceRetrofit,
-    private val client: PokeApiService = service.createPokeApiClient(clientConfig)
-) : PokemonRemoteDataSource() {
+    service: ClientPokemonApiCreator,
+    private val client: PokemonApi = service.createPokemonApiClient(clientConfig)
+) : BaseApiTalker() {
 
     fun callPokemonResourceList(
         offset: Int,

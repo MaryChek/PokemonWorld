@@ -3,10 +3,10 @@ package com.example.work_with_service.presentation.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.bundleOf
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -17,9 +17,9 @@ import com.example.work_with_service.App
 import com.example.work_with_service.R
 import com.example.work_with_service.data.repository.PokemonRepository
 import com.example.work_with_service.databinding.FragmentPokemonListBinding
-import com.example.work_with_service.presentation.models.Pokemon
 import com.example.work_with_service.presentation.adapters.PokemonListAdapter
 import com.example.work_with_service.presentation.mappers.PokemonListMapper
+import com.example.work_with_service.presentation.models.Receipt
 import com.example.work_with_service.presentation.viewmodels.PokemonListViewModel
 import com.example.work_with_service.presentation.viewmodels.PokemonListViewModelFactory
 import kotlinx.android.synthetic.main.fragment_pokemon_list.*
@@ -48,7 +48,7 @@ class PokemonListPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_pokemon_list, container, (false))
+            FragmentPokemonListBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
@@ -56,7 +56,7 @@ class PokemonListPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initNavigationToolBar()
         initList()
-        setupObserversPokemons()
+        setupObservers()
         setOnRetryConnectionClickListener()
         viewModel.fetchPokemonList()
     }
@@ -66,7 +66,7 @@ class PokemonListPageFragment : Fragment() {
     }
 
     private fun initList() {
-        adapter = PokemonListAdapter(this::onItemPokemonClick)
+        adapter = PokemonListAdapter(viewModel::onItemPokemonClick)
         binding?.rvPokemon?.adapter = adapter
         addDividerItem()
     }
@@ -79,56 +79,45 @@ class PokemonListPageFragment : Fragment() {
         }
     }
 
-    private fun setupObserversPokemons() {
+    private fun setupObservers() {
+        viewModel.receipt.observe(viewLifecycleOwner, { receipt ->
+            when (receipt.status) {
+                Receipt.Status.LOADING -> showLoadingIndicator()
+                Receipt.Status.SUCCESS -> {
+                    hideConnectionErrorMessage()
+                    hideLoadingIndicator()
+                }
+                Receipt.Status.ERROR -> showConnectionErrorMessage()
+            }
+        })
         viewModel.pokemonList.observe(viewLifecycleOwner, { pokemons ->
-            binding?.status = pokemons.status
-            adapter?.submitList(pokemons.data)
+            adapter?.submitList(pokemons)
+        })
+        viewModel.navigation.observe(viewLifecycleOwner, { navigation ->
+            findNavController().navigate(navigation.navigateToId, navigation.arguments)
         })
     }
 
-    private fun onItemPokemonClick(name: String) {
-        viewModel.pokemonList.value?.data?.let {
-            openDetailedPage(it.first { pokemon ->
-                pokemon.name.equals(name, true)
-            })
-        }
+    private fun showLoadingIndicator() {
+        binding?.progressIndicator?.visibility = VISIBLE
     }
 
-//    override fun showLoadingIndicator() {
-//        binding?.progressIndicator?.visibility = VISIBLE
-//    }
+    private fun hideLoadingIndicator() {
+        binding?.progressIndicator?.visibility = GONE
+    }
 
-//    override fun hideLoadingIndicator() {
-//        binding?.progressIndicator?.visibility = GONE
-//    }
-
-//    override fun showConnectionErrorMessage() {
-//        binding?.connectionError?.root?.visibility = VISIBLE
-//        setOnRetryConnectionClickListener()
-//    }
+    private fun showConnectionErrorMessage() {
+        binding?.connectionError?.root?.visibility = VISIBLE
+        setOnRetryConnectionClickListener()
+    }
 
     private fun setOnRetryConnectionClickListener() {
         binding?.connectionError?.buttonRetryConnection?.setOnClickListener {
-            viewModel.fetchPokemonList()
+            viewModel.onButtonRetryConnectionClick()
         }
     }
 
-//    override fun hideConnectionErrorMessage() {
-//        binding?.connectionError?.root?.visibility = GONE
-//    }
-
-
-    private fun openDetailedPage(pokemon: Pokemon) =
-        findNavController().navigate(
-            R.id.action_pokemonListPageFragment_to_pokemonDetailPageFragment,
-            bundleOf(KEY_FOR_POKEMON_ARG to pokemon)
-        )
-
-//    override fun updatePokemonList(pokemons: List<Pokemon>) {
-//        adapter?.submitList(pokemons)
-//    }
-
-    companion object {
-        private const val KEY_FOR_POKEMON_ARG = "namePokemon"
+    private fun hideConnectionErrorMessage() {
+        binding?.connectionError?.root?.visibility = GONE
     }
 }

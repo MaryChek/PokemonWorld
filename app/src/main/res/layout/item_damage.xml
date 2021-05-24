@@ -1,42 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/noDamageTo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="5dp"
+    android:visibility="@{names.empty ? view.GONE : view.VISIBLE}">
 
-    <data>
+    <TextView
+        style="@style/TextView.Heading"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:text='@{title}'
+        tools:text="@string/no_damage_to" />
 
-        <variable
-            name="title"
-            type="String"/>
-
-        <variable
-            name="names"
-            type="java.util.List&lt;String&gt;" />
-
-        <import type="android.view.View" alias="view"/>
-
-    </data>
-    <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/noDamageTo"
+    <TextView
+        style="@style/TextView.Normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
-        android:visibility="@{names.empty ? view.GONE : view.VISIBLE}">
-
-        <TextView
-            style="@style/TextView.Heading"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
-            android:text='@{title}'
-            tools:text="@string/no_damage_to" />
-
-        <TextView
-            style="@style/TextView.Normal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:text="@{names}"
-            tools:text="name, name, name, name, name, name, name" />
-    </LinearLayout>
-</layout>
+        android:layout_marginStart="5dp"
+        android:text="@{names}"
+        tools:text="name, name, name, name, name, name, name" />
+</LinearLayout>

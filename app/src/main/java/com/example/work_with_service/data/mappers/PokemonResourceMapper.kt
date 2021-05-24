@@ -4,11 +4,11 @@ import com.example.work_with_service.domain.models.Pokemon as DomainPokemon
 import com.example.work_with_service.domain.models.Type as DomainPokemonType
 import com.example.work_with_service.domain.models.Ability as DomainPokemonAbility
 import com.example.work_with_service.domain.models.PokemonSpecies as DomainPokemonSpecies
-import com.example.work_with_service.data.model.NameApiResource
-import com.example.work_with_service.data.model.Pokemon
-import com.example.work_with_service.data.model.PokemonSpecies
-import com.example.work_with_service.data.model.Ability
-import com.example.work_with_service.data.model.Type
+import com.example.work_with_service.data.api.model.NameApiResource
+import com.example.work_with_service.data.api.model.Pokemon
+import com.example.work_with_service.data.api.model.PokemonSpecies
+import com.example.work_with_service.data.api.model.Ability
+import com.example.work_with_service.data.api.model.Type
 
 class PokemonResourceMapper {
     fun map(resource: List<Pokemon>): List<DomainPokemon> =

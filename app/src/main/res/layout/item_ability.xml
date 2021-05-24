@@ -1,41 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <data>
+    <TextView
+        android:id="@+id/tvAbilityName"
+        style="@style/TextView.Heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@{String.format(@string/name_with_number, position, ability.name)}"
+        tools:text="1. AbilityName" />
 
-        <variable
-            name="ability"
-            type="com.example.work_with_service.presentation.models.PokemonDetail.Ability" />
-
-        <variable
-            name="position"
-            type="Integer" />
-    </data>
-    <!--        &lt; &gt; -->
-
-    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    <TextView
+        android:id="@+id/tvAbilityDescription"
+        style="@style/TextView.Normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tvAbilityName"
-            style="@style/TextView.Heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="@{String.format(@string/name_with_number, position, ability.name)}"
-            tools:text="1. AbilityName" />
-
-        <TextView
-            android:id="@+id/tvAbilityDescription"
-            style="@style/TextView.Normal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:text="@{ability.effect}"
-            tools:text="@string/appbar_scrolling_view_behavior" />
-    </LinearLayout>
-</layout>
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:text="@{ability.effect}"
+        tools:text="@string/appbar_scrolling_view_behavior" />
+</LinearLayout>

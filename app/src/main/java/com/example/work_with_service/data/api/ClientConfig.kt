@@ -1,4 +1,4 @@
-package com.example.work_with_service.data.client
+package com.example.work_with_service.data.api
 
 import android.annotation.SuppressLint
 import okhttp3.OkHttpClient

@@ -1,11 +1,11 @@
 package com.example.work_with_service
 
 import android.app.Application
-import com.example.work_with_service.data.client.ClientConfig
-import com.example.work_with_service.data.client.PokemonApiTalker
+import com.example.work_with_service.data.api.ClientConfig
+import com.example.work_with_service.data.api.PokemonApiTalker
 import com.example.work_with_service.data.mappers.PokemonResourceMapper
 import com.example.work_with_service.data.repository.PokemonRepository
-import com.example.work_with_service.data.service.PokeApiServiceRetrofit
+import com.example.work_with_service.data.api.ClientPokemonApiCreator
 import okhttp3.OkHttpClient
 
 class App : Application() {
@@ -18,8 +18,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         val clientConfig = ClientConfig(BASE_URL, OkHttpClient.Builder())
-        val pokiClient = PokemonApiTalker(clientConfig, PokeApiServiceRetrofit())
-        repository = PokemonRepository(pokiClient, PokemonResourceMapper())
+        val apiTalker = PokemonApiTalker(clientConfig, ClientPokemonApiCreator())
+        repository = PokemonRepository(apiTalker, PokemonResourceMapper())
 //        pokemonListViewModel = ViewModelProvider(this, PokemonListViewModelFactory(PokemonListMapper(), repository)).get(PokemonListViewModel::class.java)
 //        pokemonListModel = PokemonListModel(PokemonListMapper(), repository)
 //        pokemonDetailModel = PokemonDetailModel(PokemonDetailMapper(), repository)

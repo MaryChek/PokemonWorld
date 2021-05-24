@@ -1,16 +1,16 @@
-package com.example.work_with_service.data.service
+package com.example.work_with_service.data.api
 
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import com.example.work_with_service.data.model.PokemonResourceList
-import com.example.work_with_service.data.model.Pokemon
-import com.example.work_with_service.data.model.PokemonSpecies
-import com.example.work_with_service.data.model.Ability
-import com.example.work_with_service.data.model.Type
+import com.example.work_with_service.data.api.model.PokemonResourceList
+import com.example.work_with_service.data.api.model.Pokemon
+import com.example.work_with_service.data.api.model.PokemonSpecies
+import com.example.work_with_service.data.api.model.Ability
+import com.example.work_with_service.data.api.model.Type
 
-interface PokeApiService {
+interface PokemonApi {
     @GET("/api/v2/pokemon")
     fun getPokemonList(
         @Query("offset") offset: Int,

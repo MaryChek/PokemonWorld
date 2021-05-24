@@ -1,15 +1,14 @@
 package com.example.work_with_service.data.repository
 
-import com.example.work_with_service.data.client.PokemonApiTalker
+import com.example.work_with_service.data.api.PokemonApiTalker
 import com.example.work_with_service.data.mappers.PokemonResourceMapper
-import com.example.work_with_service.data.model.PokemonResourceList
-import com.example.work_with_service.data.model.Pokemon
-import com.example.work_with_service.data.model.PokemonSpecies
-import com.example.work_with_service.data.model.Ability
-import com.example.work_with_service.data.model.Type
+import com.example.work_with_service.data.api.model.PokemonResourceList
+import com.example.work_with_service.data.api.model.Pokemon
+import com.example.work_with_service.data.api.model.PokemonSpecies
+import com.example.work_with_service.data.api.model.Ability
+import com.example.work_with_service.data.api.model.Type
 import com.example.work_with_service.domain.Resource
 import com.example.work_with_service.domain.Status.ERROR
-import com.example.work_with_service.domain.Status.SUCCESS
 import com.example.work_with_service.domain.models.PokemonDetail
 import com.example.work_with_service.domain.models.Pokemon as DomainPokemon
 

@@ -1,80 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/colorFrontLayer"
+    app:cardCornerRadius="10dp">
 
-    <data>
-
-        <variable
-            name="pokemonDetail"
-            type="com.example.work_with_service.presentation.models.PokemonDetail" />
-
-        <variable
-            name="pokemon"
-            type="com.example.work_with_service.presentation.models.Pokemon" />
-    </data>
-
-    <androidx.cardview.widget.CardView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/colorFrontLayer"
-        app:cardCornerRadius="10dp">
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            style="@style/TextView.HeadName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="20dp"
-            android:orientation="vertical">
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/pokemon_main" />
 
-            <TextView
-                style="@style/TextView.HeadName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="5dp"
-                android:text="@string/pokemon_main" />
+        <include
+            android:id="@+id/tvBasExperience"
+            layout="@layout/item_pokemon_base"
+            app:title="@{@string/base_experience}"
+            app:value="@{String.valueOf(pokemon.baseExperience)}" />
 
-            <include
-                android:id="@+id/tvBasExperience"
-                layout="@layout/item_pokemon_base"
-                app:title="@{@string/base_experience}"
-                app:value="@{String.valueOf(pokemon.baseExperience)}"/>
+        <include
+            android:id="@+id/tvCaptureRate"
+            layout="@layout/item_pokemon_base"
+            app:title="@{@string/capture_rate}"
+            app:value='@{String.format(@string/capture_rate_value, pokemonDetail.captureRate)}' />
 
-            <include
-                android:id="@+id/tvCaptureRate"
-                layout="@layout/item_pokemon_base"
-                app:title="@{@string/capture_rate}"
-                app:value='@{String.format(@string/capture_rate_value, pokemonDetail.captureRate)}'/>
+        <include
+            android:id="@+id/tvHeight"
+            layout="@layout/item_pokemon_base"
+            app:title="@{@string/pokemon_height}"
+            app:value='@{String.format(@string/pokemon_height_value, pokemon.height)}' />
 
-            <include
-                android:id="@+id/tvHeight"
-                layout="@layout/item_pokemon_base"
-                app:title="@{@string/pokemon_height}"
-                app:value='@{String.format(@string/pokemon_height_value, pokemon.height)}'/>
+        <include
+            android:id="@+id/tvWeight"
+            layout="@layout/item_pokemon_base"
+            app:title="@{@string/pokemon_weight}"
+            app:value='@{String.format(@string/pokemon_weight_value, pokemon.weight)}' />
 
-            <include
-                android:id="@+id/tvWeight"
-                layout="@layout/item_pokemon_base"
-                app:title="@{@string/pokemon_weight}"
-                app:value='@{String.format(@string/pokemon_weight_value, pokemon.weight)}'/>
+        <include
+            android:id="@+id/tvAgeCategory"
+            layout="@layout/item_pokemon_base"
+            app:title="@{@string/age_category}"
+            app:value="@{pokemonDetail.baby ? @string/baby : @string/adult}" />
 
-            <include
-                android:id="@+id/tvAgeCategory"
-                layout="@layout/item_pokemon_base"
-                app:title="@{@string/age_category}"
-                app:value="@{pokemonDetail.baby ? @string/baby : @string/adult}"/>
+        <include
+            android:id="@+id/tvHabitat"
+            layout="@layout/item_pokemon_base"
+            app:title="@{@string/habitat}"
+            app:value="@{pokemonDetail.habitat}" />
 
-            <include
-                android:id="@+id/tvHabitat"
-                layout="@layout/item_pokemon_base"
-                app:title="@{@string/habitat}"
-                app:value="@{pokemonDetail.habitat}"/>
-
-            <include
-                android:id="@+id/tvColor"
-                layout="@layout/item_pokemon_base"
-                app:title="@{@string/color}"
-                app:value="@{pokemonDetail.color}" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</layout>
+        <include
+            android:id="@+id/tvColor"
+            layout="@layout/item_pokemon_base"
+            app:title="@{@string/color}"
+            app:value="@{pokemonDetail.color}" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,4 +1,4 @@
-package com.example.work_with_service.data.model
+package com.example.work_with_service.data.api.model
 
 class PokemonResourceList(
     val count: Int,

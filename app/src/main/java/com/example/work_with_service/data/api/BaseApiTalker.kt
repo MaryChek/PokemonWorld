@@ -1,11 +1,11 @@
-package com.example.work_with_service.data.client
+package com.example.work_with_service.data.api
 
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import com.example.work_with_service.domain.Resource
 
-open class PokemonRemoteDataSource {
+open class BaseApiTalker {
 
     fun <T> getResult(
         call: Call<T>,
