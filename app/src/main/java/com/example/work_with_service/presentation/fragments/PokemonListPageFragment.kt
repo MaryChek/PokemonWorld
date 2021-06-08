@@ -19,12 +19,12 @@ import com.example.work_with_service.data.repository.PokemonRepository
 import com.example.work_with_service.databinding.FragmentPokemonListBinding
 import com.example.work_with_service.presentation.adapters.PokemonListAdapter
 import com.example.work_with_service.presentation.mappers.PokemonListMapper
-import com.example.work_with_service.presentation.models.Receipt
+import com.example.work_with_service.presentation.models.PokemonListModel
 import com.example.work_with_service.presentation.viewmodels.PokemonListViewModel
 import com.example.work_with_service.presentation.viewmodels.PokemonListViewModelFactory
 import kotlinx.android.synthetic.main.fragment_pokemon_list.*
 
-class PokemonListPageFragment : Fragment() {
+class PokemonListPageFragment : BasePokemonFragment() {
     private var binding: FragmentPokemonListBinding? = null
     private lateinit var viewModel: PokemonListViewModel
     private var adapter: PokemonListAdapter? = null
@@ -80,15 +80,8 @@ class PokemonListPageFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.receipt.observe(viewLifecycleOwner, { receipt ->
-            when (receipt.status) {
-                Receipt.Status.LOADING -> showLoadingIndicator()
-                Receipt.Status.SUCCESS -> {
-                    hideConnectionErrorMessage()
-                    hideLoadingIndicator()
-                }
-                Receipt.Status.ERROR -> showConnectionErrorMessage()
-            }
+        viewModel.model.observe(viewLifecycleOwner, { model ->
+            updateViewVisibility(model)
         })
         viewModel.pokemonList.observe(viewLifecycleOwner, { pokemons ->
             adapter?.submitList(pokemons)
@@ -98,26 +91,14 @@ class PokemonListPageFragment : Fragment() {
         })
     }
 
-    private fun showLoadingIndicator() {
-        binding?.progressIndicator?.visibility = VISIBLE
-    }
-
-    private fun hideLoadingIndicator() {
-        binding?.progressIndicator?.visibility = GONE
-    }
-
-    private fun showConnectionErrorMessage() {
-        binding?.connectionError?.root?.visibility = VISIBLE
-        setOnRetryConnectionClickListener()
+    private fun updateViewVisibility(model: PokemonListModel) {
+        binding?.progressIndicator?.updateVisibility(model.isLoadingIndicatorVisible)
+        binding?.connectionError?.root?.updateVisibility(model.isConnectionErrorViewVisible)
     }
 
     private fun setOnRetryConnectionClickListener() {
         binding?.connectionError?.buttonRetryConnection?.setOnClickListener {
             viewModel.onButtonRetryConnectionClick()
         }
-    }
-
-    private fun hideConnectionErrorMessage() {
-        binding?.connectionError?.root?.visibility = GONE
     }
 }

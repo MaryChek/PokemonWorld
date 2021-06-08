@@ -1,6 +1,5 @@
 package com.example.work_with_service.presentation.models
 
-import androidx.databinding.BaseObservable
 
 class PokemonDetail(
     val name: String,
@@ -10,12 +9,12 @@ class PokemonDetail(
     val color: String,
     val abilities: List<Ability>,
     val types: List<Type>
-) : BaseObservable() {
+) {
 
     class Ability(
         val name: String? = null,
         val effect: String
-    ) : BaseObservable()
+    )
 
     class Type(
         val name: String? = null,
@@ -23,5 +22,5 @@ class PokemonDetail(
         val doubleDamageTo: List<String> = emptyList(),
         val noDamageFrom: List<String> = emptyList(),
         val doubleDamageFrom: List<String> = emptyList()
-    ) : BaseObservable()
+    )
 }

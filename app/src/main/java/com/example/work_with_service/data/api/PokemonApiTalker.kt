@@ -1,7 +1,7 @@
 package com.example.work_with_service.data.api
 
 import com.example.work_with_service.data.api.model.*
-import com.example.work_with_service.domain.Resource
+import com.example.work_with_service.domain.models.Resource
 
 class PokemonApiTalker(
     clientConfig: ClientConfig,

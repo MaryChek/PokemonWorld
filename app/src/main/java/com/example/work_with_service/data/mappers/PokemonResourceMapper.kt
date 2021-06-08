@@ -1,35 +1,39 @@
 package com.example.work_with_service.data.mappers
 
+import com.example.work_with_service.data.api.model.*
 import com.example.work_with_service.domain.models.Pokemon as DomainPokemon
 import com.example.work_with_service.domain.models.Type as DomainPokemonType
 import com.example.work_with_service.domain.models.Ability as DomainPokemonAbility
 import com.example.work_with_service.domain.models.PokemonSpecies as DomainPokemonSpecies
-import com.example.work_with_service.data.api.model.NameApiResource
-import com.example.work_with_service.data.api.model.Pokemon
-import com.example.work_with_service.data.api.model.PokemonSpecies
-import com.example.work_with_service.data.api.model.Ability
-import com.example.work_with_service.data.api.model.Type
 
 class PokemonResourceMapper {
+    fun mapPokemonResourceList(resource: PokemonResourceList?): List<String>? =
+        resource?.results?.map {
+            it.name
+        }
+
     fun map(resource: List<Pokemon>): List<DomainPokemon> =
-        resource.map {
+        resource.mapNotNull(this::mapPokemon)
+
+    fun mapPokemon(resource: Pokemon?): DomainPokemon? =
+        resource?.let {
             DomainPokemon(
-                it.name,
-                it.baseExperience,
-                it.height,
-                it.weight,
-                it.abilities.map { ability ->
+                resource.name,
+                resource.baseExperience,
+                resource.height,
+                resource.weight,
+                resource.abilities.map { ability ->
                     ability.ability.name
                 },
-                it.types.map { type ->
+                resource.types.map { type ->
                     type.type.name
                 },
-                it.sprites.frontDefault
+                resource.sprites.frontDefault
             )
         }
 
-    fun map(resource: PokemonSpecies): DomainPokemonSpecies =
-        resource.let {
+    fun mapSpecies(resource: PokemonSpecies?): DomainPokemonSpecies? =
+        resource?.let {
             DomainPokemonSpecies(
                 it.isBaby,
                 it.habitat.name,
@@ -38,8 +42,8 @@ class PokemonResourceMapper {
             )
         }
 
-    fun map(resource: Ability): DomainPokemonAbility =
-        resource.let {
+    fun mapAbility(resource: Ability?): DomainPokemonAbility? =
+        resource?.let {
             DomainPokemonAbility(
                 it.name,
                 it.effectEntries.map { verboseEffect ->
@@ -50,8 +54,8 @@ class PokemonResourceMapper {
                 })
         }
 
-    fun map(resource: Type): DomainPokemonType =
-        resource.let {
+    fun mapType(resource: Type?): DomainPokemonType? =
+        resource?.let {
             DomainPokemonType(
                 it.name,
                 it.damageRelations.let { typeRelations ->

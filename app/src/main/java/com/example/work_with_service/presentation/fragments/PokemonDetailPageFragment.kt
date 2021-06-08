@@ -46,8 +46,6 @@ class PokemonDetailPageFragment : Fragment() {
     ): View? {
         binding =
             FragmentPokemonDetailBinding.inflate(inflater, container, false)
-//            DataBindingUtil.inflate(inflater, R.layout.fragment_pokemon_detail, container, false)
-//        binding?.lifecycleOwner = this
         return binding?.root
     }
 
