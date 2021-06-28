@@ -22,7 +22,7 @@ open class PokemonDetailMapper : BasePokemonMapper() {
     fun map(pokemonDetail: DomainPokemonDetail): PokemonDetail =
         pokemonDetail.let {
             PokemonDetail(
-                firstUpperCase(it.name),
+//                firstUpperCase(it.name),
                 it.species.captureRate,
                 it.species.isBaby,
                 firstUpperCase(it.species.habitat),

@@ -1,12 +1,11 @@
 package com.example.work_with_service.presentation.models
 
-import com.example.work_with_service.data.repository.PokemonRepository
-import com.example.work_with_service.presentation.mappers.PokemonDetailMapper
-
 class PokemonDetailModel(
-    private val mapper: PokemonDetailMapper,
-    private var pokemonService: PokemonRepository
-){
+    state: State = State.loading(),
+    val pokemonDetail: PokemonDetail? = null
+) : BasePokemonModel(state) {
+//    val isLoadingIndicatorVisible: Boolean = state.isInLoadingState()
+//    val isConnectionErrorViewVisible: Boolean = state.isInErrorState()
 //    private var onListReadyListener: ((PokemonDetail) -> Unit)? = null
 //    private var pokemon: Pokemon? = null
 //    private var pokemonDetail: PokemonDetail? = null

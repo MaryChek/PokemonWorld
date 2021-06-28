@@ -1,10 +1,6 @@
 package com.example.work_with_service.presentation.viewmodels
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.work_with_service.domain.models.Resource
-import com.example.work_with_service.domain.models.Status
 import com.example.work_with_service.domain.interactor.PokemonInteractor
 import com.example.work_with_service.presentation.mappers.PokemonDetailMapper
 import com.example.work_with_service.domain.models.PokemonDetail as DomainPokemonDetail
@@ -13,35 +9,28 @@ import com.example.work_with_service.presentation.models.*
 class PokemonDetailViewModel(
     private val mapper: PokemonDetailMapper,
     private val interactor: PokemonInteractor
-) : ViewModel() {
-
-    val pokemonDetail = MutableLiveData<Resource<PokemonDetail>>()
-    val pokemon = Pokemon
+) : BasePokemonViewModel<PokemonDetailModel>(mapper) {
 
     fun fetchPokemonDetail(pokemon: Pokemon) {
-        this.pokemon.value = pokemon
-//        pokemonDetail.value = Resource.loading()
-        mapper.map(pokemon).let {
+        model.value = PokemonDetailModel()
+        mapper.map(pokemon).let { domainPokemon ->
             interactor.fetchPokemonDetail(
-                it.name,
-                it.abilityNames,
-                it.typeNames,
-                this::onServiceFinishedWork
+                domainPokemon.name,
+                domainPokemon.abilityNames,
+                domainPokemon.typeNames,
+                this::onPokemonDetailGet
             )
         }
     }
 
-    private fun onServiceFinishedWork(pokemonDetail: Resource<DomainPokemonDetail>) {
-        this.pokemonDetail.value =
-            if (pokemonDetail.data != null && pokemonDetail.status == Status.SUCCESS) {
-                Resource.success(mapper.map(pokemonDetail.data))
-            } else {
-                pokemonDetail.message?.let {
-                    Log.w(null, it)
-                }
-                Resource.error((pokemonDetail.message ?: ""), null)
-            }
+    private fun onPokemonDetailGet(resource: Resource<DomainPokemonDetail>) {
+        val state: State = getResourceState(resource)
+        val pokemonDetail: PokemonDetail? = resource.data?.let { detail ->
+            mapper.map(detail)
+        }
+        model.value = PokemonDetailModel(state, pokemonDetail)
     }
+
 //
 //    private fun onPokemonDetailReady(pokiDetail: ServicePokemonAnswer) {
 //        pokemonDetailLive.value = getPokemonDetail(pokiDetail as PokiDetail)

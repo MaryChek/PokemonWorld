@@ -3,11 +3,8 @@ package com.example.work_with_service.presentation.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -54,14 +51,14 @@ class PokemonListPageFragment : BasePokemonFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initNavigationToolBar()
+        initNavigationToolbar()
         initList()
         setupObservers()
         setOnRetryConnectionClickListener()
         viewModel.fetchPokemonList()
     }
 
-    private fun initNavigationToolBar() {
+    private fun initNavigationToolbar() {
         binding?.toolbar?.setupWithNavController(findNavController())
     }
 
@@ -82,10 +79,11 @@ class PokemonListPageFragment : BasePokemonFragment() {
     private fun setupObservers() {
         viewModel.model.observe(viewLifecycleOwner, { model ->
             updateViewVisibility(model)
+            model.pokemons?.let { pokemons ->
+                adapter?.submitList(pokemons)
+            }
         })
-        viewModel.pokemonList.observe(viewLifecycleOwner, { pokemons ->
-            adapter?.submitList(pokemons)
-        })
+
         viewModel.navigation.observe(viewLifecycleOwner, { navigation ->
             findNavController().navigate(navigation.navigateToId, navigation.arguments)
         })
