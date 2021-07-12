@@ -1,0 +1,3 @@
+package com.example.work_with_service.presentation.navigation
+
+interface BaseNavigation

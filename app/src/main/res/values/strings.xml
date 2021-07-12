@@ -4,9 +4,9 @@
     <string name="pokemon_main">Main</string>
     <string name="base_experience">Start experience: </string>
     <string name="capture_rate">Capture rate: </string>
-    <string name="capture_rate_value">%1$d/255</string>
+    <string name="capture_rate_value">%1$s/255</string>
     <string name="pokemon_height">Height: </string>
-    <string name="pokemon_height_value">%1$dcm</string>
+    <string name="pokemon_height_value">%1$scm</string>
     <string name="pokemon_weight">Weight: </string>
     <string name="pokemon_weight_value">%1$.2fkg</string>
     <string name="age_category">Age category: </string>

@@ -3,7 +3,7 @@ package com.example.work_with_service.presentation.models
 
 class PokemonDetail(
 //    val name: String,
-    val captureRate: Int,
+    val captureRate: String,
     val isBaby: Boolean,
     val habitat: String,
     val color: String,

@@ -8,7 +8,7 @@ import com.example.work_with_service.presentation.models.PokemonDetail
 
 open class PokemonDetailMapper : BasePokemonMapper() {
 
-    fun map(pokemon: Pokemon): DomainPokemon =
+    fun mapToDomainPokemon(pokemon: Pokemon): DomainPokemon =
         DomainPokemon(
             firstLowerCase(pokemon.name),
             pokemon.baseExperience,
@@ -23,7 +23,7 @@ open class PokemonDetailMapper : BasePokemonMapper() {
         pokemonDetail.let {
             PokemonDetail(
 //                firstUpperCase(it.name),
-                it.species.captureRate,
+                it.species.captureRate.toString(),
                 it.species.isBaby,
                 firstUpperCase(it.species.habitat),
                 firstUpperCase(it.species.color),

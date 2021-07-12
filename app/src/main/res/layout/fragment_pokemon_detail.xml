@@ -9,31 +9,29 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height='?attr/actionBarSize'
-        android:theme="@style/CustomActionbarTheme"
-        app:height="@{(status == status.SUCCESS) ? @dimen/dp_220 : @dimen/action_bar_size}">
+        android:theme="@style/CustomActionbarTheme">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorAppBackground"
+            android:visibility="visible"
             app:expandedTitleTextAppearance="@style/TitleTextStyle"
-            app:layout_scrollFlags="exitUntilCollapsed|scroll">
+            app:layout_scrollFlags="exitUntilCollapsed|scroll"
+            tools:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivPokemon"
                 android:layout_width="320dp"
                 android:layout_height="220dp"
                 android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/pokemon"
-                android:visibility="@{(status == status.SUCCESS) ? View.VISIBLE : View.GONE}"
-                app:imageUrl="@{pokemon.imageUrl}" />
+                android:contentDescription="@string/pokemon" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:title="@{pokemonDetail.name}"
                 app:layout_collapseMode="pin" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -60,9 +58,7 @@
                     layout="@layout/cv_pokemon_main"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="@{(status == status.SUCCESS) ? View.VISIBLE : View.GONE}"
-                    app:pokemon="@{pokemon}"
-                    app:pokemonDetail="@{pokemonDetail}"
+                    android:visibility="gone"
                     tools:visibility="visible" />
 
                 <include
@@ -71,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:visibility="@{(status == status.SUCCESS) ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     tools:visibility="visible" />
 
                 <include
@@ -80,9 +76,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:visibility="@{(status == status.SUCCESS) ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     tools:visibility="visible" />
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
@@ -91,15 +86,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="@{(status == status.LOADING) ? View.VISIBLE : View.GONE}"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <include
             android:id="@+id/connectionError"
             layout="@layout/connection_error"
-            android:visibility="@{(status == status.ERROR) ? View.VISIBLE : View.GONE}"
-            tools:visibility="gone" />
+            android:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

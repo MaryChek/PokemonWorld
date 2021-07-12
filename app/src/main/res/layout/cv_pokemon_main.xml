@@ -23,44 +23,30 @@
 
         <include
             android:id="@+id/tvBasExperience"
-            layout="@layout/item_pokemon_base"
-            app:title="@{@string/base_experience}"
-            app:value="@{String.valueOf(pokemon.baseExperience)}" />
+            layout="@layout/item_pokemon_main" />
 
         <include
             android:id="@+id/tvCaptureRate"
-            layout="@layout/item_pokemon_base"
-            app:title="@{@string/capture_rate}"
-            app:value='@{String.format(@string/capture_rate_value, pokemonDetail.captureRate)}' />
+            layout="@layout/item_pokemon_main" />
 
         <include
             android:id="@+id/tvHeight"
-            layout="@layout/item_pokemon_base"
-            app:title="@{@string/pokemon_height}"
-            app:value='@{String.format(@string/pokemon_height_value, pokemon.height)}' />
+            layout="@layout/item_pokemon_main" />
 
         <include
             android:id="@+id/tvWeight"
-            layout="@layout/item_pokemon_base"
-            app:title="@{@string/pokemon_weight}"
-            app:value='@{String.format(@string/pokemon_weight_value, pokemon.weight)}' />
+            layout="@layout/item_pokemon_main" />
 
         <include
             android:id="@+id/tvAgeCategory"
-            layout="@layout/item_pokemon_base"
-            app:title="@{@string/age_category}"
-            app:value="@{pokemonDetail.baby ? @string/baby : @string/adult}" />
+            layout="@layout/item_pokemon_main" />
 
         <include
             android:id="@+id/tvHabitat"
-            layout="@layout/item_pokemon_base"
-            app:title="@{@string/habitat}"
-            app:value="@{pokemonDetail.habitat}" />
+            layout="@layout/item_pokemon_main" />
 
         <include
             android:id="@+id/tvColor"
-            layout="@layout/item_pokemon_base"
-            app:title="@{@string/color}"
-            app:value="@{pokemonDetail.color}" />
+            layout="@layout/item_pokemon_main" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -6,23 +6,25 @@ import com.example.work_with_service.data.api.PokemonApiTalker
 import com.example.work_with_service.data.mappers.PokemonResourceMapper
 import com.example.work_with_service.data.repository.PokemonRepository
 import com.example.work_with_service.data.api.ClientPokemonApiCreator
+import com.example.work_with_service.domain.interactor.PokemonInteractor
+import com.example.work_with_service.presentation.mappers.PokemonDetailMapper
+import com.example.work_with_service.presentation.mappers.PokemonListMapper
+import com.example.work_with_service.presentation.viewmodels.factory.PokemonViewModelFactory
 import okhttp3.OkHttpClient
 
 class App : Application() {
-//    lateinit var pokemonListModel: PokemonListModel
-//    lateinit var pokemonDetailModel: PokemonDetailModel
-    lateinit var repository: PokemonRepository
-//    lateinit var pokemonListViewModel: PokemonListViewModel
-//    lateinit var pokemonDetailViewModel: PokemonDetailViewModel
+
+    lateinit var viewModelFactory: PokemonViewModelFactory
 
     override fun onCreate() {
         super.onCreate()
         val clientConfig = ClientConfig(BASE_URL, OkHttpClient.Builder())
         val apiTalker = PokemonApiTalker(clientConfig, ClientPokemonApiCreator())
-        repository = PokemonRepository(apiTalker, PokemonResourceMapper())
-//        pokemonListViewModel = ViewModelProvider(this, PokemonListViewModelFactory(PokemonListMapper(), repository)).get(PokemonListViewModel::class.java)
-//        pokemonListModel = PokemonListModel(PokemonListMapper(), repository)
-//        pokemonDetailModel = PokemonDetailModel(PokemonDetailMapper(), repository)
+        val repository = PokemonRepository(apiTalker, PokemonResourceMapper())
+        val interactor = PokemonInteractor(repository)
+        viewModelFactory = PokemonViewModelFactory(
+            interactor, PokemonListMapper(), PokemonDetailMapper()
+        )
     }
 
     companion object {

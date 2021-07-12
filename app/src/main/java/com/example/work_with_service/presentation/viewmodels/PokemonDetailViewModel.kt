@@ -4,16 +4,36 @@ import com.example.work_with_service.domain.models.Resource
 import com.example.work_with_service.domain.interactor.PokemonInteractor
 import com.example.work_with_service.presentation.mappers.PokemonDetailMapper
 import com.example.work_with_service.domain.models.PokemonDetail as DomainPokemonDetail
-import com.example.work_with_service.presentation.models.*
+import com.example.work_with_service.presentation.models.Pokemon
+import com.example.work_with_service.presentation.models.PokemonDetail
+import com.example.work_with_service.presentation.models.State
+import com.example.work_with_service.presentation.models.PokemonDetailModel
+import com.example.work_with_service.presentation.navigation.FromPokemonDetail
+import com.example.work_with_service.presentation.viewmodels.base.BasePokemonViewModel
 
 class PokemonDetailViewModel(
     private val mapper: PokemonDetailMapper,
     private val interactor: PokemonInteractor
-) : BasePokemonViewModel<PokemonDetailModel>(mapper) {
+) : BasePokemonViewModel<PokemonDetailModel, FromPokemonDetail>(PokemonDetailModel(), mapper) {
+
+    private fun updateModel(
+        namePokemon: String? = model.name,
+        imageUrl: String? = model.imageUrl,
+        baseExperience: String? = model.baseExperience,
+        pokemonHeight: String? = model.pokemonHeight,
+        pokemonWeight: Double? = model.pokemonWeight,
+        state: State = model.state,
+        pokemonDetail: PokemonDetail? = model.pokemonDetail,
+    ) {
+        model = PokemonDetailModel(
+            namePokemon, imageUrl, baseExperience, pokemonHeight, pokemonWeight,
+            pokemonDetail, state,
+        )
+        updateScreen()
+    }
 
     fun fetchPokemonDetail(pokemon: Pokemon) {
-        model.value = PokemonDetailModel()
-        mapper.map(pokemon).let { domainPokemon ->
+        mapper.mapToDomainPokemon(pokemon).let { domainPokemon ->
             interactor.fetchPokemonDetail(
                 domainPokemon.name,
                 domainPokemon.abilityNames,
@@ -21,6 +41,11 @@ class PokemonDetailViewModel(
                 this::onPokemonDetailGet
             )
         }
+        updateModel(
+            namePokemon = pokemon.name, imageUrl = pokemon.imageUrl,
+            baseExperience = pokemon.baseExperience.toString(),
+            pokemonHeight = pokemon.height.toString(), pokemonWeight = pokemon.weight
+        )
     }
 
     private fun onPokemonDetailGet(resource: Resource<DomainPokemonDetail>) {
@@ -28,10 +53,12 @@ class PokemonDetailViewModel(
         val pokemonDetail: PokemonDetail? = resource.data?.let { detail ->
             mapper.map(detail)
         }
-        model.value = PokemonDetailModel(state, pokemonDetail)
+        updateModel(state = state, pokemonDetail = pokemonDetail)
     }
 
-//
+    override fun goToPrevious() =
+        goToScreen(FromPokemonDetail.PreviousScreen)
+
 //    private fun onPokemonDetailReady(pokiDetail: ServicePokemonAnswer) {
 //        pokemonDetailLive.value = getPokemonDetail(pokiDetail as PokiDetail)
 //    }

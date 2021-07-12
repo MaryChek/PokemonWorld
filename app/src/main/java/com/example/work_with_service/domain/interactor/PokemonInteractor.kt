@@ -19,7 +19,11 @@ class PokemonInteractor(
 
     fun fetchListPokemon(onPokemonListReady: (Resource<List<Pokemon>>) -> Unit) {
         this.onPokemonListReady = onPokemonListReady
-        repository.fetchListPokemonResource(this::onPokemonResourceListReady, OFFSET, LIMIT)
+        if (pokemonList.isEmpty()) {
+            repository.fetchListPokemonResource(this::onPokemonResourceListReady, OFFSET, LIMIT)
+        } else {
+            onPokemonListReady.invoke(Resource.success(pokemonList))
+        }
     }
 
     private fun onPokemonResourceListReady(pokemonNames: Resource<List<String>>) {
@@ -35,7 +39,6 @@ class PokemonInteractor(
             pokemonList.add(pokemon)
             if (pokemonList.size == LIMIT) {
                 onPokemonListReady?.invoke(Resource.success(pokemonList))
-                pokemonList = mutableListOf()
             }
         }
     }
@@ -109,6 +112,10 @@ class PokemonInteractor(
             onStatusResourceError(resource.message ?: UNKNOWN_ERROR)
         }
         return resource.data
+    }
+
+    fun cleanPokemonCache() {
+        pokemonList = mutableListOf()
     }
 
     companion object {

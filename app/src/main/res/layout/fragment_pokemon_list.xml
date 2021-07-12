@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAppBackground"
-    tools:context=".presentation.fragments.PokemonListPageFragment">
+    tools:context=".presentation.fragments.PokemonListFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -40,12 +40,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:visibility="@{status == status.LOADING ? View.VISIBLE : View.GONE}"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <include
         android:id="@+id/connectionError"
         layout="@layout/connection_error"
-        android:visibility="@{status == status.ERROR ? View.VISIBLE : View.GONE}" />
+        android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>
