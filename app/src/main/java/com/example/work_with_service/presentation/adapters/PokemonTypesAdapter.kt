@@ -37,9 +37,18 @@ class PokemonTypesAdapter(
     ) =
         with(holder.binding) {
             val type: String =
-                resources.getString(R.string.name_with_number, position, itemType.name)
+                resources.getString(R.string.name_with_number, (position + 1), itemType.name)
             tvNameType.text = type
-            itemNoDamageTo.updateHeadAndValueTexts(R.string.no_damage_to, itemType.doubleDamageTo)
+            itemNoDamageTo.updateHeadAndValueTexts(R.string.no_damage_to, itemType.noDamageTo)
+            itemDoubleDamageTo.updateHeadAndValueTexts(
+                R.string.double_damage_to,
+                itemType.doubleDamageTo
+            )
+            itemNoDamageFrom.updateHeadAndValueTexts(R.string.no_damage_from, itemType.noDamageFrom)
+            itemDoubleDamageFrom.updateHeadAndValueTexts(
+                R.string.double_damage_from,
+                itemType.doubleDamageFrom
+            )
         }
 
     private fun ItemDamageBinding.updateHeadAndValueTexts(
@@ -48,11 +57,11 @@ class PokemonTypesAdapter(
     ) {
         tvHeading.text = resources.getString(headTextResId)
         if (damage.isNotEmpty()) {
-            root.visibility = View.VISIBLE
+            layoutDamage.visibility = View.VISIBLE
             val typesDamage: String = damage.joinToString(separator = ", ")
             tvValue.text = typesDamage
         } else {
-            root.visibility = View.GONE
+            layoutDamage.visibility = View.GONE
         }
     }
 

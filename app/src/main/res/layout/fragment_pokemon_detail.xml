@@ -8,7 +8,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height='?attr/actionBarSize'
+        android:layout_height='@dimen/custom_action_bar_with_image_size'
         android:theme="@style/CustomActionbarTheme">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorAppBackground"
-            android:visibility="visible"
+            android:visibility="gone"
             app:expandedTitleTextAppearance="@style/TitleTextStyle"
             app:layout_scrollFlags="exitUntilCollapsed|scroll"
             tools:visibility="visible">
@@ -24,7 +24,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivPokemon"
                 android:layout_width="320dp"
-                android:layout_height="220dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="@string/pokemon" />
 
@@ -36,64 +36,58 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:background="@color/colorAppBackground"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorAppBackground"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <include
-                    android:id="@+id/cvPokemonMain"
-                    layout="@layout/cv_pokemon_main"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-                <include
-                    android:id="@+id/cvTypes"
-                    layout="@layout/item_pokemon_types"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-                <include
-                    android:id="@+id/cvAbilities"
-                    layout="@layout/item_pokemon_abilities"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-
-        <ProgressBar
-            android:id="@+id/progressIndicator"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="gone" />
+            android:orientation="vertical">
 
-        <include
-            android:id="@+id/connectionError"
-            layout="@layout/connection_error"
-            android:visibility="gone" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                android:id="@+id/cvPokemonMain"
+                layout="@layout/cv_pokemon_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <include
+                android:id="@+id/cvTypes"
+                layout="@layout/item_pokemon_types"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <include
+                android:id="@+id/cvAbilities"
+                layout="@layout/item_pokemon_abilities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="visible"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/connectionError"
+        layout="@layout/connection_error"
+        android:visibility="gone" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

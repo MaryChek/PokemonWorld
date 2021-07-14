@@ -4,14 +4,15 @@ import androidx.annotation.StringRes
 import com.example.work_with_service.R
 
 class PokemonDetailModel(
+    val pokemon: Pokemon? = null,
     val name: String? = null,
     val imageUrl: String? = null,
     val baseExperience: String? = null,
     val pokemonHeight: String? = null,
     val pokemonWeight: Double? = null,
     val pokemonDetail: PokemonDetail? = null,
-    val state: State = State.loading(),
-) : BasePokemonModel(state) {
+    val resource: State = State.loading(),
+) : RefreshableModel(resource) {
 
     val isToolbarVisible: Boolean = name != null
     val isPokemonMainVisible: Boolean = pokemonDetail != null

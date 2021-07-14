@@ -38,7 +38,8 @@ open class PokemonDetailMapper : BasePokemonMapper() {
                 it.language == ENGLISH_LANGUAGE
             }?.let {
                 PokemonDetail.Ability(
-                    firstUpperCase(ability.name), it.description.replace(TWO_NL, PARAGRAPH)
+                    firstUpperCase(ability.name),
+                    PARAGRAPH + it.description.replace(TWO_NL, (NEW_LINE + PARAGRAPH))
                 )
             }
         }
@@ -64,7 +65,8 @@ open class PokemonDetailMapper : BasePokemonMapper() {
 
     companion object {
         private const val ENGLISH_LANGUAGE = "en"
-        private const val TWO_NL = "\n\n"
-        private const val PARAGRAPH = "\n\t\t\t"
+        private const val NEW_LINE = "\n"
+        private const val TWO_NL = "$NEW_LINE$NEW_LINE"
+        private const val PARAGRAPH = "\t\t\t"
     }
 }

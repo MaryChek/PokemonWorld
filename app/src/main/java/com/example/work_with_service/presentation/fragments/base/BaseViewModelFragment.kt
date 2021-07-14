@@ -1,4 +1,4 @@
-package com.example.work_with_service.presentation.fragments
+package com.example.work_with_service.presentation.fragments.base
 
 import android.os.Bundle
 import android.view.View
@@ -13,12 +13,12 @@ import androidx.navigation.Navigation
 import com.example.work_with_service.App
 import com.example.work_with_service.presentation.navigation.BaseNavigation
 import com.example.work_with_service.presentation.navigation.GoToScreen
-import com.example.work_with_service.presentation.viewmodels.base.BasePokemonViewModel
+import com.example.work_with_service.presentation.viewmodels.base.BaseViewModel
 
-abstract class BasePokemonViewModelFragment<
+abstract class BaseViewModelFragment<
         Model : Any,
         NavigationType : BaseNavigation,
-        ViewModel : BasePokemonViewModel<Model, NavigationType>>
+        ViewModel : BaseViewModel<Model, NavigationType>>
     : Fragment(), GoToScreen<NavigationType> {
 
     protected lateinit var viewModel: ViewModel
@@ -58,15 +58,6 @@ abstract class BasePokemonViewModelFragment<
         }
         requireActivity().onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, onBackPressedCallback)
-    }
-
-    protected fun View.updateVisibility(show: Boolean) {
-        val visibility =
-            when (show) {
-                true -> View.VISIBLE
-                else -> View.GONE
-            }
-        this.visibility = visibility
     }
 
     protected fun navigate(@IdRes navigateToId: Int, arguments: Bundle? = null) =

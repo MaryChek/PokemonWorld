@@ -1,6 +1,7 @@
 package com.example.work_with_service.presentation.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +13,25 @@ import com.example.work_with_service.R
 import com.example.work_with_service.databinding.*
 import com.example.work_with_service.presentation.adapters.PokemonAbilitiesAdapter
 import com.example.work_with_service.presentation.adapters.PokemonTypesAdapter
+import com.example.work_with_service.presentation.fragments.base.RefreshableViewModelFragment
 import com.example.work_with_service.presentation.models.Pokemon
 import com.example.work_with_service.presentation.models.PokemonDetail
 import com.example.work_with_service.presentation.models.PokemonDetailModel
 import com.example.work_with_service.presentation.navigation.FromPokemonDetail
 import com.example.work_with_service.presentation.viewmodels.PokemonDetailViewModel
+import java.lang.IllegalArgumentException
 
-class PokemonDetailFragment : BasePokemonViewModelFragment<
+class PokemonDetailFragment : RefreshableViewModelFragment<
         PokemonDetailModel, FromPokemonDetail, PokemonDetailViewModel>() {
+
+    private val logTag: String = PokemonDetailFragment::class.java.simpleName
+
     private var binding: FragmentPokemonDetailBinding? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initPokemon()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,8 +46,6 @@ class PokemonDetailFragment : BasePokemonViewModelFragment<
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initNavigationToolBar()
-        setOnRetryConnectionClickListener()
-        initPokemon()
         initTitlesPokemonDetail()
     }
 
@@ -47,10 +56,14 @@ class PokemonDetailFragment : BasePokemonViewModelFragment<
     }
 
     private fun initPokemon() {
-        arguments?.let { bundle ->
-            bundle.getSerializable(Pokemon::class.java.simpleName)?.let {
-                viewModel.fetchPokemonDetail(it as Pokemon)
+        val bundle: Bundle? = arguments
+        if (bundle != null) {
+            bundle.getSerializable(Pokemon::class.java.simpleName)?.let { pokemon ->
+                viewModel.init(pokemon as Pokemon)
+                viewModel.fetchPokemonDetail()
             }
+        } else {
+            Log.e(logTag, "Missing Pokemon", IllegalArgumentException())
         }
     }
 
@@ -77,6 +90,7 @@ class PokemonDetailFragment : BasePokemonViewModelFragment<
         }
 
     override fun updateScreen(model: PokemonDetailModel) {
+        super.updateScreen(model)
         binding?.ivPokemon?.load(model.imageUrl)
         binding?.toolbar?.title = model.name
 
@@ -127,11 +141,5 @@ class PokemonDetailFragment : BasePokemonViewModelFragment<
         binding?.cvAbilities?.root?.updateVisibility(model.isPokemonAbilitiesVisible)
         binding?.progressIndicator?.updateVisibility(model.isLoadingIndicatorVisible)
         binding?.connectionError?.root?.updateVisibility(model.isConnectionErrorViewVisible)
-    }
-
-    private fun setOnRetryConnectionClickListener() {
-        binding?.connectionError?.buttonRetryConnection?.setOnClickListener {
-            initPokemon()
-        }
     }
 }

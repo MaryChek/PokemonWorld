@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.work_with_service.R
 import com.example.work_with_service.databinding.FragmentPokemonListBinding
 import com.example.work_with_service.presentation.adapters.PokemonListAdapter
+import com.example.work_with_service.presentation.fragments.base.BaseViewModelFragment
 import com.example.work_with_service.presentation.models.PokemonListModel
 import com.example.work_with_service.presentation.navigation.FromPokemonList
 import com.example.work_with_service.presentation.viewmodels.PokemonListViewModel
 import kotlinx.android.synthetic.main.fragment_pokemon_list.*
 
-class PokemonListFragment : BasePokemonViewModelFragment<
+class PokemonListFragment : BaseViewModelFragment<
         PokemonListModel, FromPokemonList, PokemonListViewModel>() {
 
     private var binding: FragmentPokemonListBinding? = null

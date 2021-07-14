@@ -10,18 +10,18 @@ import com.example.work_with_service.presentation.models.Pokemon
 import com.example.work_with_service.presentation.models.PokemonListModel
 import com.example.work_with_service.presentation.models.State
 import com.example.work_with_service.presentation.navigation.FromPokemonList
-import com.example.work_with_service.presentation.viewmodels.base.BasePokemonViewModel
+import com.example.work_with_service.presentation.viewmodels.base.BaseViewModel
 
 class PokemonListViewModel(
     private val mapper: PokemonListMapper,
     private val interactor: PokemonInteractor
-) : BasePokemonViewModel<PokemonListModel, FromPokemonList>(PokemonListModel(), mapper) {
+) : BaseViewModel<PokemonListModel, FromPokemonList>(PokemonListModel(), mapper) {
 
     private fun updateModel(
         pokemons: List<Pokemon>? = model.pokemons,
-        state: State = model.state,
+        state: State = model.resource,
     ) {
-        model = PokemonListModel(state = state, pokemons = pokemons)
+        model = PokemonListModel(resource = state, pokemons = pokemons)
         updateScreen()
     }
 

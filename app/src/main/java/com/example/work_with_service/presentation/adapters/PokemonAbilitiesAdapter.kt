@@ -36,7 +36,7 @@ class PokemonAbilitiesAdapter(
     ) =
         with(holder.binding) {
             val ability: String =
-                resources.getString(R.string.name_with_number, position, itemAbility.name)
+                resources.getString(R.string.name_with_number, (position + 1), itemAbility.name)
             tvAbilityName.text = ability
             tvAbilityDescription.text = itemAbility.effect
         }
